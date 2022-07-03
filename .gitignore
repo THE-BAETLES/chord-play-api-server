@@ -4,6 +4,12 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+### gradle
+.gradle
+bin/*
+
+### Enviornment
+application.properties
 ### STS ###
 .apt_generated
 .classpath
