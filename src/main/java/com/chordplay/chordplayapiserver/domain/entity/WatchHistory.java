@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 @Document(collection = "WATCH_HISTORY")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class WatchHistory {
     @Id
     private String id;

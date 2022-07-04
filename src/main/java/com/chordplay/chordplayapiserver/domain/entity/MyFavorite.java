@@ -11,7 +11,6 @@ import javax.persistence.Id;
 @Document(collection = "MY_FAVORITE")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class MyFavorite {
 
     @Id

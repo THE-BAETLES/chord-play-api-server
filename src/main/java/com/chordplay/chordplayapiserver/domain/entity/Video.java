@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Document(collection = "VIDEO")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Video {
 
     @Id

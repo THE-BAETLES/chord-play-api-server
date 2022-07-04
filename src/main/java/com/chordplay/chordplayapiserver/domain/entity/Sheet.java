@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 @Document(collection = "SHEET_INFO")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Sheet {
     @Id
     private String id;

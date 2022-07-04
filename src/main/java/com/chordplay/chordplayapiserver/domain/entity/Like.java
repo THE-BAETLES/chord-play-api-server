@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 @Document(collection = "LIKE")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Like {
 
     @Id

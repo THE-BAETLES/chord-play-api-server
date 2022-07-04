@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class ChordInfo {
     private String chord;
     private double start;

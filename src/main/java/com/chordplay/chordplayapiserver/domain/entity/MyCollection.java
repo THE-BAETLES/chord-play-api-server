@@ -12,7 +12,6 @@ import java.util.Date;
 @Document(collection = "MY_COLLECTION")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class MyCollection {
     @Id
     private String id;

@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Document(collection = "USER_NICKNAME")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class UserNickname {
     @Id
     private String id;

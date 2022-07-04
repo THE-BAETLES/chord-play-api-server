@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 @Document(collection = "DIFFICULTY")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class Difficulty {
     @Id
     private String id;

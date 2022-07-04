@@ -9,7 +9,6 @@ import java.util.List;
 @Document(collection = "SHEET")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class SheetData {
 
     private int bpm;

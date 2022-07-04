@@ -14,7 +14,6 @@ import javax.persistence.Id;
 @Document(collection = "USER")
 @Getter
 @RequiredArgsConstructor
-@NoArgsConstructor
 public class User {
 
     @Id
