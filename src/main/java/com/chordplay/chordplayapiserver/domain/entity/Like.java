@@ -5,11 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
-import com.chordplay.chordplayapiserver.domain.sheet.entity.SheetInfo;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
-import java.sql.Timestamp;
 
 @Document(collection = "LIKE")
 @Getter
@@ -22,7 +19,7 @@ public class Like {
     @DocumentReference(lazy = true)
     private User user;
     @DocumentReference(lazy = true)
-    private SheetInfo sheetInfo;
+    private com.chordplay.chordplayapiserver.domain.sheet.entity.Sheet sheet;
 
     private Time time;
 }

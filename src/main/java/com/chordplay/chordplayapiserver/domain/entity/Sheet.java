@@ -1,20 +1,35 @@
-package com.chordplay.chordplayapiserver.domain.entity;
+package com.chordplay.chordplayapiserver.domain.sheet.entity;
 
-import lombok.*;
-import org.hibernate.annotations.NotFound;
-
-import javax.persistence.Entity;
-import com.chordplay.chordplayapiserver.domain.entity.ChordInfo;
+import com.chordplay.chordplayapiserver.domain.entity.User;
+import com.chordplay.chordplayapiserver.domain.entity.Video;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import java.util.List;
+import javax.persistence.Id;
+import java.sql.Timestamp;
 
-@Document(collection = "SHEET")
+@Document(collection = "SHEET_INFO")
 @Getter
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Sheet {
+    @Id
+    private String id;
 
-    private int bpm;
-    private List<ChordInfo> ChordInfo;
+    @DocumentReference(lazy = true)
+    private Video video;
+
+    @DocumentReference(lazy = true)
+    private User user;
+
+    private String title;
+
+    private Timestamp createdAt;
+
+    private Timestamp updatedAt;
+
+    private Long likeCount;
 }

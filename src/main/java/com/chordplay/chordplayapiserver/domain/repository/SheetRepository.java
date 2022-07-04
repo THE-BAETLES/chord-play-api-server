@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.domain.sheet.repository;
+package com.chordplay.chordplayapiserver.domain.repository;
 
 import com.chordplay.chordplayapiserver.domain.sheet.controller.SheetController;
 import org.springframework.data.jpa.repository.JpaRepository;
