@@ -1,16 +1,14 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
 import com.mongodb.internal.connection.Time;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
-
+import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 @Document(collection = "LIKE")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@RequiredArgsConstructor
 public class Like {
 
     @Id
@@ -18,7 +16,15 @@ public class Like {
     @DocumentReference(lazy = true)
     private User user;
     @DocumentReference(lazy = true)
-    private com.chordplay.chordplayapiserver.domain.sheet.entity.Sheet sheet;
+    private Sheet sheet;
 
     private Time time;
+
+    @Builder
+    public Like(String id, User user, Sheet sheet, Time time) {
+        this.id = id;
+        this.user = user;
+        this.sheet = sheet;
+        this.time = time;
+    }
 }

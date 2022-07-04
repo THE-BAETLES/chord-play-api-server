@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.entity;
 import lombok.*;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChordInfo {
     @Builder
     public ChordInfo(String chord, double start, double end, int position) {
