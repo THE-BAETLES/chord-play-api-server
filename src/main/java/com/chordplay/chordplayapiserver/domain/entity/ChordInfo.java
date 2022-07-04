@@ -1,8 +1,13 @@
-package com.chordplay.chordplayapiserver.domain.sheet.entity;
+package com.chordplay.chordplayapiserver.domain.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@Data
+@Getter
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class ChordInfo {
     private String chord;
     private double start;

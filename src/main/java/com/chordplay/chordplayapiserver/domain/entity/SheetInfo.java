@@ -1,24 +1,36 @@
 package com.chordplay.chordplayapiserver.domain.sheet.entity;
 
+import com.chordplay.chordplayapiserver.domain.entity.User;
+import com.chordplay.chordplayapiserver.domain.entity.Video;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import javax.persistence.Id;
 import java.sql.Date;
+import java.sql.Timestamp;
 
-@Document(collection = "sheet_info")
+@Document(collection = "SHEET_INFO")
+@Getter
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class SheetInfo {
     @Id
-    private int id;
+    private String id;
 
-    private String videoId;
+    @DocumentReference(lazy = true)
+    private Video video;
 
-    private String userId;
+    @DocumentReference(lazy = true)
+    private User user;
 
     private String title;
 
-    private Date createdAt;
+    private Timestamp createdAt;
 
-    private Date updatedAt;
+    private Timestamp updatedAt;
 
-    private int likeCount;
+    private Long likeCount;
 }

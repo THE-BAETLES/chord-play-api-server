@@ -1,16 +1,20 @@
-package com.chordplay.chordplayapiserver.domain.sheet.entity;
+package com.chordplay.chordplayapiserver.domain.entity;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 import org.hibernate.annotations.NotFound;
 
 import javax.persistence.Entity;
+import com.chordplay.chordplayapiserver.domain.entity.ChordInfo;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+import java.util.List;
+
+@Document(collection = "SHEET")
+@Getter
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Sheet {
-    @NonNull
-    private int bpm;
 
-    @NonNull
-    private ChordInfo[] info;
+    private int bpm;
+    private List<ChordInfo> ChordInfo;
 }
