@@ -17,21 +17,16 @@ class VideoRepositoryTest {
     @Test
     @Transactional
     @Rollback(false)
-    public void testVideo(){
+    public void testV(){
 
-        Video video = new Video();
-        video.setId("mongo");
-        video.setThumnail_path("path");
-        video.setVid_youtube("youtube");
-        video.setTitle("title");
-        video.setGenre("genre");
-        video.setSinger("singer");
-        video.setDifficulty_avg(3);
-        video.setPlay_count(3);
+        Video video = Video.builder()
+                .id("zzzzz").vid_youtube("vid").title("title").genre("genre").singer("singer")
+                        .build();
 
         videoRepository.save(video);
 
         Video testVideo = videoRepository.findById(video.getId()).get();
+        System.out.println(testVideo.getId() + " = " + video.getId());
         assertEquals(testVideo.getId(), video.getId());
 
     }
