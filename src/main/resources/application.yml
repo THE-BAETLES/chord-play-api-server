@@ -4,6 +4,14 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: 1234
+      database: chord_play
+      port: 27017
+      host: localhost
 jpa:
   hibernate:
     ddl-auto: create
