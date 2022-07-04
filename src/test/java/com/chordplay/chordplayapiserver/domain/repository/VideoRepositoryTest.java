@@ -16,7 +16,7 @@ class VideoRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(false)
+    @Rollback(true)
     public void testV(){
 
         Video video = Video.builder()
