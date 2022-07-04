@@ -3,12 +3,13 @@ package com.chordplay.chordplayapiserver.domain.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
 
 @Document(collection = "VIDEO")
-@Getter
+@Getter @Setter
 @RequiredArgsConstructor
 public class Video {
 
@@ -19,7 +20,7 @@ public class Video {
     private String title;
     private String genre;
     private String singer;
-    private Long difficulty_avg;
-    private Long play_count;
+    private int difficulty_avg;
+    private int play_count;
 
 }

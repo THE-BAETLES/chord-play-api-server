@@ -7,8 +7,8 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      username: root
-      password: 1234
+      username: test
+      password: test
       database: chord_play
       port: 27017
       host: localhost

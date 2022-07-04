@@ -1,13 +1,17 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
-@RequiredArgsConstructor
 public class ChordInfo {
+    @Builder
+    public ChordInfo(String chord, double start, double end, int position) {
+        this.chord = chord;
+        this.start = start;
+        this.end = end;
+        this.position = position;
+    }
+
     private String chord;
     private double start;
     private double end;
