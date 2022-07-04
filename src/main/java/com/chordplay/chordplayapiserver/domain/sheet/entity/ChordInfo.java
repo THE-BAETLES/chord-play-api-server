@@ -1,10 +1,9 @@
 package com.chordplay.chordplayapiserver.domain.sheet.entity;
 
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
-public class ChordBlock {
+public class ChordInfo {
     private String chord;
     private double start;
     private double end;
