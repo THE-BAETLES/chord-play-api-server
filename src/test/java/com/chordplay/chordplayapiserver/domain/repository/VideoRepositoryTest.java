@@ -16,11 +16,11 @@ class VideoRepositoryTest {
 
     @Test
     @Transactional
-    @Rollback(true)
-    public void testV(){
+    @Rollback(value = false)
+    public void testVideo(){
 
         Video video = Video.builder()
-                .id("zzzzz").vid_youtube("vid").title("title").genre("genre").singer("singer")
+                .vid_youtube("unique").title("title").genre("genre").singer("singer")
                         .build();
 
         videoRepository.save(video);
