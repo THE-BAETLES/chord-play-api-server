@@ -52,7 +52,7 @@ public class UserRepoTest {
     public void defaultUserTest(){
 
         Video video = videoRepository.findById("zzzzz").get();
-        MyVideo myVideo = MyVideo.builder().video(video).last_played().build();
+        MyVideo myVideo = MyVideo.builder().video(video).build();
         List<MyVideo> myCollection = new ArrayList<MyVideo>();
         myCollection.add(myVideo);
         User user = User.builder().myCollection(myCollection).build();
