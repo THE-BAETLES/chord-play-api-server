@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.domain.entity;
+package com.chordplay.chordplayapiserver.domain.entity.item;
 
 import lombok.*;
 
