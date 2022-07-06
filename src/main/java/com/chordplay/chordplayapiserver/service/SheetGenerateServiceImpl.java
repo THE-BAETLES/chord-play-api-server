@@ -1,23 +1,17 @@
-package com.chordplay.chordplayapiserver.domain.service;
+package com.chordplay.chordplayapiserver.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service @Primary
-public class SheetGenerateServiceImpl implements com.chordplay.chordplayapiserver.domain.sheet.service.SheetGenerateService {
+@RequiredArgsConstructor
+public class SheetGenerateServiceImpl implements SheetGenerateService {
 
-    private final com.chordplay.chordplayapiserver.domain.sheet.service.ProgressService progressService;
+    @Override @Transactional
+    public void aiCreate() {
 
-    public SheetGenerateServiceImpl(com.chordplay.chordplayapiserver.domain.sheet.service.ProgressService progressService){
-        this.progressService = progressService;
-    }
-
-    public void startLongPolling(){
-
-    }
-
-    @Override
-    public void createSheet() {
-        startLongPolling();
     }
 }

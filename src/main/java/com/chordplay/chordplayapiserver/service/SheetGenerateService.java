@@ -1,5 +1,6 @@
-package com.chordplay.chordplayapiserver.domain.sheet.service;
+package com.chordplay.chordplayapiserver.service;
 
 public interface SheetGenerateService {
-    void createSheet();
+    void aiCreate();
+
 }
