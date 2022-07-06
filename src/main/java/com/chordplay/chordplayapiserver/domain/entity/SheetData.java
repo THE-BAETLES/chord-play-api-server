@@ -13,11 +13,11 @@ import java.util.List;
 public class SheetData {
 
     private int bpm;
-    private List<ChordInfo> ChordInfo;
+    private List<ChordInfo> ChordInfos;
 
     @Builder
-    public SheetData(int bpm, List<com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo> chordInfo) {
+    public SheetData(int bpm, List<ChordInfo> chordInfos) {
         this.bpm = bpm;
-        ChordInfo = chordInfo;
+        ChordInfos = chordInfos;
     }
 }
