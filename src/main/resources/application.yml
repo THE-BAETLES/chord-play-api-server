@@ -1,15 +1,10 @@
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
   data:
     mongodb:
       authentication-database: admin
-      username: test
-      password: test
-      database: chord_play
+      username: root
+      password: password
+      database: admin
       port: 27017
       host: localhost
 jpa:
