@@ -36,3 +36,6 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+bootJar {
+	mainClassName = 'com.chordplay.chordplayapiserver.Application.ChordPlayApiServerApplication'
+}
