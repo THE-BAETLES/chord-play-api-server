@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.dto;
+package com.chordplay.chordplayapiserver.dto.sheet;
 
 import lombok.Getter;
 
