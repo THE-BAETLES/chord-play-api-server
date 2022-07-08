@@ -1,4 +1,4 @@
-package com.chordplay.dto;
+package com.chordplay.chordplayapiserver.dto;
 
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;

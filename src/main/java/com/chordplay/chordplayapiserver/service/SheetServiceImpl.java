@@ -2,8 +2,7 @@ package com.chordplay.chordplayapiserver.service;
 
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.repository.SheetDataRepository;
-import com.chordplay.dto.SheetDataRequestDTO;
-import com.chordplay.dto.SheetDataResponseDTO;
+import com.chordplay.chordplayapiserver.dto.SheetDataResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

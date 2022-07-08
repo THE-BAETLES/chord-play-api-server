@@ -1,10 +1,8 @@
 package com.chordplay.chordplayapiserver.api.sheet;
 
 import com.chordplay.chordplayapiserver.service.SheetService;
-import com.chordplay.dto.SheetDataRequestDTO;
-import com.chordplay.dto.SheetDataResponseDTO;
+import com.chordplay.chordplayapiserver.dto.SheetDataResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
