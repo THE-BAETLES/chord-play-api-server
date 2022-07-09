@@ -51,4 +51,8 @@ public class User {
         this.signupFavorite = signupFavorite;
         this.myCollection = myCollection;
     }
+    public User(String id){
+        this.id = id;
+    }
+
 }
