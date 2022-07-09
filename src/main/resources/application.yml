@@ -1,12 +1,9 @@
 spring:
   data:
     mongodb:
-      authentication-database: admin
-      username: root
-      password: password
-      database: admin
-      port: 27017
-      host: localhost
+      uri: mongodb://ec2-54-180-119-145.ap-northeast-2.compute.amazonaws.com:27017/chordplay
+      username: baetles
+      password: 12345
 jpa:
   hibernate:
     ddl-auto: create
