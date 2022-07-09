@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Document(collection = "SHEET_INFO")
+@Document(collection = "SHEET")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Sheet {
