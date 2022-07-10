@@ -1,13 +1,11 @@
-package com.chordplay.chordplayapiserver.api.sheet;
+package com.chordplay.chordplayapiserver.domain.sheet.api;
 
-import com.chordplay.chordplayapiserver.dto.sheet.SheetAiRequest;
-import com.chordplay.chordplayapiserver.service.SheetGenerateService;
-import com.chordplay.chordplayapiserver.service.SheetService;
-import com.chordplay.chordplayapiserver.dto.sheet.SheetDataResponseDTO;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.sheet.SheetAiRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.service.SheetGenerateService;
+import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.sheet.SheetDataResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

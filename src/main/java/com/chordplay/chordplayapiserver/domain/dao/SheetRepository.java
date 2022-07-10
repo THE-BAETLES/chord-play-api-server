@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.domain.repository;
+package com.chordplay.chordplayapiserver.domain.dao;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 

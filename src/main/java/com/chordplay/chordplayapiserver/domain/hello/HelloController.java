@@ -1,9 +1,7 @@
-package com.chordplay.chordplayapiserver.api;
+package com.chordplay.chordplayapiserver.domain.hello;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

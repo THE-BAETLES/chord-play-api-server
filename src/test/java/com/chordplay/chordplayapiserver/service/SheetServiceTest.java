@@ -1,7 +1,7 @@
 package com.chordplay.chordplayapiserver.service;
 
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
-import com.chordplay.chordplayapiserver.domain.repository.SheetDataRepository;
+import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

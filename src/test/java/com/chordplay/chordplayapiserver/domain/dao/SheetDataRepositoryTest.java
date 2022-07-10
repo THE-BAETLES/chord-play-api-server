@@ -1,11 +1,9 @@
-package com.chordplay.chordplayapiserver.domain.repository;
+package com.chordplay.chordplayapiserver.domain.dao;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class SheetDataRepositoryTest {
 

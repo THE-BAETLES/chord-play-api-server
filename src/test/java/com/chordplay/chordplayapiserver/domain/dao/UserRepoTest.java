@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.domain.repository;
+package com.chordplay.chordplayapiserver.domain.dao;
 
 import com.chordplay.chordplayapiserver.domain.entity.MyVideo;
 import com.chordplay.chordplayapiserver.domain.entity.User;
@@ -10,7 +10,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

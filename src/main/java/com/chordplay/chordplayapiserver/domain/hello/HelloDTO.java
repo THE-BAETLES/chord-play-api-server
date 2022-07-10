@@ -1,4 +1,4 @@
-package com.chordplay.chordplayapiserver.api;
+package com.chordplay.chordplayapiserver.domain.hello;
 
 import lombok.Getter;
 import lombok.ToString;
