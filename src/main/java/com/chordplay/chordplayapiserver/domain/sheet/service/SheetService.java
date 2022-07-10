@@ -1,8 +1,8 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
-import com.chordplay.chordplayapiserver.domain.sheet.dto.sheet.SheetDataResponseDTO;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 
 public interface SheetService {
-    SheetDataResponseDTO read(String id);
+    SheetDataResponse read(String id);
 
 }

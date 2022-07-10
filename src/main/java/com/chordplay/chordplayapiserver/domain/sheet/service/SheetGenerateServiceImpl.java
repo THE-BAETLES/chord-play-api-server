@@ -5,7 +5,7 @@ import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.sheet.SheetAiRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
