@@ -1,9 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 spring:
   data:
     mongodb:
       uri: mongodb://ec2-15-164-70-33.ap-northeast-2.compute.amazonaws.com:27017/chordplay
       username: baetles
       password: 1234
+  security:
+    user:
+      password: user
 cloud:
   aws:
     credentials:
