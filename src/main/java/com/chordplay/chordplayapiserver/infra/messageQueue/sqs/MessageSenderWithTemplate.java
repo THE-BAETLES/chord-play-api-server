@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MessageSenderWithTemplate {
-    private final QueueMessagingTemplate queueMessagingTemplate;
-
-    public void send(String message) {
-        this.queueMessagingTemplate.send("physicalQueueName", MessageBuilder.withPayload(message).build());
-    }
+//    private final QueueMessagingTemplate queueMessagingTemplate;
+//
+//    public void send(String message) {
+//        this.queueMessagingTemplate.send("physicalQueueName", MessageBuilder.withPayload(message).build());
+//    }
 
 }
