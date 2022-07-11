@@ -6,10 +6,17 @@ spring:
       password: 12345
 cloud:
   aws:
+    credentials:
+      access-key: xxx
+      secret-key: xxx
     region:
       static: ap-northeast-2
     stack:
       auto: false
+    sqs:
+      queue:
+        name: AiSheet.fifo
+        url: 생성한 sqs 큐 url
 jpa:
   hibernate:
     ddl-auto: create
