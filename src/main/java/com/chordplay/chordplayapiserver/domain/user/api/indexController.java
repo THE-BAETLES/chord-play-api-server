@@ -1,13 +1,18 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
+import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.mapping.Join;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/auth")
+@RequiredArgsConstructor
+@RequestMapping
 public class indexController {
+
+    private final UserService userService;
 
     @GetMapping("/index")
     public String index(){
@@ -29,19 +34,20 @@ public class indexController {
         return "manager";
     }
 
-    @GetMapping("/login")
-    public @ResponseBody String login(){
-        return "login";
+    @GetMapping("/loginForm")
+    public String login(){
+        return "loginForm";
     }
 
-    @GetMapping("/join")
-    public @ResponseBody String join(){
+    @PostMapping("/join")
+    public @ResponseBody String join(JoinRequest dto){
+        userService.join(dto);
         return "join";
     }
 
-    @GetMapping("/joinProc")
-    public @ResponseBody String loginProc(){
-        return "joinProc";
+    @GetMapping("/joinForm")
+    public String loginProc(){
+        return "joinForm";
     }
 
 
