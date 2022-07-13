@@ -8,6 +8,7 @@ import javax.persistence.Id;
 @Document(collection = "TEST_USER")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
+@ToString
 public class TestUser {
 
     public void setRole(String role) {

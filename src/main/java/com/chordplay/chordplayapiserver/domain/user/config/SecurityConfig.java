@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/loginForm").loginProcessingUrl("/loign").defaultSuccessUrl("/");
+                .loginPage("/loginForm").loginProcessingUrl("/login").defaultSuccessUrl("/index");
 
 
     }
