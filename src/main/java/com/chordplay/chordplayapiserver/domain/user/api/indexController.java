@@ -3,7 +3,7 @@ package com.chordplay.chordplayapiserver.domain.user.api;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.mapping.Join;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,9 +40,9 @@ public class indexController {
     }
 
     @PostMapping("/join")
-    public @ResponseBody String join(JoinRequest dto){
+    public String join(JoinRequest dto){
         userService.join(dto);
-        return "join";
+        return "redirect:/loginForm";
     }
 
     @GetMapping("/joinForm")
@@ -50,6 +50,11 @@ public class indexController {
         return "joinForm";
     }
 
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody String info(){
+        return "정보 입니다";
+    }
 
 
 }
