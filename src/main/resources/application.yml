@@ -14,6 +14,17 @@ spring:
   security:
     user:
       password: user
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 554846798235-uu5sm979htghi8ci43faasghshggsuom.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+
 cloud:
   aws:
     credentials:
