@@ -44,7 +44,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .provider(provider)
                 .providerId(providerId)
                 .email(email)
-                .username(username).role("ROLE_USER")
+                .username(username).roles("ROLE_USER")
                 .password("empty").build();
         TestUser newUser = userRepository.findByUsername(user.getUsername());
 
