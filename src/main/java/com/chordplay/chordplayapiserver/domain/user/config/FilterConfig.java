@@ -1,6 +1,5 @@
 package com.chordplay.chordplayapiserver.domain.user.config;
 
-import com.chordplay.chordplayapiserver.domain.user.config.filter.MyFilter1;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
