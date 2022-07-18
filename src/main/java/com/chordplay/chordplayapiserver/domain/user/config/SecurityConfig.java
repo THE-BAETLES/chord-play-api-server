@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.user.config;
 
+import com.chordplay.chordplayapiserver.domain.user.TestUserRepository;
+import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthenticationFilter;
+import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthorizationFilter;
 import com.chordplay.chordplayapiserver.domain.user.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final TestUserRepository userRepository;
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final CorsFilter corsFilter;
     @Bean
@@ -32,11 +35,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter)
                 .formLogin().disable()
                 .httpBasic().disable()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
-                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/api/v1/manager/**")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
+                .antMatchers("/api/v1/manager/**")
+                .access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/api/v1/admin/**")
                 .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().permitAll();
