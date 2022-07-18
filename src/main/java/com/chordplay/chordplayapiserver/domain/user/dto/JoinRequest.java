@@ -19,7 +19,7 @@ public class JoinRequest {
         this.email = email;
     }
 
-    public TestUser toEntity(String role){
-        return TestUser.builder().username(username).email(email).password(password).role(role).build();
+    public TestUser toEntity(String roles){
+        return TestUser.builder().username(username).email(email).password(password).roles(roles).build();
     }
 }

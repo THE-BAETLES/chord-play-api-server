@@ -19,6 +19,6 @@ public class CorsConfig {
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/api/**", config);
         source.registerCorsConfiguration("api/**", config);
-        return new org.springframework.web.filter.CorsFilter(source);
+        return new CorsFilter(source);
     }
 }
