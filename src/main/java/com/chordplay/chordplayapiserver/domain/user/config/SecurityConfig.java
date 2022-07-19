@@ -1,12 +1,9 @@
 package com.chordplay.chordplayapiserver.domain.user.config;
 
 import com.chordplay.chordplayapiserver.domain.user.TestUserRepository;
-import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
 import com.chordplay.chordplayapiserver.domain.user.config.firebase.FirebaseTokenFilter;
 import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthenticationFilter;
-import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthorizationFilter;
-import com.chordplay.chordplayapiserver.domain.user.config.oauth.PrincipalOauth2UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TestUserRepository userRepository;
+
     private final PrincipalDetailsService principalDetailsService;
     private final FirebaseAuth firebaseAuth;
     private final CorsFilter corsFilter;
@@ -35,6 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        jwtAuthenticationFilter.setFilterProcessesUrl("/user/login");
+
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -42,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .addFilterBefore(new FirebaseTokenFilter(principalDetailsService, firebaseAuth), UsernamePasswordAuthenticationFilter.class)
-                //.addFilter(new JwtAuthenticationFilter(authenticationManager()))  //파이어베이스 쪽 인증/인가 -> 자체 인가 작업 필요
+                //.addFilter(jwtAuthenticationFilter)  //파이어베이스 쪽 인증/인가 -> 자체 인가 작업 필요
                 //.addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
                 .authorizeRequests()
                 .antMatchers("/api/v1/user/**")
