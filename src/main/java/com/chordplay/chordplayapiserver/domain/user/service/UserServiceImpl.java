@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,13 +15,9 @@ public class UserServiceImpl implements UserService{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TestUserRepository testUserRepository;
 
-
-
     @Override
+    @Transactional
     public void join(JoinRequest dto) {
-        String rawPassword = dto.getPassword();
-        String encPassword = bCryptPasswordEncoder.encode(rawPassword);
-        dto.setPassword(encPassword);
         TestUser testUser = (dto.getUsername().equals("admin")) ? dto.toEntity("ROLE_ADMIN") : dto.toEntity("ROLE_USER");
         testUserRepository.save(testUser);
     }
