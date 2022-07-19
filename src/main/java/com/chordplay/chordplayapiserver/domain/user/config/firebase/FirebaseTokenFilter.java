@@ -40,7 +40,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
         FirebaseToken decodedToken;
         String header = request.getHeader("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
-            setUnauthorizedResponse(response, "INVALID_HEADER");
+            setBadResponse(response, "INVALID_HEADER");
             return;
         }
         String token = header.substring(7);
@@ -49,7 +49,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
         try{
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
         } catch (FirebaseAuthException e) {
-            setUnauthorizedResponse(response, "INVALID_TOKEN");
+            setBadResponse(response, "INVALID_TOKEN");
             return;
         }
         // User를 가져와 SecurityContext에 저장한다.
@@ -60,7 +60,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch(NoSuchElementException e){
             userService.join(new JoinRequest(decodedToken));
-            setOkResponse(response, "Join complete");
+            setUnauthorizedResponse(response, "회원가입이 필요합니다");
             return;
         }
         filterChain.doFilter(request, response);
@@ -72,8 +72,8 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
         response.getWriter().write("{\"message\":\"" + msg + "\"}");
     }
 
-    private void setOkResponse(HttpServletResponse response, String msg) throws IOException {
-        response.setStatus(HttpStatus.SC_CREATED);
+    private void setBadResponse(HttpServletResponse response, String msg) throws IOException {
+        response.setStatus(HttpStatus.SC_BAD_REQUEST);
         response.setContentType("application/json");
         response.getWriter().write("{\"message:\"" + msg + "\"}");
     }
