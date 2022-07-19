@@ -23,11 +23,18 @@ class TestUserRepositoryTest {
     @DisplayName("Test user")
     @Rollback(value = true)
     public void test1() {
-
-
         TestUser user = userRepository.findByUsername("12345");
         System.out.println(user);
         assertNull(user);
+    }
 
+    @Test
+    @Transactional
+    @DisplayName("Test user2")
+    @Rollback(value = true)
+    public void test2() {
+        TestUser user = userRepository.findByFirebaseUid("asdf");
+        System.out.println(user);
+        assertInstanceOf(TestUser.class,user);
     }
 }
