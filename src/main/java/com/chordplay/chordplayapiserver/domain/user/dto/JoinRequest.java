@@ -8,6 +8,8 @@ import lombok.ToString;
 
 @ToString @Getter @Setter
 public class JoinRequest {
+
+    private String firebase_uid;
     private String username;
     private String password;
     private String email;
