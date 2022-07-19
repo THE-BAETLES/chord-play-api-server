@@ -55,7 +55,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
                     user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch(NoSuchElementException e){
-            setOKResponse(response, "Join complete");
+            setOkResponse(response, "Join complete");
             return;
         }
         filterChain.doFilter(request, response);
@@ -67,7 +67,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
         response.getWriter().write("{\"code\":\"" + code + "\"}");
     }
 
-    private void setOKResponse(HttpServletResponse response, String code) throws IOException {
+    private void setOkResponse(HttpServletResponse response, String code) throws IOException {
         response.setStatus(HttpStatus.SC_CREATED);
         response.setContentType("application/json");
         response.getWriter().write("{\"code\":\"" + code + "\"}");
