@@ -1,6 +1,8 @@
 package com.chordplay.chordplayapiserver.domain.user.config.firebase;
 
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
+import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -20,6 +22,8 @@ import java.util.NoSuchElementException;
 
 public class FirebaseTokenFilter extends OncePerRequestFilter{
 
+
+    private UserService userService;
     private PrincipalDetailsService principalDetailsService;
     private FirebaseAuth firebaseAuth;
 
@@ -55,21 +59,22 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
                     user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch(NoSuchElementException e){
+            userService.join(new JoinRequest(decodedToken));
             setOkResponse(response, "Join complete");
             return;
         }
         filterChain.doFilter(request, response);
     }
 
-    private void setUnauthorizedResponse(HttpServletResponse response, String code) throws IOException {
+    private void setUnauthorizedResponse(HttpServletResponse response, String msg) throws IOException {
         response.setStatus(HttpStatus.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"code\":\"" + code + "\"}");
+        response.getWriter().write("{\"message\":\"" + msg + "\"}");
     }
 
-    private void setOkResponse(HttpServletResponse response, String code) throws IOException {
+    private void setOkResponse(HttpServletResponse response, String msg) throws IOException {
         response.setStatus(HttpStatus.SC_CREATED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"code\":\"" + code + "\"}");
+        response.getWriter().write("{\"message:\"" + msg + "\"}");
     }
 }
