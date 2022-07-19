@@ -29,8 +29,9 @@ public class TestUser {
     private String roles;    //USER, ADMIN
 
     @Builder
-    public TestUser(String id, String username, String password, String email, String roles) {
+    public TestUser(String id, String firebaseUid, String username, String password, String email, String roles) {
         this.id = id;
+        this.firebaseUid = firebaseUid;
         this.username = username;
         this.password = password;
         this.email = email;
