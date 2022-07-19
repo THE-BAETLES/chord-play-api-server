@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.user;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 import java.util.Arrays;
@@ -19,30 +20,21 @@ public class TestUser {
 
     @Id
     private String id;
+
+    @Field("firebase_uid")
+    private String firebaseUid;
     private String username;
     private String password;
     private String email;
     private String roles;    //USER, ADMIN
 
-    private String provider;
-    private String providerId;
-
+    @Builder
     public TestUser(String id, String username, String password, String email, String roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.roles = roles;
-    }
-    @Builder
-    public TestUser(String id, String username, String password, String email, String roles, String provider, String providerId) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.roles = roles;
-        this.provider = provider;
-        this.providerId = providerId;
     }
 
     public List<String> getRoleList(){

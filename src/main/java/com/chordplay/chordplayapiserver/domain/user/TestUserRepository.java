@@ -3,4 +3,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface TestUserRepository extends MongoRepository<TestUser, String> {
     public TestUser findByUsername(String username);
+    public TestUser findByFirebaseUid(String FirebaseUid);
 }

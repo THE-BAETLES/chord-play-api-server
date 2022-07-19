@@ -27,5 +27,13 @@ public class PrincipalDetailsService implements UserDetailsService {
         }
         return null;
     }
+
+    public UserDetails loadUserByFirebaseUid(String firebaseUid) {
+        TestUser user = userRepository.findByFirebaseUid(firebaseUid);
+        if (user != null){
+            return new PrincipalDetails(user);
+        }
+        return null;
+    }
 }
 
