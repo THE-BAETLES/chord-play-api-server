@@ -1,6 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.user.config;
 
-import com.chordplay.chordplayapiserver.domain.user.TestUserRepository;
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
 import com.chordplay.chordplayapiserver.domain.user.config.firebase.FirebaseTokenFilter;
 import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthenticationFilter;
@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final TestUserRepository userRepository;
+    private final UserRepository userRepository;
 
     private final PrincipalDetailsService principalDetailsService;
     private final FirebaseAuth firebaseAuth;

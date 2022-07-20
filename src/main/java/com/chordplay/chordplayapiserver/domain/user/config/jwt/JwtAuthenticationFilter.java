@@ -3,7 +3,6 @@ package com.chordplay.chordplayapiserver.domain.user.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.user.TestUser;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -34,9 +32,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         System.out.println("JwtAuthenticationFilter: 로그인 시도중");
 
         ObjectMapper om = new ObjectMapper();
-        TestUser user = null;
+        User user = null;
         try {
-            user = om.readValue(request.getInputStream(), TestUser.class);
+            user = om.readValue(request.getInputStream(), User.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

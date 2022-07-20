@@ -30,6 +30,8 @@ public class User {
 
     private String roles;
 
+    private String password;
+
     private String email;
     private String social_type;
     private String country;
@@ -54,12 +56,13 @@ public class User {
     }
 
     @Builder
-    public User(String id, String nickname, String username, String firebaseUid, String roles, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> signupFavorite, List<MyVideo> myCollection) {
+    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> signupFavorite, List<MyVideo> myCollection) {
         this.id = id;
         this.nickname = nickname;
         this.username = username;
         this.firebaseUid = firebaseUid;
         this.roles = roles;
+        this.password = password;
         this.email = email;
         this.social_type = social_type;
         this.country = country;
@@ -72,7 +75,6 @@ public class User {
         this.signupFavorite = signupFavorite;
         this.myCollection = myCollection;
     }
-
 
     public User(String id){
         this.id = id;

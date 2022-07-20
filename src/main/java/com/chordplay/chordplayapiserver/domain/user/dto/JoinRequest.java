@@ -1,6 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.user.dto;
 
-import com.chordplay.chordplayapiserver.domain.user.TestUser;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class JoinRequest {
     }
 
 
-    public TestUser toEntity(String roles){
-        return TestUser.builder().username(username).email(email).firebaseUid(firebaseUid).roles(roles).build();
+    public User toEntity(String roles){
+        return User.builder().username(username).email(email).firebaseUid(firebaseUid).roles(roles).build();
     }
 }

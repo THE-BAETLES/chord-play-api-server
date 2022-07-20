@@ -2,8 +2,8 @@ package com.chordplay.chordplayapiserver.domain.user.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.chordplay.chordplayapiserver.domain.user.TestUser;
-import com.chordplay.chordplayapiserver.domain.user.TestUserRepository;
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,9 +19,9 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private TestUserRepository userRepository;
+    private UserRepository userRepository;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, TestUserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         super(authenticationManager);
         this.userRepository = userRepository;
     }
@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         //JWT 토큰을 검증해서 정상적인 사용자인지 확인
         String jwtToken = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX,"");
         String username = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim(JwtProperties.USERNAME).asString();
-        TestUser user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         System.out.println(user);
         PrincipalDetails principalDetails = new PrincipalDetails(user);
         Authentication authentication =
