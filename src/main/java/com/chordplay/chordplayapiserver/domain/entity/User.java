@@ -9,18 +9,28 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.persistence.Id;
+import java.util.Arrays;
 import java.util.List;
 
 @Document(collection = "USER")
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
+@ToString
 public class User {
 
 
     @Id
     private String id;
     private String nickname;
-    private String social_id;
+
+    private String username;
+
+    @Field(value = "firebase_uid")
+    private String firebaseUid;
+
+    private String roles;
+
+    private String email;
     private String social_type;
     private String country;
     private String language;
@@ -35,11 +45,22 @@ public class User {
 
     private List<MyVideo> myCollection;
 
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            List<String> roleList  = Arrays.asList(this.roles.split(","));
+            return roleList;
+        }
+        return null;
+    }
+
     @Builder
-    public User(String id, String nickname, String social_id, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> signupFavorite, List<MyVideo> myCollection) {
+    public User(String id, String nickname, String username, String firebaseUid, String roles, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> signupFavorite, List<MyVideo> myCollection) {
         this.id = id;
         this.nickname = nickname;
-        this.social_id = social_id;
+        this.username = username;
+        this.firebaseUid = firebaseUid;
+        this.roles = roles;
+        this.email = email;
         this.social_type = social_type;
         this.country = country;
         this.language = language;
@@ -51,6 +72,8 @@ public class User {
         this.signupFavorite = signupFavorite;
         this.myCollection = myCollection;
     }
+
+
     public User(String id){
         this.id = id;
     }
