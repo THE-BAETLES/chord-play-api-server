@@ -14,17 +14,6 @@ spring:
   security:
     user:
       password: user
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 554846798235-uu5sm979htghi8ci43faasghshggsuom.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
-
-
 cloud:
   aws:
     credentials:
@@ -38,14 +27,6 @@ cloud:
       queue:
         name: AiSheet.fifo
         url: 생성한 sqs 큐 url
-jpa:
-  hibernate:
-    ddl-auto: create
-properties:
-  hibernate:
-    show_sql: true
-    format_sql: true
-    open-in-view: false
 logging.level:
   org.hibernate.SQL: debug
 # org.hibernate.type: tra
