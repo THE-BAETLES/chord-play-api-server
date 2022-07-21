@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 public class FirebaseInitializer {
@@ -19,8 +20,8 @@ public class FirebaseInitializer {
         //log.info("Initializing Firebase.");
 
         ClassPathResource resource = new ClassPathResource("key/chordplay_firebase.json");
-        FileInputStream serviceAccount =
-                new FileInputStream(resource.getFile());
+        InputStream serviceAccount = resource.getInputStream();
+
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
