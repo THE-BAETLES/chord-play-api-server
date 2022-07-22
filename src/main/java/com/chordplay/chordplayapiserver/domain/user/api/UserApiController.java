@@ -1,12 +1,16 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.security.auth.login.LoginException;
 
 @RestController
 @RequestMapping("/user")
@@ -36,6 +40,7 @@ public class UserApiController {
 
     @PostMapping("join")
     public ResponseEntity<Void> join(@RequestBody JoinRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
+        dto.setFirebaseJwtInfo(principalDetails.getUser());
         userService.join(dto);
         return ResponseEntity.ok().build();
     }

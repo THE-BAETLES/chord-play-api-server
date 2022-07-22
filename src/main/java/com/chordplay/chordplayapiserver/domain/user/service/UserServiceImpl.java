@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.user.service;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,13 @@ public class UserServiceImpl implements UserService{
     public void join(JoinRequest dto) {
         User user = (dto.getUsername().equals("admin")) ? dto.toEntity("ROLE_ADMIN") : dto.toEntity("ROLE_USER");
         userRepository.save(user);
-        //ResponseEntity.status(404).body();
+    }
+
+    @Override
+    @Transactional
+    public void joinTempSocial(JoinTempSocialRequest dto) {
+        User user = dto.toEntity();
+        userRepository.save(user);
     }
 
     @Override

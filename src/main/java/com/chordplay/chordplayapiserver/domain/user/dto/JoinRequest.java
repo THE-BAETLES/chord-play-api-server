@@ -36,16 +36,10 @@ public class JoinRequest {
         this.earlyFavoriteSongs = earlyFavoriteSongs;
     }
 
-    public JoinRequest(FirebaseToken token) {
-        this.username = token.getName();
-        this.email = token.getEmail();
-        this.firebaseUid = token.getUid();
-    }
-
-    public void setFirebaseJwtInfo(String firebaseUid, String username, String email){
-        this.firebaseUid = firebaseUid;
-        this.username = username;
-        this.email = email;
+    public void setFirebaseJwtInfo(User user){
+        this.firebaseUid = user.getFirebaseUid();
+        this.username = user.getUsername();
+        this.email = user.getEmail();
     }
 
     public User toEntity(String roles){

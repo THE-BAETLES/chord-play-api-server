@@ -1,7 +1,9 @@
 package com.chordplay.chordplayapiserver.domain.user.config.firebase;
 
+import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -62,16 +64,18 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
             return;
         }
         // User를 가져와 SecurityContext에 저장한다.
+        UserDetails userDetails = null;
         try{
-            UserDetails user = principalDetailsService.loadUserByFirebaseUid(decodedToken.getUid());
+            userDetails = principalDetailsService.loadUserByFirebaseUid(decodedToken.getUid());
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    user, null, user.getAuthorities());
+                    userDetails, null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch(NoSuchElementException e){
-            userService.join(new JoinRequest(decodedToken));
-            setUnauthorizedResponse(response, "회원가입이 필요합니다");
+            userService.joinTempSocial(new JoinTempSocialRequest(decodedToken));
+            setUnauthorizedResponse(response, "세부 회원가입이 필요합니다");
             return;
         }
+
         filterChain.doFilter(request, response);
     }
 
