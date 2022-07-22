@@ -26,7 +26,7 @@ public class UserApiController {
     }
 
     @GetMapping("/nickname")
-    public ResponseEntity<Void> getNickname(){ return ResponseEntity.ok().build();}
+    public String getNickname(){ return "test Nickname";}
 
     @PostMapping("check-duplication")
     public ResponseEntity<Void> checkDuplication(@RequestParam String nickname){
