@@ -43,7 +43,7 @@ public class User {
     private String membership;
 
     @DocumentReference(lazy = true)
-    private List<Video> signupFavorite;
+    private List<Video> earlyFavoriteSongs;
 
     private List<MyVideo> myCollection;
 
@@ -56,7 +56,7 @@ public class User {
     }
 
     @Builder
-    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> signupFavorite, List<MyVideo> myCollection) {
+    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> earlyFavoriteSongs, List<MyVideo> myCollection) {
         this.id = id;
         this.nickname = nickname;
         this.username = username;
@@ -72,7 +72,7 @@ public class User {
         this.experience = experience;
         this.performer_grade = performer_grade;
         this.membership = membership;
-        this.signupFavorite = signupFavorite;
+        this.earlyFavoriteSongs = earlyFavoriteSongs;
         this.myCollection = myCollection;
     }
 
