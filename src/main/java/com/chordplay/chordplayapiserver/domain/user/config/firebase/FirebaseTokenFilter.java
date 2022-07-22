@@ -18,6 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FirebaseTokenFilter extends OncePerRequestFilter{
@@ -26,6 +29,12 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
     private UserService userService;
     private PrincipalDetailsService principalDetailsService;
     private FirebaseAuth firebaseAuth;
+
+    private static final List<String> EXCLUDE_URL =
+            Collections.unmodifiableList(
+                    Arrays.asList(
+                            "/user/join"
+                    ));
 
     public FirebaseTokenFilter(PrincipalDetailsService principalDetailsService, FirebaseAuth firebaseAuth) {
         this.principalDetailsService = principalDetailsService;
@@ -64,6 +73,12 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
             return;
         }
         filterChain.doFilter(request, response);
+    }
+
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
     }
 
     private void setUnauthorizedResponse(HttpServletResponse response, String msg) throws IOException {
