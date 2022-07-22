@@ -14,4 +14,10 @@ public class UserExceptionHandler {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(value = {NotFullyJoinedException.class})
+    public ResponseEntity<Object> handleNotFullyJoinedException(NotFullyJoinedException ex){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
 }
