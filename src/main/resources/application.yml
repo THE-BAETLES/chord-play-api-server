@@ -10,7 +10,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://test:test@localhost:27017/chord_play
+      uri: mongodb://baetles:12345@ec2-15-164-70-33.ap-northeast-2.compute.amazonaws.com:27017/chordplay
   security:
     user:
       password: user
