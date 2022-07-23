@@ -3,14 +3,12 @@ package com.chordplay.chordplayapiserver.domain.user.dto;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.google.firebase.auth.FirebaseToken;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @ToString @Getter @Setter
+@NoArgsConstructor
 public class JoinRequest {
     //from token
     private String firebaseUid;
