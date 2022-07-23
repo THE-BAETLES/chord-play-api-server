@@ -10,5 +10,6 @@ public interface UserRepository extends MongoRepository<User, String> {
     public User findByUsername(String username);
     public User findByFirebaseUid(String FirebaseUid);
     public Boolean existsByNickname(String nickname);
+    public User deleteByFirebaseUid(String FirebaseUid);
 
 }

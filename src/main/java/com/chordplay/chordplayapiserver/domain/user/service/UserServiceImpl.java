@@ -2,6 +2,8 @@ package com.chordplay.chordplayapiserver.domain.user.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.User;
+import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
@@ -10,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +39,12 @@ public class UserServiceImpl implements UserService{
     public void checkNicknameDuplication(String nickname) {
         if(userRepository.existsByNickname(nickname) == false) throw new NicknameDuplicationException("이미 닉네임이 존재합니다");
 
+    @Override
+    public FavoritesResponse getFavorites() {
+        List<Video> videos = new ArrayList<Video>();
+        Video exampleVideo = Video.builder().id("HYUNJUN").difficulty_avg(3).genre("zz").play_count(3).singer("배찬우")
+                .title("벛꽃엔딩").thumnail_path("https://i.ytimg.com/vi/q_WMoSdsXRk/hqdefault.jpg?sqp=-oaymwEWCMACELQBIAQqCghQEJADGFogjgJIWg&rs=AOn4CLA1X0WqNqn5pcUEGDv7qwLgLBgQYw").build();
+        videos.add(exampleVideo);
+        return FavoritesResponse.builder().favorites(videos).build();
     }
 }

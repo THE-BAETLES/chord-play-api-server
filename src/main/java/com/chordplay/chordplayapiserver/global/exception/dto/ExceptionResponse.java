@@ -1,5 +1,8 @@
 package com.chordplay.chordplayapiserver.global.exception.dto;
 
+import lombok.Getter;
+
+@Getter
 public class ExceptionResponse {
 
     private String message;
