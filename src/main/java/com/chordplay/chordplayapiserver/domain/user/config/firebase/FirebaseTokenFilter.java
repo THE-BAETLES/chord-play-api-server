@@ -36,7 +36,7 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
     private static final List<String> EXCLUDE_URL =
             Collections.unmodifiableList(
                     Arrays.asList(
-                            "/user/join"
+                            "/user/test"
                     ));
 
     @Builder
