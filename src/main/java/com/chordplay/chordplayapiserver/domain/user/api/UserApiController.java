@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
-import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
+import com.chordplay.chordplayapiserver.domain.user.dto.CheckDuplicationRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.NicknameResponse;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,14 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.LoginException;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserApiController {
 
-    UserService userService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -26,10 +28,11 @@ public class UserApiController {
     }
 
     @GetMapping("/nickname")
-    public String getNickname(){ return "test Nickname";}
+    public NicknameResponse getNickname(){return new NicknameResponse("nickname");}
 
     @PostMapping("check-duplication")
-    public ResponseEntity<Void> checkDuplication(@RequestParam String nickname){
+    public ResponseEntity<Void> checkDuplication(@RequestBody CheckDuplicationRequest dto){
+        String nickname = dto.getNickname();
         userService.checkNicknameDuplication(nickname);
         return ResponseEntity.ok().build();
     }

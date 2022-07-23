@@ -32,12 +32,15 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void joinTempSocial(JoinTempSocialRequest dto) {
         User user = dto.toEntity();
+        userRepository.deleteByFirebaseUid(user.getFirebaseUid());  //임시
         userRepository.save(user);
     }
 
     @Override
     public void checkNicknameDuplication(String nickname) {
-        if(userRepository.existsByNickname(nickname) == false) throw new NicknameDuplicationException("이미 닉네임이 존재합니다");
+        if(userRepository.existsByNickname(nickname)) throw new NicknameDuplicationException("이미 닉네임이 존재합니다");
+
+    }
 
     @Override
     public FavoritesResponse getFavorites() {
