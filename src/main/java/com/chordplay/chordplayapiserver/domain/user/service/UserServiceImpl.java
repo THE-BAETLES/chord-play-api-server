@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void join(JoinRequest dto) {
         User user = (dto.getUsername().equals("admin")) ? dto.toEntity("ROLE_ADMIN") : dto.toEntity("ROLE_USER");
+        userRepository.deleteByFirebaseUid(user.getFirebaseUid());  //임시
         userRepository.save(user);
     }
 
@@ -32,7 +33,6 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public void joinTempSocial(JoinTempSocialRequest dto) {
         User user = dto.toEntity();
-        userRepository.deleteByFirebaseUid(user.getFirebaseUid());  //임시
         userRepository.save(user);
     }
 
