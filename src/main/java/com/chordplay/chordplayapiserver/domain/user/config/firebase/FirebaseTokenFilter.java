@@ -8,6 +8,7 @@ import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -66,17 +67,15 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
             return;
         }
         // User를 가져와 SecurityContext에 저장한다.
-        UserDetails userDetails = null;
-        try{
-            userDetails = principalDetailsService.loadUserByFirebaseUid(decodedToken.getUid());
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch(NoSuchElementException e){
+        UserDetails userDetails = principalDetailsService.loadUserByFirebaseUid(decodedToken.getUid());
+        if (userDetails == null) {
             userService.joinTempSocial(new JoinTempSocialRequest(decodedToken));
             setUnauthorizedResponse(response, "세부 회원가입이 필요합니다");
             return;
         }
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
