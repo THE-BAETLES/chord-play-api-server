@@ -8,6 +8,7 @@ public class JoinTempSocialRequest {
     private String firebaseUid;
     private String username;
     private String email;
+    private String roles = "ROLE_USER";
 
     @Builder
     public JoinTempSocialRequest(FirebaseToken token) {
@@ -17,6 +18,6 @@ public class JoinTempSocialRequest {
     }
 
     public User toEntity(){
-        return User.builder().username(username).email(email).firebaseUid(firebaseUid).build();
+        return User.builder().username(username).email(email).firebaseUid(firebaseUid).roles(roles).build();
     }
 }
