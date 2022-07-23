@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
 import com.chordplay.chordplayapiserver.domain.user.config.firebase.FirebaseTokenFilter;
 import com.chordplay.chordplayapiserver.domain.user.config.jwt.JwtAuthenticationFilter;
+import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
-
+    private final UserService userService;
     private final PrincipalDetailsService principalDetailsService;
     private final FirebaseAuth firebaseAuth;
     private final CorsFilter corsFilter;
@@ -43,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter)
                 .formLogin().disable()
                 .httpBasic().disable()
-                //.addFilterBefore(new FirebaseTokenFilter(principalDetailsService, firebaseAuth), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new FirebaseTokenFilter(userService,principalDetailsService, firebaseAuth), UsernamePasswordAuthenticationFilter.class)
                 //.addFilter(jwtAuthenticationFilter)  //파이어베이스 쪽 인증/인가 -> 자체 인가 작업 필요
                 //.addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
                 .authorizeRequests()
