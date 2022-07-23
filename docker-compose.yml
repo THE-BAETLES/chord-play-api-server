@@ -1,9 +1,9 @@
 version : "3.8"
 services:
-  spring-app:
-    container_name: spring-app
+  spring-api:
+    container_name: spring-api
     ports:
       - "8080:8080"
-    build: .
+    image: pove2019/chord-play-api:1.0
     restart: always
 
