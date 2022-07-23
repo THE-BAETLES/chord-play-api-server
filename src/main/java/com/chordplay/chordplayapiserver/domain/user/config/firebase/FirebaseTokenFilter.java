@@ -38,7 +38,9 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
                             "/user/join"
                     ));
 
-    public FirebaseTokenFilter(PrincipalDetailsService principalDetailsService, FirebaseAuth firebaseAuth) {
+    @Builder
+    public FirebaseTokenFilter(UserService userService, PrincipalDetailsService principalDetailsService, FirebaseAuth firebaseAuth) {
+        this.userService = userService;
         this.principalDetailsService = principalDetailsService;
         this.firebaseAuth = firebaseAuth;
     }
