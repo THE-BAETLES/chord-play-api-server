@@ -57,9 +57,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public FavoritesResponse getFavorites() {
         List<Video> videos = new ArrayList<Video>();
-        Video exampleVideo = Video.builder().id("HYUNJUN").difficulty_avg(3).genre("zz").play_count(3).singer("배찬우")
-                .title("벛꽃엔딩").thumnail_path("https://i.ytimg.com/vi/q_WMoSdsXRk/hqdefault.jpg?sqp=-oaymwEWCMACELQBIAQqCghQEJADGFogjgJIWg&rs=AOn4CLA1X0WqNqn5pcUEGDv7qwLgLBgQYw").build();
-        videos.add(exampleVideo);
+        for (int i=0; i<9; i++)
+        {
+            Video exampleVideo = Video.builder().id("tXV7dfvSefo").difficulty_avg(3).genre("현준장르").play_count(3).singer("버스커 버스커(Busker Busker)")
+                    .title("버스커 버스커 (Busker Busker) - 벚꽃 엔딩").thumnail_path("https://i.ytimg.com/vi/tXV7dfvSefo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA4Qls65lNaBb6WLfRYctHghMATJA").build();
+            videos.add(exampleVideo);
+        }
         return FavoritesResponse.builder().favorites(videos).build();
     }
 }
