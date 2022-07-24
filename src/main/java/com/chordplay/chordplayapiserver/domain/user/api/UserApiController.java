@@ -28,22 +28,25 @@ public class UserApiController {
     }
 
     @GetMapping("/nickname")
-    public NicknameResponse getNickname(){return new NicknameResponse("nickname");}
+    public NicknameResponse getNickname(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        String userEmail = principalDetails.getUser().getEmail();
+        return new NicknameResponse(userService.RecommendNickname(userEmail));
+    }
 
-    @PostMapping("check-duplication")
+    @PostMapping("/check-duplication")
     public ResponseEntity<Void> checkDuplication(@RequestBody CheckDuplicationRequest dto){
         String nickname = dto.getNickname();
         userService.checkNicknameDuplication(nickname);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("favorites")
+    @GetMapping("/favorites")
     public ResponseEntity<FavoritesResponse> getEarlyFavoriteSongs(@RequestParam HashMap<String,String> paramMap){
         //수정중...
         return ResponseEntity.ok().body(userService.getFavorites());
     }
 
-    @PostMapping("join")
+    @PostMapping("/join")
     public ResponseEntity<Void> join(@RequestBody JoinRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         dto.setFirebaseJwtInfo(principalDetails.getUser());
         userService.join(dto);

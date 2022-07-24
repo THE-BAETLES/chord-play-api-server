@@ -43,6 +43,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public String RecommendNickname(String userEmail){
+        String subEmail = (userEmail.split("@"))[0];
+
+        String recommendedNickName = subEmail;
+        int num = 1;
+        while(userRepository.existsByNickname(recommendedNickName)){
+            recommendedNickName = subEmail + Integer.toString(num);
+        }
+        return recommendedNickName;
+    }
+
+    @Override
     public FavoritesResponse getFavorites() {
         List<Video> videos = new ArrayList<Video>();
         Video exampleVideo = Video.builder().id("HYUNJUN").difficulty_avg(3).genre("zz").play_count(3).singer("배찬우")

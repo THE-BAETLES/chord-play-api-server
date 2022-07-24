@@ -26,9 +26,6 @@ class TestUserRepositoryTest {
     @DisplayName("Test user")
     @Rollback(value = false)
     public void test1() {
-        User user = User.builder().gender(Gender.MALE).build();
-        System.out.println(user);
-        userRepository.save(user);
     }
 
 }

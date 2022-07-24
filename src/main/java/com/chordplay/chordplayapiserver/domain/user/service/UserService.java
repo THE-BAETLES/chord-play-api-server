@@ -8,5 +8,6 @@ public interface UserService {
     public void join(JoinRequest dto);
     public void joinTempSocial(JoinTempSocialRequest dto);
     public void checkNicknameDuplication(String nickname);
+    public String RecommendNickname(String userEmail);
     public FavoritesResponse getFavorites();
 }
