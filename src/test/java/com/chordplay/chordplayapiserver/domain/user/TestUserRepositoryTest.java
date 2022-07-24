@@ -1,7 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.user;
 
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
+import com.chordplay.chordplayapiserver.domain.entity.User;
+import com.chordplay.chordplayapiserver.domain.entity.item.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +19,16 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestUserRepositoryTest {
 
     @Autowired
-    TestUserRepository userRepository;
+    UserRepository userRepository;
 
     @Test
     @Transactional
     @DisplayName("Test user")
-    @Rollback(value = true)
+    @Rollback(value = false)
     public void test1() {
-        TestUser user = userRepository.findByUsername("12345");
+        User user = User.builder().gender(Gender.MALE).build();
         System.out.println(user);
-        assertNull(user);
+        userRepository.save(user);
     }
 
-    @Test
-    @Transactional
-    @DisplayName("Test user2")
-    @Rollback(value = true)
-    public void test2() {
-        TestUser user = userRepository.findByFirebaseUid("asdf");
-        System.out.println(user);
-        assertInstanceOf(TestUser.class,user);
-    }
 }

@@ -2,6 +2,9 @@ package com.chordplay.chordplayapiserver.domain.user.dto;
 
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.entity.item.Country;
+import com.chordplay.chordplayapiserver.domain.entity.item.Gender;
+import com.chordplay.chordplayapiserver.domain.entity.item.PerformerGrade;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.*;
 
@@ -16,23 +19,26 @@ public class JoinRequest {
     private String email;
 
     //from body
-    private String country;
-    private String performer_grade;
+    private Country country;
+    private PerformerGrade performerGrade;
     private String nickname;
-    private String gender;
+    private Gender gender;
     private List<Video> earlyFavoriteSongs;
 
+
     @Builder
-    public JoinRequest(String firebaseUid, String username, String email, String country, String performer_grade, String nickname, String gender, List<Video> earlyFavoriteSongs) {
+    public JoinRequest(String firebaseUid, String username, String email, Country country, PerformerGrade performerGrade, String nickname, Gender gender, List<Video> earlyFavoriteSongs) {
         this.firebaseUid = firebaseUid;
         this.username = username;
         this.email = email;
         this.country = country;
-        this.performer_grade = performer_grade;
+        this.performerGrade = performerGrade;
         this.nickname = nickname;
         this.gender = gender;
         this.earlyFavoriteSongs = earlyFavoriteSongs;
     }
+
+
 
     public void setFirebaseJwtInfo(User user){
         this.firebaseUid = user.getFirebaseUid();
@@ -42,7 +48,7 @@ public class JoinRequest {
 
     public User toEntity(String roles){
         return User.builder().username(username).email(email).firebaseUid(firebaseUid).roles(roles)
-                .country(country).performer_grade(performer_grade).nickname(nickname).gender(gender)
+                .country(country).performerGrade(performerGrade).nickname(nickname).gender(gender)
                 .earlyFavoriteSongs(earlyFavoriteSongs).build();
     }
 }

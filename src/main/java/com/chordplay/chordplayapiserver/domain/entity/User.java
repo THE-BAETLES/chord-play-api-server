@@ -1,12 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
+import com.chordplay.chordplayapiserver.domain.entity.item.*;
 import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.persistence.Id;
 import java.util.Arrays;
@@ -17,8 +15,6 @@ import java.util.List;
 @Getter
 @ToString
 public class User {
-
-
     @Id
     private String id;
     private String nickname;
@@ -33,14 +29,13 @@ public class User {
     private String password;
 
     private String email;
-    private String social_type;
-    private String country;
-    private String language;
-    private String gender;
-    private String level;
-    private Long experience;
-    private String performer_grade;
-    private String membership;
+    private Country country;
+    private Language language;
+    private Gender gender;
+
+    @Field(value = "performer_grade")
+    private PerformerGrade performerGrade;
+    private Membership membership;
 
     @DocumentReference(lazy = true)
     private List<Video> earlyFavoriteSongs;
@@ -56,7 +51,7 @@ public class User {
     }
 
     @Builder
-    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, String social_type, String country, String language, String gender, String level, Long experience, String performer_grade, String membership, List<Video> earlyFavoriteSongs, List<MyVideo> myCollection) {
+    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, Country country, Language language, Gender gender, PerformerGrade performerGrade, Membership membership, List<Video> earlyFavoriteSongs, List<MyVideo> myCollection) {
         this.id = id;
         this.nickname = nickname;
         this.username = username;
@@ -64,17 +59,16 @@ public class User {
         this.roles = roles;
         this.password = password;
         this.email = email;
-        this.social_type = social_type;
         this.country = country;
         this.language = language;
         this.gender = gender;
-        this.level = level;
-        this.experience = experience;
-        this.performer_grade = performer_grade;
+        this.performerGrade = performerGrade;
         this.membership = membership;
         this.earlyFavoriteSongs = earlyFavoriteSongs;
         this.myCollection = myCollection;
     }
+
+
 
     public User(String id){
         this.id = id;
