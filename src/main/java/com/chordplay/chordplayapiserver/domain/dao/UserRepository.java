@@ -1,7 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.dao;
 
 import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.user.TestUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
