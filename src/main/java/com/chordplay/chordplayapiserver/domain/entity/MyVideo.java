@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.entity;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.sql.Timestamp;
 
@@ -11,11 +12,12 @@ public class MyVideo {
 
     @DocumentReference(lazy = true)
     private Video video;
-    private Timestamp last_played;
+    @Field("last_played")
+    private Timestamp lastPlayed;
 
     @Builder
-    public MyVideo(Video video, Timestamp last_played) {
+    public MyVideo(Video video, Timestamp lastPlayed) {
         this.video = video;
-        this.last_played = last_played;
+        this.lastPlayed = lastPlayed;
     }
 }
