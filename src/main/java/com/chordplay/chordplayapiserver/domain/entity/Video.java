@@ -14,9 +14,9 @@ public class Video {
     private String id;
 
     @Builder
-    public Video(String id, String thumnail_path, String title, String genre, String singer, int difficulty_avg, int play_count) {
+    public Video(String id, String thumbnail_path, String title, String genre, String singer, int difficulty_avg, int play_count) {
         this.id = id;
-        this.thumnail_path = thumnail_path;
+        this.thumbnail_path = thumbnail_path;
         this.title = title;
         this.genre = genre;
         this.singer = singer;
@@ -24,7 +24,7 @@ public class Video {
         this.play_count = play_count;
     }
 
-    private String thumnail_path;
+    private String thumbnail_path;
     private String title;
     private String genre;
     private String singer;
