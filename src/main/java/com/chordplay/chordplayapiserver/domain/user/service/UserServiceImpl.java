@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void checkNicknameDuplication(String nickname) {
-        if(userRepository.existsByNickname(nickname)) throw new NicknameDuplicationException("이미 닉네임이 존재합니다");
+        String LowerCaseNickname = nickname.toLowerCase();
+        if(userRepository.existsByNickname(LowerCaseNickname)) throw new NicknameDuplicationException("이미 닉네임이 존재합니다");
 
     }
 
