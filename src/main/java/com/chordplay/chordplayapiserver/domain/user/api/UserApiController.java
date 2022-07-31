@@ -23,7 +23,7 @@ public class UserApiController {
 
     @PostMapping("/login")
     public ResponseEntity<Void> login(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        if (principalDetails.getUser().getNickname().equals(null)) throw new NotFullyJoinedException("세부 회원가입이 필요합니다");
+        if (principalDetails.getUser().getNickname() == null) throw new NotFullyJoinedException("세부 회원가입이 필요합니다");
         return ResponseEntity.ok().build();
     }
 
