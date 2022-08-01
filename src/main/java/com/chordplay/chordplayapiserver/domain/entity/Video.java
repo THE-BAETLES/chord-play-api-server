@@ -102,7 +102,7 @@ public class Video {
         videos.add(
                 Video.builder()
                         .id("aZCfbL5oIeI")
-                        .thumbnailPath("https://img.youtube.com/vi/aZCfbL5oIeI/0.jpg'")
+                        .thumbnailPath("https://img.youtube.com/vi/aZCfbL5oIeI/0.jpg")
                         .title("Eul (Feat. BIG Naughty) (을 (Feat. BIG Naughty (서동현)))")
                         .genre("hip-hop")
                         .singer("GIRIBOY")
