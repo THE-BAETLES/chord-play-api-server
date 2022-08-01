@@ -18,7 +18,7 @@ public class RedisUtil {
 
     private final RedisTemplate redisTemplate;
 
-    public <T> boolean saveData(String key, T data) {
+    public <T> boolean setData(String key, T data) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String value = objectMapper.writeValueAsString(data);
@@ -30,12 +30,11 @@ public class RedisUtil {
         }
     }
 
-    public <T> Optional<T> findByKey(String key, Class<T> classType) {
+    public <T> Optional<T> getData(String key, Class<T> classType) {
         String value = (String) redisTemplate.opsForValue().get(key);
         if(value == null){
             return Optional.empty();
         }
-
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             return Optional.of(objectMapper.readValue(value, classType));
