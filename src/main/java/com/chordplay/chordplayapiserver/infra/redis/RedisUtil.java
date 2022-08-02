@@ -9,7 +9,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -17,6 +20,18 @@ import java.util.Optional;
 public class RedisUtil {
 
     private final RedisTemplate redisTemplate;
+
+    public <T> boolean setData(String key, T data, long timeout, TimeUnit timeUnit) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String value = objectMapper.writeValueAsString(data);
+            redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
+            return true;
+        } catch(Exception e){
+            log.error(String.valueOf(e));
+            return false;
+        }
+    }
 
     public <T> boolean setData(String key, T data) {
         try {
@@ -44,8 +59,8 @@ public class RedisUtil {
         }
     }
 
-    public void findAllStartWithId(String matchString){
-
+    public Map<String, Object> findAllStartWithId(String matchString){
+        Map<String, Object> datas = new HashMap<String,Object>();
         RedisConnection redisConnection = null;
         try {
             redisConnection = redisTemplate.getConnectionFactory().getConnection();
@@ -53,10 +68,14 @@ public class RedisUtil {
 
             Cursor c = redisConnection.scan(options);
             while (c.hasNext()) {
-                log.info(new String((byte[]) c.next()));
+                String key = new String((byte[]) c.next());
+                String value = getData(key, String.class).orElse(null);
+                datas.put(key, value);
+                log.info("findAllStartWithId : " + key);
             }
         } finally {
             redisConnection.close();
+            return datas;
         }
     }
 }
