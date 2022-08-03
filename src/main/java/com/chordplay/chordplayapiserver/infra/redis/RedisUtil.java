@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.infra.redis;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -77,5 +79,11 @@ public class RedisUtil {
             redisConnection.close();
             return datas;
         }
+    }
+
+    public void publish(ChannelTopic topic, Object message) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String value = objectMapper.writeValueAsString(message);
+        redisTemplate.convertAndSend(topic.getTopic(), value);
     }
 }
