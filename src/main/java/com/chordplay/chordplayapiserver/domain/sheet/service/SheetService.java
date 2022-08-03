@@ -7,6 +7,5 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public interface SheetService {
     void createAi(SheetAiRequest dto);
     SheetDataResponse read(String id);
-    SseEmitter subscribe(Long userId, String lastEventId);
 
 }
