@@ -1,7 +1,6 @@
 package com.chordplay.chordplayapiserver.infra.redis;
 
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

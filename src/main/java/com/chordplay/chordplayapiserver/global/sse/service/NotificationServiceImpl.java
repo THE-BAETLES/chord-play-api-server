@@ -34,6 +34,8 @@ public class NotificationServiceImpl implements NotificationService{
         CustomSseEmitter customSseEmitter = CustomSseEmitter.builder().videoId(videoId).userId(userId).timeout(DEFAULT_TIMEOUT).build();
         sseEmitterRepository.save(customSseEmitter);
 
+        ContextUtil.getResponse().addHeader("access-control-allow-origin", "*"); //Cors 에러 방지를 위함
+
         customSseEmitter.onCompletion(() -> sseEmitterRepository.deleteById(customSseEmitter.getId()));
         customSseEmitter.onTimeout(() -> sseEmitterRepository.deleteById(customSseEmitter.getId()));
         customSseEmitter.onError((e) -> {
