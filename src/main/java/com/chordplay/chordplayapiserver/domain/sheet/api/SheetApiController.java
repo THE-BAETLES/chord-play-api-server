@@ -1,9 +1,11 @@
 package com.chordplay.chordplayapiserver.domain.sheet.api;
 
+import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,10 @@ public class SheetApiController {
         return notificationService.subscribe("user", video_id, lastEventId);
     }
 
-
+    @PostMapping("publish")
+    public void publish(@RequestBody AiStatusMessage aiStatusMessage) throws JsonProcessingException {
+        log.info(aiStatusMessage.getVideoId());
+        notificationService.publish(aiStatusMessage);
+    }
 
 }
