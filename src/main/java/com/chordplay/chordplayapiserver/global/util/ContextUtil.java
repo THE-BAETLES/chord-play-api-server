@@ -3,6 +3,10 @@ package com.chordplay.chordplayapiserver.global.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -41,6 +45,7 @@ public class ContextUtil {
                 (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
         return attr.getResponse();
     }
+
 
     /**
      * HttpSession 객체를 직접 얻습니다.
@@ -98,5 +103,12 @@ public class ContextUtil {
         ServletRequestAttributes attr =
                 (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
         attr.setAttribute(key, obj, ServletRequestAttributes.SCOPE_SESSION);
+    }
+
+    public static String getPrincipalUserId(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PrincipalDetails userDetails = (PrincipalDetails)principal;
+        String userId = userDetails.getUser().getId();
+        return userId;
     }
 }
