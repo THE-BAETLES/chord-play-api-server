@@ -1,6 +1,8 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
 import com.chordplay.chordplayapiserver.domain.entity.item.*;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -14,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @ToString
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class User {
     @Id
     private String id;

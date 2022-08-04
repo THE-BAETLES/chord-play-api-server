@@ -1,5 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,6 +13,7 @@ import java.util.List;
 @Document(collection = "VIDEO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Video {
 
     @Id

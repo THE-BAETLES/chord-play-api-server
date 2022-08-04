@@ -5,6 +5,8 @@ import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.Country;
 import com.chordplay.chordplayapiserver.domain.entity.item.Gender;
 import com.chordplay.chordplayapiserver.domain.entity.item.PerformerGrade;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @ToString @Getter @Setter
 @NoArgsConstructor
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class JoinRequest {
     //from token
     private String firebaseUid;

@@ -1,6 +1,8 @@
 package com.chordplay.chordplayapiserver.domain.entity;
 
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import org.springframework.data.annotation.Id;
@@ -11,6 +13,7 @@ import java.util.List;
 @Document(collection = "SHEET")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetData {
 
     @Id
