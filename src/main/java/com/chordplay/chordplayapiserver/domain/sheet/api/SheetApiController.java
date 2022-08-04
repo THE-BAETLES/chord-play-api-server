@@ -20,9 +20,9 @@ public class SheetApiController {
     private final SheetService sheetService;
     private final NotificationService notificationService;
     @PostMapping("/ai")
-    public ResponseEntity<Void> sheetAi(@RequestBody SheetAiRequest dto){
+    public SseEmitter sheetAi(@RequestBody SheetAiRequest dto){
         sheetService.createAi(dto);
-        return ResponseEntity.ok().build();
+        return null;
     }
 
     @GetMapping(value = "/{id}")
@@ -42,7 +42,6 @@ public class SheetApiController {
 
     @PostMapping("publish")
     public void publish(@RequestBody AiStatusMessage aiStatusMessage) throws JsonProcessingException {
-        log.info(aiStatusMessage.getVideoId());
         notificationService.publish(aiStatusMessage);
     }
 
