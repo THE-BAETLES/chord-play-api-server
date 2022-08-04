@@ -9,11 +9,9 @@ import lombok.Getter;
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class AiStatusMessage {
-    private String videoId;
     private int status;
 
-    public AiStatusMessage(String videoId, int status) {
-        this.videoId = videoId;
+    public AiStatusMessage(int status) {
         this.status = status;
     }
     public AiStatusMessage(){
