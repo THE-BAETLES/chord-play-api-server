@@ -17,7 +17,7 @@ public class SqsMessageSender implements MessageQueue {
     private final AmazonSQSProperties amazonSQSProperties;
 
     @Override
-    public void sendToFifoQueue(String messagePayload, String messageGroupID, String messageDedupID) {
+    public void sendToFifoQueue(Object messagePayload, String messageGroupID, String messageDedupID) {
 
         Message msg = MessageBuilder.withPayload(messagePayload)
                 .setHeader("message-group-id", messageGroupID)
