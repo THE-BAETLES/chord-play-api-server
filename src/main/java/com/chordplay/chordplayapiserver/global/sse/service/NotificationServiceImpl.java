@@ -22,7 +22,7 @@ public class NotificationServiceImpl implements NotificationService{
 
     private static final Long DEFAULT_TIMEOUT = 60L * 1000 * 5;
     private final RedisUtil redisUtil;
-    public SseEmitter subscribe(String userId, String videoId, String lastEventId) {
+    public CustomSseEmitter subscribe(String userId, String videoId) {
 
         CustomSseEmitter customSseEmitter = CustomSseEmitter.builder().videoId(videoId).userId(userId).timeout(DEFAULT_TIMEOUT).build();
         ContextUtil.getResponse().addHeader("access-control-allow-origin", "*"); //Cors 에러 방지를 위함

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface NotificationService {
-    SseEmitter subscribe(String userId, String videoId, String lastEventId);
+    CustomSseEmitter subscribe(String userId, String videoId);
     void sendStatusToClient(AiStatusMessage aiStatusMessage, CustomSseEmitter emitter);
     void sendToClient(CustomSseEmitter emitter, Object data);
     void publish(AiStatusMessage aiStatusMessage) throws JsonProcessingException;
