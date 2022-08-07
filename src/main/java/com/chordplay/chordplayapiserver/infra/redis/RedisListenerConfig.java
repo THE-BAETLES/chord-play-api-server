@@ -1,6 +1,5 @@
 package com.chordplay.chordplayapiserver.infra.redis;
 
-import com.chordplay.chordplayapiserver.domain.sheet.SheetRedisListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
