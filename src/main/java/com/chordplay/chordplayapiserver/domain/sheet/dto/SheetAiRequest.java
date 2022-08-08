@@ -11,15 +11,16 @@ import lombok.Getter;
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetAiRequest {
-    private String sheetId;
     private String videoId;
     private int status;
 
     @Builder
-    public SheetAiRequest(String sheetId, String videoId, int status) {
-        this.sheetId = sheetId;
+    public SheetAiRequest(String videoId, int status) {
         this.videoId = videoId;
         this.status = status;
+    }
+
+    public SheetAiRequest() {
     }
 
     public Sheet toEntity(User user){

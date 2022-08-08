@@ -12,4 +12,7 @@ public class SheetDataRequest {
     public SheetDataRequest(String sheetId) {
         this.sheetId = sheetId;
     }
+
+    public SheetDataRequest() {
+    }
 }
