@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.entity;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 
@@ -12,24 +13,26 @@ public class Video {
 
     @Id
     private String id;
-
     @Builder
-    public Video(String id, String thumnail_path, String title, String genre, String singer, int difficulty_avg, int play_count) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, int difficultyAvg, int playCount) {
         this.id = id;
-        this.thumnail_path = thumnail_path;
+        this.thumbnailPath = thumbnailPath;
         this.title = title;
         this.genre = genre;
         this.singer = singer;
-        this.difficulty_avg = difficulty_avg;
-        this.play_count = play_count;
+        this.difficultyAvg = difficultyAvg;
+        this.playCount = playCount;
     }
 
-    private String thumnail_path;
+    @Field("thumbnail_path")
+    private String thumbnailPath;
     private String title;
     private String genre;
     private String singer;
-    private int difficulty_avg;
-    private int play_count;
+    @Field("difficulty_avg")
+    private int difficultyAvg;
+    @Field("play_count")
+    private int playCount;
 
     public Video(String id){
         this.id = id;
