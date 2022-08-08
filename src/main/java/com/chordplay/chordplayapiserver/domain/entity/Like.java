@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.entity;
 import com.mongodb.internal.connection.Time;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
@@ -13,7 +14,7 @@ public class Like {
 
     @Id
     private String id;
-    @DocumentReference(lazy = true)
+    @DBRef(lazy = true)
     private User user;
     @DocumentReference(lazy = true)
     private Sheet sheet;
