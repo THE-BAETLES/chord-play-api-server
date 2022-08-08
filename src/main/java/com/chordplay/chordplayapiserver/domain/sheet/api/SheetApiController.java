@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.sheet.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
@@ -21,24 +22,25 @@ public class SheetApiController {
     private final NotificationService notificationService;
     @PostMapping("/ai")
     public SseEmitter sheetAi(@RequestBody SheetAiRequest dto){
-        sheetService.createAi(dto);
-        return null;
+        return sheetService.createAi(dto);
+    }
+
+    @GetMapping(value = "/ai/{id}")
+    public SseEmitter sheetAi_test(@PathVariable("id") String id){
+        return sheetService.createAi(new SheetAiRequest(id, 0));
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<SheetDataResponse> sheet(@PathVariable("id") String id){
-        System.out.println("sheet service: " + sheetService);
-
-        SheetDataResponse responseDTO = sheetService.read(id);
-        return ResponseEntity.ok(responseDTO);
+        //추후 구현예정
+        return ResponseEntity.ok(null);
     }
 
-    @GetMapping(value = "/subscribe/{video_id}", produces = "text/event-stream")
-    public SseEmitter subscribe(@PathVariable String video_id,
-                                @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        log.info(video_id + " was subscribed");
-        return notificationService.subscribe("user", video_id, lastEventId);
-    }
+//    @GetMapping(value = "/subscribe/{video_id}", produces = "text/event-stream")
+//    public SseEmitter subscribe(@PathVariable String video_id) {
+//        log.info(video_id + " was subscribed");
+//        return notificationService.subscribe("user", video_id);
+//    }
 
     @PostMapping("publish")
     public void publish(@RequestBody AiStatusMessage aiStatusMessage) throws JsonProcessingException {

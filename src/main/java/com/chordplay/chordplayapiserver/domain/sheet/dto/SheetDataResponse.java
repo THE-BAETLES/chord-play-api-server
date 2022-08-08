@@ -12,11 +12,13 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetDataResponse {
 
+    private int status;
     private int bpm;
     private List<ChordInfo> ChordInfos;
 
     public SheetDataResponse(SheetData sheetData) {
         this.bpm = sheetData.getBpm();
         ChordInfos = sheetData.getChordInfos();
+        this.status = 3;
     }
 }
