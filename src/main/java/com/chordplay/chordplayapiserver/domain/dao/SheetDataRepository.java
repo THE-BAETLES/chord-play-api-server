@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface SheetDataRepository extends MongoRepository<SheetData,String> {
-    Optional<SheetData> findOneByVideoId(String videoId);
+    Optional<SheetData> findOneById(String id);
 }
