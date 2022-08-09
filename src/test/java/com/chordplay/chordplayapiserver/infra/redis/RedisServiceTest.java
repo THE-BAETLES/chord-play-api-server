@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class RedisServiceTest {
-    @Autowired RedisService redisService;
-
-    @Test
-    void test1(){
-        ChannelTopic channelTopic = new ChannelTopic("ch01");
-        RedisMessage redisMessage = new RedisMessage("hello");
-        redisService.publish(channelTopic, redisMessage);
-    }
+//    @Autowired RedisService redisService;
+//
+//    @Test
+//    void test1(){
+//        ChannelTopic channelTopic = new ChannelTopic("ch01");
+//        RedisMessage redisMessage = new RedisMessage("hello");
+//        //redisService.publish(channelTopic, redisMessage);
+//    }
 
 }
