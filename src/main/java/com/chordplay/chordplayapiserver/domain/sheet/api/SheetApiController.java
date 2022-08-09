@@ -9,6 +9,7 @@ import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -21,13 +22,13 @@ public class SheetApiController {
     private final SheetService sheetService;
     private final NotificationService notificationService;
     @PostMapping("/ai")
-    public SseEmitter sheetAi(@RequestBody SheetAiRequest dto){
-        return sheetService.createAi(dto);
+    public SseEmitter sheetAi(@RequestBody SheetAiRequest req){
+        return sheetService.createSheet(req);
     }
 
-    @GetMapping(value = "/ai/{id}")
-    public SseEmitter sheetAi_test(@PathVariable("id") String id){
-        return sheetService.createAi(new SheetAiRequest(id, 0));
+    @GetMapping(value = "/ai/{video_id}")
+    public SseEmitter sheetAi_test(@PathVariable("video_id") String videoId){
+        return sheetService.createSheet(new SheetAiRequest(videoId, 0));
     }
 
     @GetMapping(value = "/{id}")
