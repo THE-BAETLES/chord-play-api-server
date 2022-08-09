@@ -14,6 +14,7 @@ import java.util.List;
 @Document(collection = "SHEET_DATA")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @ToString
+
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetData {
 

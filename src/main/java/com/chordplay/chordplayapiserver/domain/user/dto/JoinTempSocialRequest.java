@@ -1,9 +1,12 @@
 package com.chordplay.chordplayapiserver.domain.user.dto;
 
 import com.chordplay.chordplayapiserver.domain.entity.User;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.firebase.auth.FirebaseToken;
 import lombok.Builder;
 
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class JoinTempSocialRequest {
     private String firebaseUid;
     private String username;
