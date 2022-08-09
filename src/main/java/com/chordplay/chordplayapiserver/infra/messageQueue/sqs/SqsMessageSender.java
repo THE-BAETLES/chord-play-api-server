@@ -24,7 +24,7 @@ public class SqsMessageSender implements MessageQueue {
                 .setHeader("message-deduplication-id", messageDedupID)
                 .build();
         queueMessagingTemplate.send(amazonSQSProperties.getName(), msg);
-        log.info("message sent to " + amazonSQSProperties.getName());
+        log.info("message(message-group-id: "+messageGroupID+", deduplication-id: "+messageDedupID+")sent to " + amazonSQSProperties.getName());
     }
 
 }
