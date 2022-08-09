@@ -18,7 +18,6 @@ public class Video {
 
     @Id
     private String id;
-
     @Builder
     public Video(String id, String thumbnailPath, String title, String genre, String singer, int difficultyAvg, int playCount) {
         this.id = id;
@@ -30,15 +29,14 @@ public class Video {
         this.playCount = playCount;
     }
 
-    @Field(value = "thumbnail_path")
+    @Field("thumbnail_path")
     private String thumbnailPath;
     private String title;
     private String genre;
     private String singer;
-    @Field(value = "difficulty_avg")
+    @Field("difficulty_avg")
     private int difficultyAvg;
-
-    @Field(value = "play_count")
+    @Field("play_count")
     private int playCount;
 
     public Video(String id){

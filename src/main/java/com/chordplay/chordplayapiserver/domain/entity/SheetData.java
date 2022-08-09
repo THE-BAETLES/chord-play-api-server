@@ -7,18 +7,21 @@ import lombok.*;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
-@Document(collection = "SHEET")
+@Document(collection = "SHEET_DATA")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @ToString
+
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetData {
 
     @Id
     private String id;
     private int bpm;
+    @Field("chord_infos")
     private List<ChordInfo> ChordInfos;
 
     @Builder

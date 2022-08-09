@@ -43,7 +43,7 @@ public class UserApiController {
     @GetMapping("/favorites")
     public ResponseEntity<FavoritesResponse> getEarlyFavoriteSongs(@RequestParam HashMap<String,String> paramMap){
         //수정중...
-        return ResponseEntity.ok().body(userService.getFavorites());
+        return null;
     }
 
     @PostMapping("/join")

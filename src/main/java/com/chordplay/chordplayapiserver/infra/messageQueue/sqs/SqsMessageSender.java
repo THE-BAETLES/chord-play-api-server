@@ -17,14 +17,14 @@ public class SqsMessageSender implements MessageQueue {
     private final AmazonSQSProperties amazonSQSProperties;
 
     @Override
-    public void sendToFifoQueue(String messagePayload, String messageGroupID, String messageDedupID) {
+    public void sendToFifoQueue(Object messagePayload, String messageGroupID, String messageDedupID) {
 
         Message msg = MessageBuilder.withPayload(messagePayload)
                 .setHeader("message-group-id", messageGroupID)
                 .setHeader("message-deduplication-id", messageDedupID)
                 .build();
         queueMessagingTemplate.send(amazonSQSProperties.getName(), msg);
-        log.info("message sent to " + amazonSQSProperties.getName());
+        log.info("message(message-group-id: "+messageGroupID+", deduplication-id: "+messageDedupID+")sent to " + amazonSQSProperties.getName());
     }
 
 }
