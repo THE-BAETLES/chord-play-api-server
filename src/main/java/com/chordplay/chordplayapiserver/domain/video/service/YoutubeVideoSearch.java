@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
 import com.chordplay.chordplayapiserver.domain.video.dto.YoutubeVideoResponse;
+import com.chordplay.chordplayapiserver.global.exception.RuntimeIoException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -64,26 +65,28 @@ public class YoutubeVideoSearch {
 
     public List<SearchResult> search (String search_query, String regionCode){
 
+        List<SearchResult> searchResultList = null;
+
         try {
             YouTube.Search.List search = youtube.search().list("id, snippet");
 
             this.setYoutubeSearchConfig(search,search_query,regionCode);
 
             SearchListResponse searchResponse = search.execute();
-            List<SearchResult> searchResultList = searchResponse.getItems();
-
+            searchResultList = searchResponse.getItems();
             return searchResultList;
 
         } catch (GoogleJsonResponseException e) {
-            System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
+            log.error("There was a service error: " + e.getDetails().getCode() + " : "
                     + e.getDetails().getMessage());
+            throw new RuntimeIoException();
         } catch (IOException e) {
-            System.err.println("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            log.error("There was an IO error: " + e.getCause() + " : " + e.getMessage());
+            throw new RuntimeIoException();
         } catch (Throwable t) {
-            t.printStackTrace();
+            log.error(t.getMessage());
+            throw new RuntimeIoException();
         }
-
-        return null;
     }
 
     private void setYoutubeSearchConfig(YouTube.Search.List search, String search_query, String regionCode) throws IOException {
