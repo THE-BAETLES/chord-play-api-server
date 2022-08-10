@@ -3,11 +3,19 @@ package com.chordplay.chordplayapiserver.domain.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import org.checkerframework.checker.units.qual.C;
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.repository.Aggregation;
 
 import javax.persistence.Id;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Document(collection = "VIDEO")
@@ -19,14 +27,15 @@ public class Video {
     @Id
     private String id;
     @Builder
-    public Video(String id, String thumbnailPath, String title, String genre, String singer, int difficultyAvg, int playCount) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
         this.genre = genre;
         this.singer = singer;
-        this.difficultyAvg = difficultyAvg;
-        this.playCount = playCount;
+        this.tags = tags;
+        this.difficultyAvg = 0;
+        this.playCount = 0;
     }
 
     @Field("thumbnail_path")
@@ -34,16 +43,46 @@ public class Video {
     private String title;
     private String genre;
     private String singer;
+    private List<String> tags;
+    private String length;
+    private String createdAt;
     @Field("difficulty_avg")
     private int difficultyAvg;
     @Field("play_count")
     private int playCount;
-
     public Video(String id){
         this.id = id;
     }
 
-    public static List<Video> GetDummyVideos(){
+    public Video(com.google.api.services.youtube.model.Video youtubeVideo){
+        this.id = youtubeVideo.getId();
+        this.thumbnailPath = youtubeVideo.getSnippet().getThumbnails().getHigh().getUrl();
+        this.title = youtubeVideo.getSnippet().getTitle();
+        this.singer = youtubeVideo.getSnippet().getChannelTitle();
+        this.tags = youtubeVideo.getSnippet().getTags();
+        String videoDuration = youtubeVideo.getContentDetails().getDuration();
+        this.length = makeLengthFormat(videoDuration);
+        this.createdAt = youtubeVideo.getSnippet().getPublishedAt().toString(); // DateTime 변환 필요
+        this.difficultyAvg = 0;
+        this.playCount = 0;
+    }
+    private String makeLengthFormat(String youtubeDuration) {
+        String length;
+        Duration dur = Duration.parse(youtubeDuration);
+        if (dur.toHours() > 0) {
+            length = String.format("%d:%02d:%02d",
+                    dur.toHours(),
+                    dur.toMinutesPart(),
+                    dur.toSecondsPart());
+        } else {
+            length = String.format("%02d:%02d",
+                    dur.toMinutesPart(),
+                    dur.toSecondsPart());
+        }
+        return length;
+    }
+
+    public static List<Video> GetDummyVideos () {
         List<Video> videos = new ArrayList<Video>();
         videos.add(
                 Video.builder()
@@ -52,8 +91,6 @@ public class Video {
                         .title("NAYEON \"POP!\" M/V")
                         .genre("idol")
                         .singer("JYP Entertainment")
-                        .difficultyAvg(2)
-                        .playCount(22231)
                         .build()
         );
         videos.add(
@@ -63,8 +100,6 @@ public class Video {
                         .title("IVE 아이브 'ELEVEN' MV")
                         .genre("idol")
                         .singer("starshipTV")
-                        .difficultyAvg(3)
-                        .playCount(123213)
                         .build()
         );
         videos.add(
@@ -74,8 +109,6 @@ public class Video {
                         .title("Eul (Feat. BIG Naughty) (을 (Feat. BIG Naughty (서동현)))")
                         .genre("hip-hop")
                         .singer("GIRIBOY")
-                        .difficultyAvg(3)
-                        .playCount(141)
                         .build()
         );
         videos.add(
@@ -85,8 +118,6 @@ public class Video {
                         .title("자우림 '스물다섯, 스물하나' 어쿠스틱커버 by 장범준 Acoustic COVER")
                         .genre("performance")
                         .singer("장범준")
-                        .difficultyAvg(4)
-                        .playCount(188574)
                         .build()
         );
         videos.add(
@@ -96,8 +127,6 @@ public class Video {
                         .title("최고의 피카츄 월드컵 (※동심파괴 주의)")
                         .genre("idol")
                         .singer("침착맨")
-                        .difficultyAvg(3)
-                        .playCount(14124)
                         .build()
         );
         videos.add(
@@ -107,8 +136,6 @@ public class Video {
                         .title("Eul (Feat. BIG Naughty) (을 (Feat. BIG Naughty (서동현)))")
                         .genre("hip-hop")
                         .singer("GIRIBOY")
-                        .difficultyAvg(3)
-                        .playCount(141)
                         .build()
         );
         videos.add(
@@ -118,8 +145,6 @@ public class Video {
                         .title("자우림 '스물다섯, 스물하나' 어쿠스틱커버 by 장범준 Acoustic COVER")
                         .genre("performance")
                         .singer("장범준")
-                        .difficultyAvg(4)
-                        .playCount(188574)
                         .build()
         );
         videos.add(
@@ -129,11 +154,8 @@ public class Video {
                         .title("최고의 피카츄 월드컵 (※동심파괴 주의)")
                         .genre("idol")
                         .singer("침착맨")
-                        .difficultyAvg(3)
-                        .playCount(14124)
                         .build()
         );
         return videos;
     }
-
 }
