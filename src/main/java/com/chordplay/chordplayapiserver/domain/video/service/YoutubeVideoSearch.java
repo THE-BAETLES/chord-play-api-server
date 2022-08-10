@@ -56,34 +56,23 @@ public class YoutubeVideoSearch {
         log.info("youtube bean 초기화 완료");
     }
 
-    public List<com.chordplay.chordplayapiserver.domain.entity.Video> search_KR(String search_query){
+    public List<SearchResult> search_KR(String search_query){
         return this.search(search_query, "KR");
     }
 
 
 
-    public List<com.chordplay.chordplayapiserver.domain.entity.Video> search (String search_query, String regionCode){
+    public List<SearchResult> search (String search_query, String regionCode){
 
         try {
-
-            YouTube.Search.List search = youtube.search().list("id");
+            YouTube.Search.List search = youtube.search().list("id, snippet");
 
             this.setYoutubeSearchConfig(search,search_query,regionCode);
 
             SearchListResponse searchResponse = search.execute();
             List<SearchResult> searchResultList = searchResponse.getItems();
-            String videoIds = "";
-            for (SearchResult searchResult : searchResultList){
-                videoIds += searchResult.getId().getVideoId() + ",";
-            }
 
-            List<Video> youtubeVideoList = this.getYoutubeVideoInfos(videoIds);
-            List<com.chordplay.chordplayapiserver.domain.entity.Video> videos = new ArrayList<com.chordplay.chordplayapiserver.domain.entity.Video>();
-            for (Video youtubeVideo : youtubeVideoList){
-                videos.add(new com.chordplay.chordplayapiserver.domain.entity.Video(youtubeVideo));
-            }
-
-            return videos;
+            return searchResultList;
 
         } catch (GoogleJsonResponseException e) {
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
@@ -119,7 +108,7 @@ public class YoutubeVideoSearch {
          * This method reduces the info returned to only the fields we need and makes calls more
          * efficient.
          */
-        search.setFields("items(id/kind,id/videoId)");
+        search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle)");
         search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
 
         /*
@@ -134,7 +123,7 @@ public class YoutubeVideoSearch {
         videos.setKey(apiKey);
         videos.setId(video_id);
         videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
-        videos.setFields("id/kind,id/videoId,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration");
+        videos.setFields("items(id,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration)");
         VideoListResponse videoResponse = videos.execute();
         return videoResponse.getItems();
     }

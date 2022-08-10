@@ -1,26 +1,32 @@
 package com.chordplay.chordplayapiserver.domain.video.api;
 
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
+import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/video")
 @RequiredArgsConstructor
 public class VideoApiController {
 
+    private final VideoService videoService;
 
-    @GetMapping(value = "/ai/{search_query}")
-    public Object search(@PathVariable("search_query") String search_query){
-
-
-
-        return null;
+    @GetMapping(value = "/search/{search_query}")
+    public ResponseEntity<List<VideoResponse>>  search(@PathVariable("search_query") String search_query){
+        System.out.println(search_query);
+        List<VideoResponse> videoResponses = videoService.search(search_query);
+        return ResponseEntity.ok(videoResponses);
     }
 
 

@@ -1,5 +1,9 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
+
+import java.util.List;
+
 public interface VideoService {
-    void search(String search_query);
+    List<VideoResponse> search(String search_query);
 }

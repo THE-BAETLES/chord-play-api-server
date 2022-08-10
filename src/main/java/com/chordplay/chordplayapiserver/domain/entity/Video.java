@@ -54,34 +54,6 @@ public class Video {
         this.id = id;
     }
 
-    public Video(com.google.api.services.youtube.model.Video youtubeVideo){
-        this.id = youtubeVideo.getId();
-        this.thumbnailPath = youtubeVideo.getSnippet().getThumbnails().getHigh().getUrl();
-        this.title = youtubeVideo.getSnippet().getTitle();
-        this.singer = youtubeVideo.getSnippet().getChannelTitle();
-        this.tags = youtubeVideo.getSnippet().getTags();
-        String videoDuration = youtubeVideo.getContentDetails().getDuration();
-        this.length = makeLengthFormat(videoDuration);
-        this.createdAt = youtubeVideo.getSnippet().getPublishedAt().toString(); // DateTime 변환 필요
-        this.difficultyAvg = 0;
-        this.playCount = 0;
-    }
-    private String makeLengthFormat(String youtubeDuration) {
-        String length;
-        Duration dur = Duration.parse(youtubeDuration);
-        if (dur.toHours() > 0) {
-            length = String.format("%d:%02d:%02d",
-                    dur.toHours(),
-                    dur.toMinutesPart(),
-                    dur.toSecondsPart());
-        } else {
-            length = String.format("%02d:%02d",
-                    dur.toMinutesPart(),
-                    dur.toSecondsPart());
-        }
-        return length;
-    }
-
     public static List<Video> GetDummyVideos () {
         List<Video> videos = new ArrayList<Video>();
         videos.add(

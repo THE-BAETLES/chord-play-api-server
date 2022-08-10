@@ -4,6 +4,8 @@ import com.chordplay.chordplayapiserver.domain.entity.Video;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Optional;
+
 public interface VideoRepository extends MongoRepository<Video,String> {
 
     @Aggregation(pipeline = {
@@ -12,5 +14,7 @@ public interface VideoRepository extends MongoRepository<Video,String> {
             "{'$project': { '_id': 0, 'sheet_count': { '$size': '$sheets' } } }"
     })
     Long getSheetCount(String videoId);
+
+    Optional<Video> findById(String id);
 
 }
