@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
 import com.chordplay.chordplayapiserver.domain.video.dto.YoutubeVideoResponse;
+import com.chordplay.chordplayapiserver.domain.video.exception.InvaliedVideoException;
 import com.chordplay.chordplayapiserver.global.exception.RuntimeIoException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequest;
@@ -121,19 +122,30 @@ public class YoutubeVideoSearch {
 
     }
 
-    private List<Video> getYoutubeVideoInfos(String video_id) throws IOException {
-        YouTube.Videos.List videos = youtube.videos().list("id, snippet, contentDetails");
-        videos.setKey(apiKey);
-        videos.setId(video_id);
-        videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
-        videos.setFields("items(id,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration)");
-        VideoListResponse videoResponse = videos.execute();
-        return videoResponse.getItems();
-    }
+    public Video getYoutubeVideoInfo(String video_id) {
 
-    private Video getYoutubeVideoInfo(String video_id) throws IOException {
-        List<Video> videos = getYoutubeVideoInfos(video_id);
-        return videos.get(0);
+        try {
+
+            Video video = null;
+            YouTube.Videos.List videos = youtube.videos().list("id, snippet, contentDetails");
+            videos.setKey(apiKey);
+            videos.setId(video_id);
+            videos.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
+            videos.setFields("items(id,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration)");
+            VideoListResponse videoResponse = null;
+            videoResponse = videos.execute();
+            if (videoResponse.getItems().size() > 0) {
+                video = videoResponse.getItems().get(0);
+                return video;
+            } else {
+                throw new InvaliedVideoException();
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InvaliedVideoException e){
+            throw e;
+        }
     }
 
     /*
