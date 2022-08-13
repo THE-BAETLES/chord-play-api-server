@@ -20,20 +20,23 @@ import java.util.List;
 
 @Document(collection = "VIDEO")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
+@Getter @Setter @ToString
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Video {
 
     @Id
     private String id;
+
     @Builder
-    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, String createdAt, int difficultyAvg, int playCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
         this.genre = genre;
         this.singer = singer;
         this.tags = tags;
+        this.length = length;
+        this.createdAt = createdAt;
         this.difficultyAvg = 0;
         this.playCount = 0;
     }
@@ -54,6 +57,35 @@ public class Video {
         this.id = id;
     }
 
+    public Video (com.google.api.services.youtube.model.Video youtubeVideo){
+
+        this.id = youtubeVideo.getId();
+        this.thumbnailPath = youtubeVideo.getSnippet().getThumbnails().getHigh().getUrl();
+        this.title = youtubeVideo.getSnippet().getTitle();
+        this.singer = youtubeVideo.getSnippet().getChannelTitle();
+        this.tags = youtubeVideo.getSnippet().getTags();
+        this.length = makeLengthFormat(youtubeVideo.getContentDetails().getDuration());
+        this.createdAt = youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
+        this.difficultyAvg = 0;
+        this.playCount = 0;
+    }
+    //youtube format -> MM:SS
+    private String makeLengthFormat(String youtubeDuration) {
+        String length;
+        Duration dur = Duration.parse(youtubeDuration);
+        if (dur.toHours() > 0) {
+            length = String.format("%d:%02d:%02d",
+                    dur.toHours(),
+                    dur.toMinutesPart(),
+                    dur.toSecondsPart());
+        } else {
+            length = String.format("%02d:%02d",
+                    dur.toMinutesPart(),
+                    dur.toSecondsPart());
+        }
+        return length;
+    }
+    //id,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration
     public static List<Video> GetDummyVideos () {
         List<Video> videos = new ArrayList<Video>();
         videos.add(

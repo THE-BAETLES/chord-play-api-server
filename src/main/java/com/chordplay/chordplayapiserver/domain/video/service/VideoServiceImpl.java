@@ -17,6 +17,15 @@ public class VideoServiceImpl implements VideoService{
 
     private final YoutubeVideoSearch youtubeVideoSearch;
     private final VideoRepository videoRepository;
+
+
+    @Override
+    public void create(String video_id) {
+        com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(video_id);
+        Video video = new Video(youtubeVideo);
+        videoRepository.save(video);
+    }
+
     @Override
     public List<VideoResponse> search(String search_query) {
         List<VideoResponse> videoResponses = new ArrayList<VideoResponse>();

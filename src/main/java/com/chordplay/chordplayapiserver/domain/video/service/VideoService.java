@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface VideoService {
     List<VideoResponse> search(String search_query);
+    void create(String video_id);
 }
