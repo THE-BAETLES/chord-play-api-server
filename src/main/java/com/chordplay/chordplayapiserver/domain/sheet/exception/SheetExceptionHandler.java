@@ -23,6 +23,13 @@ public class SheetExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = {SheetDataNotFoundException.class})
+    public ResponseEntity<ErrorResponse> SheetDataNotFoundException(SheetDataNotFoundException e){
+        log.error("SheetCreationFailException",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_CREATION_FAIL);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 //    @ExceptionHandler(value = {NotFullyJoinedException.class})
 //    public ResponseEntity<Object> handleNotFullyJoinedException(NotFullyJoinedException ex){
