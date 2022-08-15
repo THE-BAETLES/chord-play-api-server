@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.entity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import net.bytebuddy.asm.Advice;
 import org.checkerframework.checker.units.qual.C;
 import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,7 +29,7 @@ public class Video {
     private String id;
 
     @Builder
-    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, String createdAt, int difficultyAvg, int playCount) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -48,7 +49,7 @@ public class Video {
     private String singer;
     private List<String> tags;
     private String length;
-    private String createdAt;
+    private LocalDateTime createdAt;
     @Field("difficulty_avg")
     private int difficultyAvg;
     @Field("play_count")
@@ -65,7 +66,8 @@ public class Video {
         this.singer = youtubeVideo.getSnippet().getChannelTitle();
         this.tags = youtubeVideo.getSnippet().getTags();
         this.length = makeLengthFormat(youtubeVideo.getContentDetails().getDuration());
-        this.createdAt = youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
+        String rfc3339String =youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
+        this.createdAt = OffsetDateTime.parse(rfc3339String).toLocalDateTime();
         this.difficultyAvg = 0;
         this.playCount = 0;
     }

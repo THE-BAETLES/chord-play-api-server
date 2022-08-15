@@ -9,6 +9,8 @@ import lombok.ToString;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +26,13 @@ public class VideoResponse {
     private String singer;
     private List<String> tags;
     private String length;
-    private String createdAt;
+    private LocalDateTime createdAt;
     private int difficultyAvg;
     private int playCount;
     private Long sheetCount;
 
 
-    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, String createdAt, int difficultyAvg, int playCount) {
+    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -78,7 +80,8 @@ public class VideoResponse {
         this.tags = youtubeVideo.getSnippet().getTags();
         String videoDuration = youtubeVideo.getContentDetails().getDuration();
         this.length = makeLengthFormat(videoDuration);
-        this.createdAt = youtubeVideo.getSnippet().getPublishedAt().toString(); // DateTime 변환 필요
+        String rfc3339String =youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
+        this.createdAt = OffsetDateTime.parse(rfc3339String).toLocalDateTime();
         this.difficultyAvg = 0;
         this.playCount = 0;
         this.sheetCount = 0L;
@@ -89,8 +92,8 @@ public class VideoResponse {
         this.thumbnailPath = youtubeSearchResult.getSnippet().getThumbnails().getHigh().getUrl();
         this.title = youtubeSearchResult.getSnippet().getTitle();
         this.singer = youtubeSearchResult.getSnippet().getChannelTitle();
-        this.createdAt = youtubeSearchResult.getSnippet().getPublishedAt().toString(); // DateTime 변환 필요
-
+        String rfc3339String = youtubeSearchResult.getSnippet().getPublishedAt().toString();
+        this.createdAt = OffsetDateTime.parse(rfc3339String).toLocalDateTime();
         this.tags = new ArrayList<String>();
         this.difficultyAvg = 0;
         this.playCount = 0;
