@@ -41,7 +41,6 @@ public class SheetServiceImpl implements SheetService{
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
-    private final RedisUtil redisUtil;
     private final MessageQueue messageQueue;
 
     private final WatchHistoryRepository watchHistoryRepository;
@@ -115,17 +114,6 @@ public class SheetServiceImpl implements SheetService{
             redisMessageListenerContainer.removeMessageListener(messageListener);
             throw new RuntimeException("emitter error");    // 예외처리
         });
-
-    }
-
-    private void saveHistory(){
-//        //user, video, lastPlayed
-//        WatchHistory watchHistory =
-//        watchHistoryRepository.save();
-//
-//        //
-//
-//        //update
 
     }
 }
