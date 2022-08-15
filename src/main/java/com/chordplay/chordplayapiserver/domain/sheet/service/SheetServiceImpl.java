@@ -8,6 +8,7 @@ import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
 import com.chordplay.chordplayapiserver.global.sse.CustomSseEmitter;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
@@ -87,6 +88,17 @@ public class SheetServiceImpl implements SheetService{
         return sseEmitter;
     }
 
+    @Override
+    public SheetData getSheetData(String sheetId) {
+
+        Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheetId);
+        if (sheetData.isPresent()) {
+            return sheetData.get();
+        } else {
+            throw new SheetDataNotFoundException();
+        }
+    }
+
     private void addRedisListener(CustomSseEmitter emitter){
 
         MessageListener messageListener = new MessageListenerAdapter(SheetRedisListener.builder()
@@ -107,8 +119,13 @@ public class SheetServiceImpl implements SheetService{
     }
 
     private void saveHistory(){
-        WatchHistory watchHistory =
-        watchHistoryRepository.save()
-    }
+//        //user, video, lastPlayed
+//        WatchHistory watchHistory =
+//        watchHistoryRepository.save();
+//
+//        //
+//
+//        //update
 
+    }
 }

@@ -8,5 +8,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface SheetService {
     SseEmitter createSheet(SheetAiRequest req);
+    SheetData getSheetData(String sheetId);
 
 }
