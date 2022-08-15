@@ -18,7 +18,7 @@ public class WatchHistoryCustomRepositoryImpl implements WatchHistoryCustomRepos
     private final MongoTemplate mongoTemplate;
 
     @Override
-    public void UpdateCountAndTimeByUserAndVideo(User user, Video video) {
+    public void updateCountAndTimeByUserAndVideo(User user, Video video) {
         Query query = new Query(Criteria.where("video").is(video).and("user").is(user));
         Update update = new Update().inc("play_count", 1).currentDate("last_played");
         mongoTemplate.update(WatchHistory.class).matching(query).apply(update).upsert();
