@@ -2,11 +2,9 @@ package com.chordplay.chordplayapiserver.domain.sheet.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
-import com.chordplay.chordplayapiserver.domain.entity.Sheet;
-import com.chordplay.chordplayapiserver.domain.entity.SheetData;
+import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
+import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
-import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
@@ -44,6 +42,8 @@ public class SheetServiceImpl implements SheetService{
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisUtil redisUtil;
     private final MessageQueue messageQueue;
+
+    private final WatchHistoryRepository watchHistoryRepository;
 
     private final String CREATE_AI_SHEET = "CREATE_AI_SHEET";
 
@@ -104,6 +104,11 @@ public class SheetServiceImpl implements SheetService{
             throw new RuntimeException("emitter error");    // 예외처리
         });
 
+    }
+
+    private void saveHistory(){
+        WatchHistory watchHistory =
+        watchHistoryRepository.save()
     }
 
 }

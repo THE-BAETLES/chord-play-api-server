@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.entity.item.*;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -40,7 +41,7 @@ public class User {
     private PerformerGrade performerGrade;
     private Membership membership;
 
-    @DocumentReference(lazy = true)
+    @DBRef(lazy = true)
     private List<Video> earlyFavoriteSongs;
 
     private List<MyVideo> myCollection;
