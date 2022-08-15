@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(new FirebaseTokenFilter(userService,principalDetailsService, firebaseAuth), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(new FirebaseTokenFilter(userService,principalDetailsService, firebaseAuth), UsernamePasswordAuthenticationFilter.class)
                 //.addFilter(jwtAuthenticationFilter)  //파이어베이스 쪽 인증/인가 -> 자체 인가 작업 필요
                 //.addFilter(new JwtAuthorizationFilter(authenticationManager(),userRepository))
                 .authorizeRequests()

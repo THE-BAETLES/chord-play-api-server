@@ -6,6 +6,8 @@ import lombok.Getter;
 public enum ErrorCode {
     // Common
     SHEET_CREATION_FAIL(500, "S001", "Sheet creation failed : ai server failed"),
+    YOUTUBE_SERVER_ERROR(500, "V001", "GoogleJsonResponseException: youtube server error"),
+    IO_EXCEPTION_ERROR(500, "C001", "IoException: server error"),
     ;
     private final String code;
     private final String message;
