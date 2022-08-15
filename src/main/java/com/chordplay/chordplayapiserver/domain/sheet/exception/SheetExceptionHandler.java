@@ -25,9 +25,15 @@ public class SheetExceptionHandler {
 
     @ExceptionHandler(value = {SheetDataNotFoundException.class})
     public ResponseEntity<ErrorResponse> SheetDataNotFoundException(SheetDataNotFoundException e){
-        log.error("SheetCreationFailException",e);
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_CREATION_FAIL);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("SheetDataNotFoundException",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_DATA_NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(value = {SheetNotFoundException.class})
+    public ResponseEntity<ErrorResponse> SheetNotFoundException(SheetNotFoundException e){
+        log.error("SheetNotFoundException",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
 
