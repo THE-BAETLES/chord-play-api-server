@@ -31,22 +31,9 @@ public class SheetApiController {
         SheetData sheetData = sheetService.getSheetData(sheetId);
         return new SheetDataResponse(sheetData);
     }
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<SheetDataResponse> sheet(@PathVariable("id") String id){
-        //추후 구현예정
-        return ResponseEntity.ok(null);
+    @DeleteMapping(value = "/{sheetId}")
+    public SheetDataResponse deleteSheetData(@PathVariable("sheetId") String sheetId){
+        SheetData sheetData = sheetService.getSheetData(sheetId);
+        return new SheetDataResponse(sheetData);
     }
-
-//    @GetMapping(value = "/subscribe/{video_id}", produces = "text/event-stream")
-//    public SseEmitter subscribe(@PathVariable String video_id) {
-//        log.info(video_id + " was subscribed");
-//        return notificationService.subscribe("user", video_id);
-//    }
-
-    @PostMapping("publish")
-    public void publish(@RequestBody AiStatusMessage aiStatusMessage) throws JsonProcessingException {
-        notificationService.publish(aiStatusMessage);
-    }
-
 }
