@@ -5,9 +5,9 @@ import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
 import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.global.sse.CustomSseEmitter;
@@ -15,7 +15,6 @@ import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import com.chordplay.chordplayapiserver.domain.sheet.listener.SheetRedisListener;
 import com.chordplay.chordplayapiserver.infra.messageQueue.MessageQueue;
-import com.chordplay.chordplayapiserver.infra.redis.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,9 +22,8 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -35,6 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Slf4j
+@Transactional
 public class SheetServiceImpl implements SheetService{
 
     private final SheetDataRepository sheetDataRepository;
@@ -96,6 +95,23 @@ public class SheetServiceImpl implements SheetService{
         sheetData = sheetDataOptional.orElseThrow(() -> new SheetDataNotFoundException());
         updateWatchHistory(sheetId);
         return sheetData;
+    }
+
+    @Override
+    public Sheet getSheet(String sheetId) {
+        return sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
+    }
+
+    @Override
+    public Sheet deleteSheetAndSheetData(String sheetId) {
+        Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
+        if (sheet.getUser().getId() != ContextUtil.getPrincipalUserId()) throw new UnauthorizedException();
+
+        sheetRepository.delete(sheet);
+        sheetDataRepository.findById(sheetId).ifPresent(sheetData->{
+            sheetDataRepository.delete(sheetData);
+        });
+        return sheet;
     }
 
     private void updateWatchHistory(String sheetId){

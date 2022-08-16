@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.sheet.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
@@ -32,8 +34,8 @@ public class SheetApiController {
         return new SheetDataResponse(sheetData);
     }
     @DeleteMapping(value = "/{sheetId}")
-    public SheetDataResponse deleteSheetData(@PathVariable("sheetId") String sheetId){
-        SheetData sheetData = sheetService.getSheetData(sheetId);
-        return new SheetDataResponse(sheetData);
+    public SheetResponse deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
+        Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
+        return new SheetResponse(sheet);
     }
 }
