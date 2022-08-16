@@ -9,6 +9,7 @@ import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
+import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.global.sse.CustomSseEmitter;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
@@ -22,6 +23,7 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -89,13 +91,17 @@ public class SheetServiceImpl implements SheetService{
 
     @Override
     public SheetData getSheetData(String sheetId) {
+        SheetData sheetData = null;
+        Optional<SheetData> sheetDataOptional = sheetDataRepository.findOneById(sheetId);
+        sheetData = sheetDataOptional.orElseThrow(() -> new SheetDataNotFoundException());
+        updateWatchHistory(sheetId);
+        return sheetData;
+    }
 
-        Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheetId);
-        if (sheetData.isPresent()) {
-            return sheetData.get();
-        } else {
-            throw new SheetDataNotFoundException();
-        }
+    private void updateWatchHistory(String sheetId){
+        Optional<Sheet> sheetOptional = sheetRepository.findById(sheetId);
+        Sheet sheet = sheetOptional.orElseThrow(() -> new SheetNotFoundException());
+        watchHistoryRepository.updateCountAndTimeByUserAndVideo(sheet.getUser(), sheet.getVideo());
     }
 
     private void addRedisListener(CustomSseEmitter emitter){
@@ -112,6 +118,7 @@ public class SheetServiceImpl implements SheetService{
         emitter.onTimeout(()->redisMessageListenerContainer.removeMessageListener(messageListener));
         emitter.onError((e)->{
             redisMessageListenerContainer.removeMessageListener(messageListener);
+            log.error("emitter error");
             throw new RuntimeException("emitter error");    // 예외처리
         });
 
