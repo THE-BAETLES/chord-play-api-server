@@ -26,12 +26,7 @@ public class SheetApiController {
         return sheetService.createSheet(req);
     }
 
-    @GetMapping(value = "/ai/{videoId}")
-    public SseEmitter sheetAi_test(@PathVariable("videoId") String videoId){
-        return sheetService.createSheet(new SheetAiRequest(videoId, 0));
-    }
-
-    @GetMapping(value = "/{sheetId}/data")
+    @GetMapping(value = "/data/{sheetId}")
     public SheetDataResponse getSheetData(@PathVariable("sheetId") String sheetId){
         SheetData sheetData = sheetService.getSheetData(sheetId);
         return new SheetDataResponse(sheetData);
