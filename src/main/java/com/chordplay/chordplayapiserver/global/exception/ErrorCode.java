@@ -1,6 +1,8 @@
 package com.chordplay.chordplayapiserver.global.exception;
 
 import lombok.Getter;
+import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
@@ -10,7 +12,9 @@ public enum ErrorCode {
     SHEET_NOT_FOUND(400, "S003", "Sheet not found"),
     YOUTUBE_SERVER_ERROR(500, "V001", "GoogleJsonResponseException: youtube server error"),
     IO_EXCEPTION_ERROR(500, "C001", "IoException: server error"),
+    UNAUTHORIZED(401, "C401", "Unauthorized"),
     ;
+
     private final String code;
     private final String message;
     private int status;
