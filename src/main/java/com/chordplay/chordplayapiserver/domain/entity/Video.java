@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.repository.Aggregation;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
@@ -29,7 +30,7 @@ public class Video {
     private String id;
 
     @Builder
-    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, String length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -48,7 +49,8 @@ public class Video {
     private String genre;
     private String singer;
     private List<String> tags;
-    private String length;
+    private int length;
+    @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
     private LocalDateTime createdAt;
     @Field("difficulty_avg")
     private int difficultyAvg;
@@ -64,29 +66,19 @@ public class Video {
         this.thumbnailPath = youtubeVideo.getSnippet().getThumbnails().getHigh().getUrl();
         this.title = youtubeVideo.getSnippet().getTitle();
         this.singer = youtubeVideo.getSnippet().getChannelTitle();
-        this.tags = youtubeVideo.getSnippet().getTags();
-        this.length = makeLengthFormat(youtubeVideo.getContentDetails().getDuration());
+        this.tags = youtubeVideo.getSnippet().getTags() == null ? new ArrayList<String>(): youtubeVideo.getSnippet().getTags();
+        this.length = convertToMs(youtubeVideo.getContentDetails().getDuration());
         String rfc3339String =youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
         this.createdAt = OffsetDateTime.parse(rfc3339String).toLocalDateTime();
         this.difficultyAvg = 0;
         this.playCount = 0;
     }
-    //youtube format -> MM:SS
-    private String makeLengthFormat(String youtubeDuration) {
-        String length;
+
+    private int convertToMs(String youtubeDuration){
         Duration dur = Duration.parse(youtubeDuration);
-        if (dur.toHours() > 0) {
-            length = String.format("%d:%02d:%02d",
-                    dur.toHours(),
-                    dur.toMinutesPart(),
-                    dur.toSecondsPart());
-        } else {
-            length = String.format("%02d:%02d",
-                    dur.toMinutesPart(),
-                    dur.toSecondsPart());
-        }
-        return length;
+        return (dur.toSecondsPart() + dur.toMinutesPart()*60 + dur.toHoursPart()*3600) *1000;
     }
+
     //id,snippet/title,snippet/thumbnails/high/url,snippet/publishedAt,snippet/channelTitle,snippet/tags,contentDetails/duration
     public static List<Video> GetDummyVideos () {
         List<Video> videos = new ArrayList<Video>();
