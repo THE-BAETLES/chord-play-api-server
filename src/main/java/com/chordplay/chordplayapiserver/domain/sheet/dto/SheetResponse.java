@@ -12,25 +12,27 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetResponse {
     private String id;
-    private Video video;
-    private User user;
+    private String videoId;
+    private String userId;
     private String title;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private String createdAt;
+    private String updatedAt;
 
     private Long likeCount;
 
     public SheetResponse(Sheet sheet) {
         this.id = sheet.getId();
-        this.video = sheet.getVideo();
-        this.user = sheet.getUser();
+        this.videoId = sheet.getVideo().getId();
+        this.userId = sheet.getUser().getId();
         this.title = sheet.getTitle();
-        this.createdAt = sheet.getCreatedAt();
-        this.updatedAt = sheet.getUpdatedAt();
+        this.createdAt = sheet.getCreatedAt().toString();
+        this.updatedAt = sheet.getUpdatedAt().toString();
         this.likeCount = sheet.getLikeCount();
     }
 }

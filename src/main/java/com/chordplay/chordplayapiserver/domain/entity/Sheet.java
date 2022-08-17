@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Document(collection = "SHEET")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,15 +31,15 @@ public class Sheet {
     private String title;
 
     @Field("created_at")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
     @Field("updated_at")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @Field("like_count")
     private Long likeCount;
 
     @Builder
-    public Sheet(String id, Video video, User user, String title, Timestamp createdAt, Timestamp updatedAt) {
+    public Sheet(String id, Video video, User user, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.video = video;
         this.user = user;

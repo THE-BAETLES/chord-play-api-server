@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -116,6 +117,8 @@ public class SheetServiceImpl implements SheetService{
                 .video(video) //임시
                 .user(adminUser)
                 .title("ai")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build());
         return sheet;
     }
