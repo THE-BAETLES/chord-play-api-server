@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
+import org.springframework.test.annotation.Rollback;
 
 @Configuration
 public class mongoConfig {
@@ -24,10 +25,9 @@ public class mongoConfig {
             return new MongoTemplate(mongoDatabaseFactory());
         }
 
-    //Transactional, Rollback 기능을 위해 적용해야함 - mongodb replica set 설정 후 적용할 것
-//    @Bean
-//    public MongoTransactionManager mongoTransactionManager() {
-//        return new MongoTransactionManager(mongoDatabaseFactory());
-//    }
+    @Bean
+    public MongoTransactionManager mongoTransactionManager() {
+        return new MongoTransactionManager(mongoDatabaseFactory());
+    }
 
 }
