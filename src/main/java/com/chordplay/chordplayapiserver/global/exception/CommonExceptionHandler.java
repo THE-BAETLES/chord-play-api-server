@@ -18,4 +18,10 @@ public class CommonExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.IO_EXCEPTION_ERROR);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    public ResponseEntity<ErrorResponse> UnauthorizedException(UnauthorizedException e){
+        log.error("UnauthorizedException");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.UNAUTHORIZED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
 }

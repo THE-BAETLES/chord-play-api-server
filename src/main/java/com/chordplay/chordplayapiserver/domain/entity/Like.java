@@ -16,7 +16,7 @@ public class Like {
     private String id;
     @DBRef(lazy = true)
     private User user;
-    @DocumentReference(lazy = true)
+    @DBRef(lazy = true)
     private Sheet sheet;
 
     private Time time;

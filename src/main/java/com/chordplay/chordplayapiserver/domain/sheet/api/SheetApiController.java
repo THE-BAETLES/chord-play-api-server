@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.sheet.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
@@ -26,26 +28,14 @@ public class SheetApiController {
         return sheetService.createSheet(req);
     }
 
-    @GetMapping(value = "/ai/{video_id}")
-    public SseEmitter sheetAi_test(@PathVariable("video_id") String videoId){
-        return sheetService.createSheet(new SheetAiRequest(videoId, 0));
+    @GetMapping(value = "/data/{sheetId}")
+    public SheetDataResponse getSheetData(@PathVariable("sheetId") String sheetId){
+        SheetData sheetData = sheetService.getSheetData(sheetId);
+        return new SheetDataResponse(sheetData);
     }
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<SheetDataResponse> sheet(@PathVariable("id") String id){
-        //추후 구현예정
-        return ResponseEntity.ok(null);
+    @DeleteMapping(value = "/{sheetId}")
+    public SheetResponse deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
+        Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
+        return new SheetResponse(sheet);
     }
-
-//    @GetMapping(value = "/subscribe/{video_id}", produces = "text/event-stream")
-//    public SseEmitter subscribe(@PathVariable String video_id) {
-//        log.info(video_id + " was subscribed");
-//        return notificationService.subscribe("user", video_id);
-//    }
-
-    @PostMapping("publish")
-    public void publish(@RequestBody AiStatusMessage aiStatusMessage) throws JsonProcessingException {
-        notificationService.publish(aiStatusMessage);
-    }
-
 }

@@ -2,20 +2,19 @@ package com.chordplay.chordplayapiserver.domain.sheet.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
-import com.chordplay.chordplayapiserver.domain.entity.Sheet;
-import com.chordplay.chordplayapiserver.domain.entity.SheetData;
+import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
+import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
-import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.entity.Video;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
+import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
+import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.global.sse.CustomSseEmitter;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import com.chordplay.chordplayapiserver.domain.sheet.listener.SheetRedisListener;
 import com.chordplay.chordplayapiserver.infra.messageQueue.MessageQueue;
-import com.chordplay.chordplayapiserver.infra.redis.RedisUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -34,6 +33,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Slf4j
+@Transactional
 public class SheetServiceImpl implements SheetService{
 
     private final SheetDataRepository sheetDataRepository;
@@ -42,8 +42,9 @@ public class SheetServiceImpl implements SheetService{
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
-    private final RedisUtil redisUtil;
     private final MessageQueue messageQueue;
+
+    private final WatchHistoryRepository watchHistoryRepository;
 
     private final String CREATE_AI_SHEET = "CREATE_AI_SHEET";
 
@@ -87,6 +88,38 @@ public class SheetServiceImpl implements SheetService{
         return sseEmitter;
     }
 
+    @Override
+    public SheetData getSheetData(String sheetId) {
+        SheetData sheetData = null;
+        Optional<SheetData> sheetDataOptional = sheetDataRepository.findOneById(sheetId);
+        sheetData = sheetDataOptional.orElseThrow(() -> new SheetDataNotFoundException());
+        updateWatchHistory(sheetId);
+        return sheetData;
+    }
+
+    @Override
+    public Sheet getSheet(String sheetId) {
+        return sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
+    }
+
+    @Override
+    public Sheet deleteSheetAndSheetData(String sheetId) {
+        Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
+        if (sheet.getUser().getId() != ContextUtil.getPrincipalUserId()) throw new UnauthorizedException();
+
+        sheetRepository.delete(sheet);
+        sheetDataRepository.findById(sheetId).ifPresent(sheetData->{
+            sheetDataRepository.delete(sheetData);
+        });
+        return sheet;
+    }
+
+    private void updateWatchHistory(String sheetId){
+        Optional<Sheet> sheetOptional = sheetRepository.findById(sheetId);
+        Sheet sheet = sheetOptional.orElseThrow(() -> new SheetNotFoundException());
+        watchHistoryRepository.updateCountAndTimeByUserAndVideo(sheet.getUser(), sheet.getVideo());
+    }
+
     private void addRedisListener(CustomSseEmitter emitter){
 
         MessageListener messageListener = new MessageListenerAdapter(SheetRedisListener.builder()
@@ -101,9 +134,9 @@ public class SheetServiceImpl implements SheetService{
         emitter.onTimeout(()->redisMessageListenerContainer.removeMessageListener(messageListener));
         emitter.onError((e)->{
             redisMessageListenerContainer.removeMessageListener(messageListener);
+            log.error("emitter error");
             throw new RuntimeException("emitter error");    // 예외처리
         });
 
     }
-
 }

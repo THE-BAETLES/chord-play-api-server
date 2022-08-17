@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -16,9 +17,9 @@ import java.sql.Timestamp;
 public class WatchHistory {
     @Id
     private String id;
-    @DocumentReference(lazy = true)
+    @DBRef(lazy = true)
     private User user;
-    @DocumentReference(lazy= true)
+    @DBRef(lazy = true)
     private Video video;
     private Timestamp lastPlayed;
     private Long playCount;
