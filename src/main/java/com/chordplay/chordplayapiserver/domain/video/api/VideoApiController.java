@@ -6,6 +6,9 @@ import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.bson.types.ObjectId;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -24,5 +27,10 @@ public class VideoApiController {
         return ApiResponse.success(videoResponses, 200);
     }
 
+    @PostMapping("/{videoId}")
+    public ResponseEntity<Void> create(@PathVariable("videoId") String videoId){
+        videoService.create(videoId);
+        return ResponseEntity.ok().build();
+    }
 
 }
