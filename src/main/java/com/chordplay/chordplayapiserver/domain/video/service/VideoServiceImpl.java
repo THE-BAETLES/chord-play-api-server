@@ -1,7 +1,9 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.VideoRepository;
+import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.exception.VideoNotFoundException;
 import com.google.api.services.youtube.model.SearchResult;
@@ -18,13 +20,14 @@ public class VideoServiceImpl implements VideoService{
 
     private final YoutubeVideoSearch youtubeVideoSearch;
     private final VideoRepository videoRepository;
-
-
+    private final SheetService sheetService;
     @Override
     public Video create(String videoId) {
         com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(videoId);
         Video video = new Video(youtubeVideo);
         videoRepository.save(video);
+
+        sheetService.createOnlySheet(video.getId());
         return video;
     }
 
