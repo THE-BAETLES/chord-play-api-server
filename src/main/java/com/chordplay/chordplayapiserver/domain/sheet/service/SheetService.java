@@ -7,9 +7,11 @@ import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 public interface SheetService {
-    SseEmitter createSheet(SheetAiRequest req);
+    SseEmitter createSheetProcess(SheetAiRequest req);
     Sheet getSheet(String sheetId);
     SheetData getSheetData(String sheetId);
+
+    Sheet createOnlySheet(String videoId);
 
     Sheet deleteSheetAndSheetData(String sheetId);
 

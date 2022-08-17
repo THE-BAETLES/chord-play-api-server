@@ -62,7 +62,7 @@ public class SheetServiceImpl implements SheetService{
      * @throws java.lang.IllegalStateException wraps any other errors
      */
     @Override
-    public SseEmitter createSheet(SheetAiRequest req) {
+    public SseEmitter createSheetProcess(SheetAiRequest req) {
 
         CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", req.getVideoId());
         Optional<Sheet> sheet = sheetRepository.findOneByVideoId(req.getVideoId());
@@ -76,13 +76,7 @@ public class SheetServiceImpl implements SheetService{
                 return sseEmitter;
             }
         } else {
-            Video video = new Video(req.getVideoId());
-            User adminUser = userRepository.findByUsername("Chord Play");
-            sheetRepository.save(Sheet.builder()
-                    .video(video) //임시
-                    .user(adminUser)
-                    .title("ai")
-                    .build());
+            createOnlySheet(req.getVideoId());
         }
         alertSheetCreationProgress(sseEmitter,req.getVideoId());
         return sseEmitter;
@@ -111,6 +105,18 @@ public class SheetServiceImpl implements SheetService{
         sheetDataRepository.findById(sheetId).ifPresent(sheetData->{
             sheetDataRepository.delete(sheetData);
         });
+        return sheet;
+    }
+
+    @Override
+    public Sheet createOnlySheet(String videoId) {
+        Video video = new Video(videoId);
+        User adminUser = userRepository.findByUsername("Chord Play");
+        Sheet sheet = sheetRepository.save(Sheet.builder()
+                .video(video) //임시
+                .user(adminUser)
+                .title("ai")
+                .build());
         return sheet;
     }
 
