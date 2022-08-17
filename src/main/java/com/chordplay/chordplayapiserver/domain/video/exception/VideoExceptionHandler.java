@@ -22,4 +22,11 @@ public class VideoExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.YOUTUBE_SERVER_ERROR);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(value = {VideoNotFoundException.class})
+    public ResponseEntity<ErrorResponse> VideoNotFoundException(VideoNotFoundException e){
+        log.error("Youtube Server Exception");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.YOUTUBE_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
