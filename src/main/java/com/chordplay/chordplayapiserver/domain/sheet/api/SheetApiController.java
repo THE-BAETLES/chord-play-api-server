@@ -34,6 +34,12 @@ public class SheetApiController {
         SheetData sheetData = sheetService.getSheetData(sheetId);
         return ApiResponse.success(new SheetDataResponse(sheetData),200);
     }
+
+    @GetMapping("/{sheetId}")
+    public ApiResponse<SheetResponse> getSheet(@PathVariable("sheetId") String sheetId){
+        Sheet sheet = sheetService.getSheet(sheetId);
+        return ApiResponse.success(new SheetResponse(sheet),200);
+    }
     @DeleteMapping(value = "/{sheetId}")
     public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
