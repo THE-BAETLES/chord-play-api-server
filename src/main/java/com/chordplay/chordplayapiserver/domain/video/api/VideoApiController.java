@@ -30,11 +30,17 @@ public class VideoApiController{
     }
 
     @PostMapping("/{videoId}")
-    public ApiResponse<VideoResponse> create(@PathVariable("videoId") String videoId){
+    public ApiResponse<VideoResponse> createVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.create(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
         return ApiResponse.success(videoResponse, 201);
     }
 
+    @GetMapping("/{videoId}")
+    public ApiResponse<VideoResponse> getVideo(@PathVariable("videoId") String videoId){
+        Video video = videoService.get(videoId);
+        VideoResponse videoResponse = new VideoResponse(video);
+        return ApiResponse.success(videoResponse, 201);
+    }
 
 }

@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.video.service;
 import com.chordplay.chordplayapiserver.domain.dao.VideoRepository;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
+import com.chordplay.chordplayapiserver.domain.video.exception.VideoNotFoundException;
 import com.google.api.services.youtube.model.SearchResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,4 +52,8 @@ public class VideoServiceImpl implements VideoService{
         return videoResponses;
     }
 
+    @Override
+    public Video get(String videoId) {
+        return videoRepository.findById(videoId).orElseThrow(() -> new VideoNotFoundException());
+    }
 }

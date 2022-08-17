@@ -8,4 +8,5 @@ import java.util.List;
 public interface VideoService {
     List<VideoResponse> search(String searchQuery);
     Video create(String videoId);
+    Video get(String videoId);
 }
