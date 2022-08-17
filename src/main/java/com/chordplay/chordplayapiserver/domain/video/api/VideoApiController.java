@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,14 @@ import java.util.List;
 @RequestMapping("/videos")
 @RequiredArgsConstructor
 @Slf4j
-public class VideoApiController {
+public class VideoApiController{
 
     private final VideoService videoService;
 
     @GetMapping(value = "/search")
-    public ApiResponse<List<VideoResponse>> search(@RequestParam String search_query){
-        log.info("search: "+ search_query);
-        List<VideoResponse> videoResponses = videoService.search(search_query);
+    public ApiResponse<List<VideoResponse>> search(@RequestParam String searchTitle){
+        log.info("search: "+ searchTitle);
+        List<VideoResponse> videoResponses = videoService.search(searchTitle);
         return ApiResponse.success(videoResponses, 200);
     }
 

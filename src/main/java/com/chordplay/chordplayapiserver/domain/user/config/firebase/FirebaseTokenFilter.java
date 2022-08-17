@@ -95,6 +95,6 @@ public class FirebaseTokenFilter extends OncePerRequestFilter{
     private void setBadResponse(HttpServletResponse response, String msg) throws IOException {
         response.setStatus(HttpStatus.SC_BAD_REQUEST);
         response.setContentType("application/json");
-        response.getWriter().write("{\"message:\"" + msg + "\"}");
+        response.getWriter().write("{\"message\":\"" + msg + "\"}");
     }
 }

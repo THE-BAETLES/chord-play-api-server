@@ -64,6 +64,7 @@ public class Video {
 
         this.id = youtubeVideo.getId();
         this.thumbnailPath = youtubeVideo.getSnippet().getThumbnails().getHigh().getUrl();
+        this.genre = "";
         this.title = youtubeVideo.getSnippet().getTitle();
         this.singer = youtubeVideo.getSnippet().getChannelTitle();
         this.tags = youtubeVideo.getSnippet().getTags() == null ? new ArrayList<String>(): youtubeVideo.getSnippet().getTags();
