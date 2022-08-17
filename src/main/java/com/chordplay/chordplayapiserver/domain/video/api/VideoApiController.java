@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.video.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
@@ -28,9 +29,11 @@ public class VideoApiController {
     }
 
     @PostMapping("/{videoId}")
-    public ResponseEntity<Void> create(@PathVariable("videoId") String videoId){
-        videoService.create(videoId);
-        return ResponseEntity.ok().build();
+    public ApiResponse<VideoResponse> create(@PathVariable("videoId") String videoId){
+        Video video = videoService.create(videoId);
+        VideoResponse videoResponse = new VideoResponse(video);
+        return ApiResponse.success(videoResponse, 201);
     }
+
 
 }
