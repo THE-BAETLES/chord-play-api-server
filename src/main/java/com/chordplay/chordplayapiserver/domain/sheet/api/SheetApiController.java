@@ -7,6 +7,7 @@ import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +30,13 @@ public class SheetApiController {
     }
 
     @GetMapping(value = "/data/{sheetId}")
-    public SheetDataResponse getSheetData(@PathVariable("sheetId") String sheetId){
+    public ApiResponse<SheetDataResponse> getSheetData(@PathVariable("sheetId") String sheetId){
         SheetData sheetData = sheetService.getSheetData(sheetId);
-        return new SheetDataResponse(sheetData);
+        return ApiResponse.success(new SheetDataResponse(sheetData),200);
     }
     @DeleteMapping(value = "/{sheetId}")
-    public SheetResponse deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
+    public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
-        return new SheetResponse(sheet);
+        return ApiResponse.success(new SheetResponse(sheet),200);
     }
 }
