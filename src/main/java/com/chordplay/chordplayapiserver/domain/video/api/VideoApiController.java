@@ -41,6 +41,7 @@ public class VideoApiController{
         Video video = videoService.get(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
         return ApiResponse.success(videoResponse, 201);
+        
     }
 
 }
