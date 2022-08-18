@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.VideoRepository;
+import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.entity.WatchHistory;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.exception.VideoNotFoundException;
@@ -21,6 +23,7 @@ public class VideoServiceImpl implements VideoService{
     private final YoutubeVideoSearch youtubeVideoSearch;
     private final VideoRepository videoRepository;
     private final SheetService sheetService;
+    private final WatchHistoryRepository watchHistoryRepository;
     @Override
     public Video create(String videoId) {
         com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(videoId);
@@ -53,6 +56,12 @@ public class VideoServiceImpl implements VideoService{
         }
 
         return videoResponses;
+    }
+
+    @Override
+    public List<VideoResponse> getWatchHistory(String offset, String limit) {
+//        watchHistoryRepository.find
+        return null;
     }
 
     @Override

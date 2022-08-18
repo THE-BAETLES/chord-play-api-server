@@ -63,23 +63,23 @@ public class SheetServiceImpl implements SheetService{
      * @throws java.lang.IllegalStateException wraps any other errors
      */
     @Override
-    public SseEmitter createSheetProcess(SheetAiRequest req) {
+    public SseEmitter createSheetProcess(String videoId) {
 
-        CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", req.getVideoId());
-        Optional<Sheet> sheet = sheetRepository.findOneByVideoId(req.getVideoId());
-        boolean sheetRequestExists = sheet.isPresent();
-        if (sheetRequestExists) {
-            Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
-            if (sheetData.isPresent()) {
-                log.info("Already exist sheetData: " + sheetData.get().getId());
-                notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
-                sseEmitter.complete();
-                return sseEmitter;
-            }
-        } else {
-            createOnlySheet(req.getVideoId());
+            CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", videoId);
+            Optional<Sheet> sheet = sheetRepository.findOneByVideoId(videoId);
+            boolean sheetRequestExists = sheet.isPresent();
+            if (sheetRequestExists) {
+                Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
+                if (sheetData.isPresent()) {
+                    log.info("Already exist sheetData: " + sheetData.get().getId());
+                    notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
+                    sseEmitter.complete();
+                    return sseEmitter;
+                }
+            } else {
+                createOnlySheet(videoId);
         }
-        alertSheetCreationProgress(sseEmitter,req.getVideoId());
+        alertSheetCreationProgress(sseEmitter,videoId);
         return sseEmitter;
     }
 

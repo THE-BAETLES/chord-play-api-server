@@ -26,7 +26,11 @@ public class SheetApiController {
     private final NotificationService notificationService;
     @PostMapping("/ai")
     public SseEmitter sheetAi(@RequestBody SheetAiRequest req){
-        return sheetService.createSheetProcess(req);
+        return sheetService.createSheetProcess(req.getVideoId());
+    }
+    @GetMapping("/ai/{videoId}")
+    public SseEmitter sheetAi(@PathVariable String videoId){
+        return sheetService.createSheetProcess(videoId);
     }
 
     @GetMapping(value = "/data/{sheetId}")
