@@ -29,6 +29,12 @@ public class VideoApiController{
         return ApiResponse.success(videoResponses, 200);
     }
 
+    @GetMapping(value = "/watch-history")
+    public ApiResponse<List<VideoResponse>> search(@RequestParam String offset,
+                                                   @RequestParam String limit){
+        List<VideoResponse> videoResponses = videoService.getWatchHistory(offset,limit);
+        return ApiResponse.success(videoResponses, 200);
+    }
     @PostMapping("/{videoId}")
     public ApiResponse<VideoResponse> createVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.create(videoId);
@@ -41,7 +47,5 @@ public class VideoApiController{
         Video video = videoService.get(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
         return ApiResponse.success(videoResponse, 201);
-        
     }
-
 }
