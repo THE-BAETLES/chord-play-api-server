@@ -12,6 +12,7 @@ import com.google.api.services.youtube.model.SearchResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +27,8 @@ public class VideoServiceImpl implements VideoService{
     private final WatchHistoryRepository watchHistoryRepository;
     @Override
     public Video create(String videoId) {
+        Optional<Video> videoOptional = videoRepository.findById(videoId);
+        if(videoOptional.isPresent()) return videoOptional.get();
         com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(videoId);
         Video video = new Video(youtubeVideo);
         videoRepository.save(video);
