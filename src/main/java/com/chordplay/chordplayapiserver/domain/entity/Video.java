@@ -50,6 +50,7 @@ public class Video {
     private String singer;
     private List<String> tags;
     private int length;
+    @Field("created_at")
     @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm:ss")
     private LocalDateTime createdAt;
     @Field("difficulty_avg")
