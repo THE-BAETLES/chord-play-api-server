@@ -43,6 +43,12 @@ public class VideoApiController{
         return ApiResponse.success(videoResponse, 201);
     }
 
+    @GetMapping("/grade-collection")
+    public ApiResponse<List<VideoResponse>> getGradeCollection(@RequestParam String performerGrade){
+        List<VideoResponse> videoResponses = videoService.getGradeCollection(performerGrade);
+        return ApiResponse.success(videoResponses, 201);
+    }
+
     @GetMapping("/{videoId}")
     public ApiResponse<VideoResponse> getVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.get(videoId);

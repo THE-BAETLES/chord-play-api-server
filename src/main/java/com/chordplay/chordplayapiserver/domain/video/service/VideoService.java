@@ -9,6 +9,7 @@ import java.util.List;
 public interface VideoService {
     List<VideoResponse> search(String searchQuery);
     List<WatchHistoryResponse> getWatchHistory(int offset, int limit);
+    List<VideoResponse> getGradeCollection(String performerGrade);
     Video create(String videoId);
     Video get(String videoId);
 
