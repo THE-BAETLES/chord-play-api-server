@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.video.dto;
 
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.api.services.youtube.model.SearchResult;
@@ -21,6 +22,7 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class VideoResponse {
 
+    @JsonProperty("_id")
     private String id;
     private String thumbnailPath;
     private String title;

@@ -6,3 +6,6 @@
 
 ### docker push
 > docker push pove2019/chord-play-api:0.0.1
+
+### docker pull
+> docker pull pove2019/chord-play-api:0.0.1

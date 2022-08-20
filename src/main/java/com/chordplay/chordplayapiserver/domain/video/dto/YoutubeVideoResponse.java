@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.video.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class YoutubeVideoResponse {
 
+    @JsonProperty("_id")
     private String id;
     private String thumbnailPath;
     private String title;
