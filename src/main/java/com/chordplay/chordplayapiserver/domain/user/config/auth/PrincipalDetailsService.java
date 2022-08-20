@@ -34,5 +34,13 @@ public class PrincipalDetailsService implements UserDetailsService {
         }
         return null;
     }
+
+    public UserDetails loadUserById(String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null){
+            return new PrincipalDetails(user);
+        }
+        return null;
+    }
 }
 
