@@ -6,7 +6,10 @@ import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
+import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -60,5 +63,16 @@ public class UserServiceImpl implements UserService{
     public FavoritesResponse getFavorites() {
         List<Video> videos = Video.GetDummyVideos();
         return FavoritesResponse.builder().favorites(videos).build();
+    }
+
+    @Override
+    public void createSignupFavorite(SignupFavoriteRequest req) {
+        List<VideoRequest> videoRequests = req.getSignupFavorite();
+        List<String> signupFavorite = new ArrayList<String>();
+        for(VideoRequest videoRequest : videoRequests) {
+            signupFavorite.add(videoRequest.getId());
+        }
+        String userId = ContextUtil.getPrincipalUserId();
+        userRepository.findAndPushSignupFavoriteById(userId, signupFavorite);
     }
 }

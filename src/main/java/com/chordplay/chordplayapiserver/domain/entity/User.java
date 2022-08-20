@@ -41,8 +41,8 @@ public class User {
     private PerformerGrade performerGrade;
     private Membership membership;
 
-    @DBRef(lazy = true)
-    private List<Video> earlyFavoriteSongs;
+    @Field("signup_favorite")
+    private List<String> signupFavorite;
 
     private List<MyVideo> myCollection;
 
@@ -55,7 +55,7 @@ public class User {
     }
 
     @Builder
-    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, Country country, Language language, Gender gender, PerformerGrade performerGrade, Membership membership, List<Video> earlyFavoriteSongs, List<MyVideo> myCollection) {
+    public User(String id, String nickname, String username, String firebaseUid, String roles, String password, String email, Country country, Language language, Gender gender, PerformerGrade performerGrade, Membership membership, List<String> signupFavorite, List<MyVideo> myCollection) {
         this.id = id;
         this.nickname = nickname;
         this.username = username;
@@ -68,11 +68,9 @@ public class User {
         this.gender = gender;
         this.performerGrade = performerGrade;
         this.membership = membership;
-        this.earlyFavoriteSongs = earlyFavoriteSongs;
+        this.signupFavorite = signupFavorite;
         this.myCollection = myCollection;
     }
-
-
 
     public User(String id){
         this.id = id;

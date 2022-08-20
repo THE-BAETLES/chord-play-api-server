@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.dao;
 
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,5 +26,9 @@ class WatchHistoryCustomRepositoryTest {
 
         watchHistoryRepository.updateCountAndTimeByUserAndVideo(user,video);
     }
+
+//    @Test
+//    @DisplayName("watch history 목록 가져오기")
+//    void
 
 }

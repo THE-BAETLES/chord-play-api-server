@@ -7,12 +7,14 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Document(collection = "WATCH_HISTORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
+@Getter @ToString
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WatchHistory {
     @Id
@@ -21,11 +23,13 @@ public class WatchHistory {
     private User user;
     @DBRef(lazy = true)
     private Video video;
-    private Timestamp lastPlayed;
+    @Field(value = "last_played")
+    private LocalDateTime lastPlayed;
+    @Field(value = "play_count")
     private Long playCount;
 
     @Builder
-    public WatchHistory(String id, User user, Video video, Timestamp lastPlayed, Long playCount) {
+    public WatchHistory(String id, User user, Video video, LocalDateTime lastPlayed, Long playCount) {
         this.id = id;
         this.user = user;
         this.video = video;

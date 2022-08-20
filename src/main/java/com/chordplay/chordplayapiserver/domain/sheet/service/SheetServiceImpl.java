@@ -7,6 +7,7 @@ import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
@@ -28,6 +29,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -63,23 +66,23 @@ public class SheetServiceImpl implements SheetService{
      * @throws java.lang.IllegalStateException wraps any other errors
      */
     @Override
-    public SseEmitter createSheetProcess(SheetAiRequest req) {
+    public SseEmitter createSheetProcess(String videoId) {
 
-        CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", req.getVideoId());
-        Optional<Sheet> sheet = sheetRepository.findOneByVideoId(req.getVideoId());
-        boolean sheetRequestExists = sheet.isPresent();
-        if (sheetRequestExists) {
-            Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
-            if (sheetData.isPresent()) {
-                log.info("Already exist sheetData: " + sheetData.get().getId());
-                notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
-                sseEmitter.complete();
-                return sseEmitter;
-            }
-        } else {
-            createOnlySheet(req.getVideoId());
+            CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", videoId);
+            Optional<Sheet> sheet = sheetRepository.findOneByVideoId(videoId);
+            boolean sheetRequestExists = sheet.isPresent();
+            if (sheetRequestExists) {
+                Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
+                if (sheetData.isPresent()) {
+                    log.info("Already exist sheetData: " + sheetData.get().getId());
+                    notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
+                    sseEmitter.complete();
+                    return sseEmitter;
+                }
+            } else {
+                createOnlySheet(videoId);
         }
-        alertSheetCreationProgress(sseEmitter,req.getVideoId());
+        alertSheetCreationProgress(sseEmitter,videoId);
         return sseEmitter;
     }
 
@@ -123,10 +126,27 @@ public class SheetServiceImpl implements SheetService{
         return sheet;
     }
 
+    @Override
+    public SheetsResponse getSheetsByVideoId(String videoId) {
+        SheetsResponse sheetsResponse = SheetsResponse.builder()
+                .sharedSheet(sheetRepository.findAllByVideoId(videoId))
+                .mySheet(new ArrayList<Sheet>())
+                .likeSheet(new ArrayList<Sheet>()).build();
+        return sheetsResponse;
+    }
+
+    @Override
+    public List<Sheet> getSharedSheets(String videoId) {
+        List<Sheet> sheets = sheetRepository.findAllByVideoId(videoId);
+        return sheets;
+    }
+
     private void updateWatchHistory(String sheetId){
-        Optional<Sheet> sheetOptional = sheetRepository.findById(sheetId);
-        Sheet sheet = sheetOptional.orElseThrow(() -> new SheetNotFoundException());
-        watchHistoryRepository.updateCountAndTimeByUserAndVideo(sheet.getUser(), sheet.getVideo());
+        String userId = ContextUtil.getPrincipalUserId();
+        String videoId = sheetRepository.findById(sheetId)
+                .orElseThrow(()-> new SheetNotFoundException())
+                .getVideo().getId();
+        watchHistoryRepository.updateCountAndTimeByUserAndVideo(userId, videoId);
     }
 
     private void addRedisListener(CustomSseEmitter emitter){
