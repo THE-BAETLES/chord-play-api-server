@@ -26,11 +26,11 @@ public class JoinRequest {
     private PerformerGrade performerGrade;
     private String nickname;
     private Gender gender;
-    private List<Video> earlyFavoriteSongs;
+    private List<String> signupFavorite;
 
 
     @Builder
-    public JoinRequest(String firebaseUid, String username, String email, Country country, PerformerGrade performerGrade, String nickname, Gender gender, List<Video> earlyFavoriteSongs) {
+    public JoinRequest(String firebaseUid, String username, String email, Country country, PerformerGrade performerGrade, String nickname, Gender gender, List<String> signupFavorite) {
         this.firebaseUid = firebaseUid;
         this.username = username;
         this.email = email;
@@ -38,7 +38,7 @@ public class JoinRequest {
         this.performerGrade = performerGrade;
         this.nickname = nickname;
         this.gender = gender;
-        this.earlyFavoriteSongs = earlyFavoriteSongs;
+        this.signupFavorite = signupFavorite;
     }
 
 
@@ -52,6 +52,6 @@ public class JoinRequest {
     public User toEntity(String roles){
         return User.builder().username(username).email(email).firebaseUid(firebaseUid).roles(roles)
                 .country(country).performerGrade(performerGrade).nickname(nickname).gender(gender)
-                .earlyFavoriteSongs(earlyFavoriteSongs).build();
+                .signupFavorite(signupFavorite).build();
     }
 }
