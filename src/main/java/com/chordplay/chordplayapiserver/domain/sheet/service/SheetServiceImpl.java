@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -121,6 +122,12 @@ public class SheetServiceImpl implements SheetService{
                 .updatedAt(LocalDateTime.now())
                 .build());
         return sheet;
+    }
+
+    @Override
+    public List<Sheet> getSharedSheets(String videoId) {
+        List<Sheet> sheets = sheetRepository.findAllByVideoId(videoId);
+        return sheets;
     }
 
     private void updateWatchHistory(String sheetId){

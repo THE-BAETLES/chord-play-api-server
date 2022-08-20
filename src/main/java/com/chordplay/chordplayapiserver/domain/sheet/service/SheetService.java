@@ -6,6 +6,8 @@ import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
+
 public interface SheetService {
     SseEmitter createSheetProcess(String videoId);
     Sheet getSheet(String sheetId);
@@ -14,5 +16,7 @@ public interface SheetService {
     Sheet createOnlySheet(String videoId);
 
     Sheet deleteSheetAndSheetData(String sheetId);
+
+    List<Sheet> getSharedSheets(String videoId);
 
 }
