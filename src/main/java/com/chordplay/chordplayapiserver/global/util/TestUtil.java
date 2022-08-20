@@ -1,7 +1,6 @@
 package com.chordplay.chordplayapiserver.global.util;
 
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetailsService;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class testUtil {
+public class TestUtil {
 
-    PrincipalDetailsService principalDetailsService;
+    private final PrincipalDetailsService principalDetailsService;
     /**
      * test 전용 강제 로그인
      */
@@ -28,7 +27,13 @@ public class testUtil {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    public void pushLoginByUserName(String userName){
-
+    public void pushLoginByUserName(String userName,String testString){
+        if (testString.equals("test") == false) return;
+        // User를 가져와 SecurityContext에 저장한다.
+        UserDetails userDetails = principalDetailsService.loadUserByUsername(userName);
+        log.error(String.format("push login : %s - test 전용 function 입니다.",userName));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
