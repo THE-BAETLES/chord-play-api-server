@@ -7,7 +7,10 @@ import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.WatchHistory;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
+import com.chordplay.chordplayapiserver.domain.video.dto.WatchHistoryResponse;
 import com.chordplay.chordplayapiserver.domain.video.exception.VideoNotFoundException;
+import com.chordplay.chordplayapiserver.global.util.ContextUtil;
+import com.google.api.Context;
 import com.google.api.services.youtube.model.SearchResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,9 +65,17 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public List<VideoResponse> getWatchHistory(String offset, String limit) {
-//        watchHistoryRepository.find
-        return null;
+    public List<WatchHistoryResponse> getWatchHistory(int offset, int limit) {
+        List<WatchHistory> watchHistories = null;
+        String userId = ContextUtil.getPrincipalUserId();
+        watchHistories = watchHistoryRepository.findByIdWithOffsetAndLimit(userId, offset, limit);
+        List<WatchHistoryResponse> watchHistoryResponses = new ArrayList<WatchHistoryResponse>();
+
+        for (WatchHistory w : watchHistories){
+            watchHistoryResponses.add(new WatchHistoryResponse(w));
+        }
+
+        return watchHistoryResponses;
     }
 
     @Override

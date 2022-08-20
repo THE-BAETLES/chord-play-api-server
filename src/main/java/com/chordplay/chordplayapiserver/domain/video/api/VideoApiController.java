@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.video.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
+import com.chordplay.chordplayapiserver.domain.video.dto.WatchHistoryResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,10 +31,10 @@ public class VideoApiController{
     }
 
     @GetMapping(value = "/watch-history")
-    public ApiResponse<List<VideoResponse>> search(@RequestParam String offset,
-                                                   @RequestParam String limit){
-        List<VideoResponse> videoResponses = videoService.getWatchHistory(offset,limit);
-        return ApiResponse.success(videoResponses, 200);
+    public ApiResponse<List<WatchHistoryResponse>> search(@RequestParam int offset,
+                                                   @RequestParam int limit){
+        List<WatchHistoryResponse> watchHistoryResponses = videoService.getWatchHistory(offset,limit);
+        return ApiResponse.success(watchHistoryResponses, 200);
     }
     @PostMapping("/{videoId}")
     public ApiResponse<VideoResponse> createVideo(@PathVariable("videoId") String videoId){
