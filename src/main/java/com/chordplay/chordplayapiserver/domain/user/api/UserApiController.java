@@ -1,10 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
-import com.chordplay.chordplayapiserver.domain.user.dto.CheckDuplicationRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.NicknameResponse;
+import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +37,9 @@ public class UserApiController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/favorites")
-    public ResponseEntity<FavoritesResponse> getEarlyFavoriteSongs(@RequestParam HashMap<String,String> paramMap){
-        //수정중...
-        return null;
+    @PostMapping("/signup-favorite")
+    public void getEarlyFavoriteSongs(@RequestBody SignupFavoriteRequest req){
+        userService.createSignupFavorite(req);
     }
 
     @PostMapping("/join")
