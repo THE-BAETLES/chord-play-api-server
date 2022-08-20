@@ -124,9 +124,11 @@ public class SheetServiceImpl implements SheetService{
     }
 
     private void updateWatchHistory(String sheetId){
-        Optional<Sheet> sheetOptional = sheetRepository.findById(sheetId);
-        Sheet sheet = sheetOptional.orElseThrow(() -> new SheetNotFoundException());
-        watchHistoryRepository.updateCountAndTimeByUserAndVideo(sheet.getUser(), sheet.getVideo());
+        String userId = ContextUtil.getPrincipalUserId();
+        String videoId = sheetRepository.findById(sheetId)
+                .orElseThrow(()-> new SheetNotFoundException())
+                .getVideo().getId();
+        watchHistoryRepository.updateCountAndTimeByUserAndVideo(userId, videoId);
     }
 
     private void addRedisListener(CustomSseEmitter emitter){
