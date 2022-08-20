@@ -31,9 +31,9 @@ public class VideoApiController{
     }
 
     @GetMapping(value = "/watch-history")
-    public ApiResponse<List<WatchHistoryResponse>> search(@RequestParam int offset,
+    public ApiResponse<List<VideoResponse>> search(@RequestParam int offset,
                                                    @RequestParam int limit){
-        List<WatchHistoryResponse> watchHistoryResponses = videoService.getWatchHistory(offset,limit);
+        List<VideoResponse> watchHistoryResponses = videoService.getWatchHistory(offset,limit);
         return ApiResponse.success(watchHistoryResponses, 200);
     }
     @PostMapping("/{videoId}")

@@ -98,17 +98,16 @@ public class VideoServiceImpl implements VideoService{
     }
 
     @Override
-    public List<WatchHistoryResponse> getWatchHistory(int offset, int limit) {
+    public List<VideoResponse> getWatchHistory(int offset, int limit) {
         List<WatchHistory> watchHistories = null;
         String userId = ContextUtil.getPrincipalUserId();
         watchHistories = watchHistoryRepository.findByIdWithOffsetAndLimit(userId, offset, limit);
-        List<WatchHistoryResponse> watchHistoryResponses = new ArrayList<WatchHistoryResponse>();
+        List<VideoResponse> videoResponses = new ArrayList<VideoResponse>();
 
         for (WatchHistory w : watchHistories){
-            watchHistoryResponses.add(new WatchHistoryResponse(w));
+            videoResponses.add(new VideoResponse(w.getVideo()));
         }
-
-        return watchHistoryResponses;
+        return videoResponses;
     }
 
     @Override
