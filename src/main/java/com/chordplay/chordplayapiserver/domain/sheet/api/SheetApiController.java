@@ -2,11 +2,8 @@ package com.chordplay.chordplayapiserver.domain.sheet.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.AiStatusMessage;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,6 +40,12 @@ public class SheetApiController {
     public ApiResponse<SheetResponse> getSheet(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.getSheet(sheetId);
         return ApiResponse.success(new SheetResponse(sheet),200);
+    }
+
+    @GetMapping()
+    public ApiResponse<SheetsResponse> getSheetByVideoId(@RequestParam String videoId){
+        SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
+        return ApiResponse.success(sheetsResponse,200);
     }
     @DeleteMapping(value = "/{sheetId}")
     public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){

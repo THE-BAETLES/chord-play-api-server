@@ -7,6 +7,7 @@ import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -122,6 +124,15 @@ public class SheetServiceImpl implements SheetService{
                 .updatedAt(LocalDateTime.now())
                 .build());
         return sheet;
+    }
+
+    @Override
+    public SheetsResponse getSheetsByVideoId(String videoId) {
+        SheetsResponse sheetsResponse = SheetsResponse.builder()
+                .sharedSheet(sheetRepository.findAllByVideoId(videoId))
+                .mySheet(new ArrayList<Sheet>())
+                .likeSheet(new ArrayList<Sheet>()).build();
+        return sheetsResponse;
     }
 
     @Override
