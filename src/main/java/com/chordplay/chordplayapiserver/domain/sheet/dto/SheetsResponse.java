@@ -13,24 +13,24 @@ import java.util.List;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetsResponse {
 
-    List<SheetResponse> sharedSheet;
-    List<SheetResponse> likeSheet;
-    List<SheetResponse> mySheet;
+    List<SheetResponse> shared;
+    List<SheetResponse> like;
+    List<SheetResponse> my;
 
     @Builder
     public SheetsResponse(List<Sheet> sharedSheet, List<Sheet> likeSheet, List<Sheet> mySheet) {
-        this.sharedSheet = new ArrayList<SheetResponse>();
-        this.likeSheet = new ArrayList<SheetResponse>();
-        this.mySheet = new ArrayList<SheetResponse>();
+        this.shared = new ArrayList<SheetResponse>();
+        this.like = new ArrayList<SheetResponse>();
+        this.my = new ArrayList<SheetResponse>();
 
         for(Sheet s : sharedSheet){
-            this.sharedSheet.add(new SheetResponse(s));
+            this.shared.add(new SheetResponse(s));
         }
         for(Sheet s : likeSheet){
-            this.sharedSheet.add(new SheetResponse(s));
+            this.shared.add(new SheetResponse(s));
         }
         for(Sheet s : mySheet){
-            this.sharedSheet.add(new SheetResponse(s));
+            this.shared.add(new SheetResponse(s));
         }
 
     }
