@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/sheets")
 @RequiredArgsConstructor
@@ -51,5 +54,14 @@ public class SheetApiController {
     public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
         return ApiResponse.success(new SheetResponse(sheet),200);
+    }
+    @GetMapping("/shared")
+    public ApiResponse<List<SheetResponse>> getSharedSheets(@RequestParam String videoId){
+        List<SheetResponse> sheetResponses = new ArrayList<>();
+        List<Sheet> sharedSheets = sheetService.getSharedSheets(videoId);
+        for ( Sheet s : sharedSheets ) {
+            sheetResponses.add(new SheetResponse(s));
+        }
+        return ApiResponse.success(sheetResponses,200);
     }
 }
