@@ -42,9 +42,6 @@ class VideoServiceTest {
     @Test
     @DisplayName("Watch history 가져오기")
     void getWatchHistory(){
-        testUtil.pushLoginByUserName("Chord Play","test");
-        List<WatchHistoryResponse> watchHistoryResponses =videoService.getWatchHistory(0,5);
-        System.out.println(watchHistoryResponses.size());
     }
 
 }
