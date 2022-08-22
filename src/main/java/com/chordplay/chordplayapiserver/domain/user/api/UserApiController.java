@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails
 import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
+import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,9 +26,10 @@ public class UserApiController {
     }
 
     @GetMapping("/nickname")
-    public NicknameResponse getNickname(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    public ApiResponse<NicknameResponse> getNickname(@AuthenticationPrincipal PrincipalDetails principalDetails){
         String userEmail = principalDetails.getUser().getEmail();
-        return new NicknameResponse(userService.RecommendNickname(userEmail));
+        NicknameResponse nicknameResponse = new NicknameResponse(userService.RecommendNickname(userEmail));
+        return ApiResponse.success(nicknameResponse, 200);
     }
 
     @PostMapping("/check-duplication")
@@ -46,6 +48,6 @@ public class UserApiController {
     public ResponseEntity<Void> join(@RequestBody JoinRequest dto, @AuthenticationPrincipal PrincipalDetails principalDetails){
         dto.setFirebaseJwtInfo(principalDetails.getUser());
         userService.join(dto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 }
