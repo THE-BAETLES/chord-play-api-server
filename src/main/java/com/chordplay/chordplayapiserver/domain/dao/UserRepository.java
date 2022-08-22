@@ -12,7 +12,7 @@ public interface UserRepository extends MongoRepository<User, String>{
     public User findByFirebaseUid(String FirebaseUid);
     public Boolean existsByNickname(String nickname);
     public User deleteByFirebaseUid(String FirebaseUid);
-    @Update("{ '$push' : { 'signup_favorite' : ?1 }}")
+    @Update("{ '$push': { 'signup_favorite' : { $each : ?1 } } }")
     void findAndPushSignupFavoriteById(String id, List<String> signupFavorite);
 
 }
