@@ -26,13 +26,15 @@ public class NotificationServiceImpl implements NotificationService{
 
         CustomSseEmitter customSseEmitter = CustomSseEmitter.builder().videoId(videoId).userId(userId).timeout(DEFAULT_TIMEOUT).build();
         ContextUtil.getResponse().addHeader("access-control-allow-origin", "*"); //Cors 에러 방지를 위함
-        sendToClient(customSseEmitter, "EventStream Created. [userId=" + userId + "]");
+            //sendToClient(customSseEmitter, "EventStream Created. [userId=" + userId + "]");
+        sendToClient(customSseEmitter,0);
+        log.info("EventStream Created. [userId=" + userId + "]");
         return customSseEmitter;
     }
 
     public void sendStatusToClient(AiStatusMessage aiStatusMessage, CustomSseEmitter emitter){
         String videoId = emitter.getVideoId();
-        sendToClient(emitter, aiStatusMessage);
+        sendToClient(emitter, aiStatusMessage.getStatus());
         log.info(videoId+" message was sent to " + emitter.getUserId());
     }
 
