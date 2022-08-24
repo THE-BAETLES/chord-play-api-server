@@ -37,7 +37,7 @@ public class WatchHistoryCustomRepositoryImpl implements WatchHistoryCustomRepos
     @Override
     public List<WatchHistory> findByIdWithOffsetAndLimit(String userId, int offset, int limit) {
         User user = new User(userId);
-        Query query = (new Query(Criteria.where("user").is(user))).limit(limit).skip(offset);
+        Query query = (new Query(Criteria.where("user").is(user))).with(Sort.by(Sort.Direction.DESC, "last_played")).limit(limit).skip(offset);
         return mongoTemplate.find(query, WatchHistory.class);
     }
 }
