@@ -29,9 +29,9 @@ public class SheetRedisListener implements MessageListener {
         try {
             String status = objectMapper.readValue(message.getBody(), String.class);
             AiStatusMessage aiStatusMessage = new AiStatusMessage(status);
-            log.info("ai status messgage : " + aiStatusMessage);
             notificationService.sendStatusToClient(aiStatusMessage,emitter);
             if (status.equals("3")){
+                log.info("emitter complete with 3");
                 emitter.complete();
             }
         } catch (IOException e) {

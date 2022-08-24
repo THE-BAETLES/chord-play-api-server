@@ -30,7 +30,9 @@ public class SheetApiController {
     }
     @GetMapping("/ai/{videoId}")
     public SseEmitter sheetAi(@PathVariable String videoId){
+        log.info("sse request : "+ videoId);
         return sheetService.createSheetProcess(videoId);
+
     }
 
     @GetMapping(value = "/data/{sheetId}")
