@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.dao;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.WatchHistory;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
