@@ -68,21 +68,21 @@ public class SheetServiceImpl implements SheetService{
     @Override
     public SseEmitter createSheetProcess(String videoId) {
 
-            CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", videoId);
-            Optional<Sheet> sheet = sheetRepository.findFirstByVideoId(videoId);
-            boolean sheetRequestExists = sheet.isPresent();
-            if (sheetRequestExists) {
-                Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
-                if (sheetData.isPresent()) {
-                    log.info("Already exist sheetData: " + sheetData.get().getId());
-                    //notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
-                    notificationService.sendToClient(sseEmitter, 3);
-                    sseEmitter.complete();
-                    return sseEmitter;
-                }
-            } else {
-                createOnlySheet(videoId);
+        CustomSseEmitter sseEmitter = notificationService.subscribe("request_user_id", videoId);
+        Optional<Sheet> sheet = sheetRepository.findFirstByVideoId(videoId);
+        boolean sheetRequestExists = sheet.isPresent();
+
+        if(sheetRequestExists) createOnlySheet(videoId);
+
+        Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
+        if (sheetData.isPresent()) {
+            log.info("Already exist sheetData: " + sheetData.get().getId());
+            //notificationService.sendToClient(sseEmitter, new SheetDataResponse(sheetData.get()));
+            notificationService.sendToClient(sseEmitter, 3);
+            sseEmitter.complete();
+            return sseEmitter;
         }
+
         alertSheetCreationProgress(sseEmitter,videoId);
         return sseEmitter;
     }
