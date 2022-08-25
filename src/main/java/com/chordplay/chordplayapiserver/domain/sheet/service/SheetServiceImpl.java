@@ -72,7 +72,7 @@ public class SheetServiceImpl implements SheetService{
         Optional<Sheet> sheet = sheetRepository.findFirstByVideoId(videoId);
         boolean sheetRequestExists = sheet.isPresent();
 
-        if(sheetRequestExists) createOnlySheet(videoId);
+        if(sheetRequestExists == false) createOnlySheet(videoId);
 
         Optional<SheetData> sheetData = sheetDataRepository.findOneById(sheet.get().getId());
         if (sheetData.isPresent()) {
@@ -120,7 +120,7 @@ public class SheetServiceImpl implements SheetService{
         Sheet sheet = sheetRepository.save(Sheet.builder()
                 .video(video) //임시
                 .user(adminUser)
-                .title("ai")
+                .title("Chord Play")
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build());
