@@ -18,28 +18,22 @@ public class SheetExceptionHandler {
 
     @ExceptionHandler(value = {SheetCreationFailException.class})
     public ResponseEntity<ErrorResponse> SheetCreationFailException(SheetCreationFailException e){
-        log.error("SheetCreationFailException",e);
+        log.error("Sheet Creation Fail Exception",e);
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_CREATION_FAIL);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {SheetDataNotFoundException.class})
     public ResponseEntity<ErrorResponse> SheetDataNotFoundException(SheetDataNotFoundException e){
-        log.error("SheetDataNotFoundException",e);
+        log.error("Sheet Data Not Found Exception",e);
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_DATA_NOT_FOUND);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(value = {SheetNotFoundException.class})
     public ResponseEntity<ErrorResponse> SheetNotFoundException(SheetNotFoundException e){
-        log.error("SheetNotFoundException",e);
+        log.error("Sheet Not Found Exception",e);
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_NOT_FOUND);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-
-//    @ExceptionHandler(value = {NotFullyJoinedException.class})
-//    public ResponseEntity<Object> handleNotFullyJoinedException(NotFullyJoinedException ex){
-//        ExceptionResponse exceptionResponse = new ExceptionResponse(ex);
-//        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
-//    }
 }
