@@ -2,7 +2,6 @@ package com.chordplay.chordplayapiserver.global.util;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -13,14 +12,14 @@ import java.time.Duration;
 
 
 @Service
-public class FirebaseLogin {
+public class FirebaseUtil {
 
     private final FirebaseAuth firebaseAuth;
     private final String webApiKey;
     private final String adminUid;
 
     @Autowired
-    public FirebaseLogin(FirebaseAuth firebaseAuth, @Value("${firebase.web-api-key}") String webApiKey, @Value("${firebase.admin-uid}") String adminUid) {
+    public FirebaseUtil(FirebaseAuth firebaseAuth, @Value("${firebase.web-api-key}") String webApiKey, @Value("${firebase.admin-uid}") String adminUid) {
         this.firebaseAuth = firebaseAuth;
         this.webApiKey = webApiKey;
         this.adminUid = adminUid;
