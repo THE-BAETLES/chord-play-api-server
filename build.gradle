@@ -57,6 +57,8 @@ dependencies {
 		exclude group: "org.codehaus.groovy", module: 'groovy-xml'
 	}
 
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
