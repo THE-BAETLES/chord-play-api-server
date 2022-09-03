@@ -34,16 +34,12 @@ public class UserAcceptanceTest extends AcceptanceTest {
     void checkNicknameDuplication(){
 
         //given
-
+        String nickname  = "bcwChordPlay";
         //when
-        ExtractableResponse<Response> response =  UserTestStep.닉네임_중복체크_조회하기("bcwChordPlay");
+        ExtractableResponse<Response> response =  UserTestStep.닉네임_중복체크_조회하기(nickname);
 
         //then
         UserTestStep.닉네임_중복체크_성공_검증하기(response);
     }
-
-
-
-
 
 }
