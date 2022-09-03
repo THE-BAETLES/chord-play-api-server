@@ -16,7 +16,6 @@ public class UserAcceptanceTest extends AcceptanceTest {
     @Autowired
     FirebaseUtil firebaseLogin;
 
-    //로그인 상태 체크
     @Test
     @DisplayName("닉네임 추천 받기")
     void recommendNickname(){
