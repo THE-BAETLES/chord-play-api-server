@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.acceptance.global;
 
+import com.chordplay.chordplayapiserver.acceptance.global.util.DatabaseCleanup;
 import com.chordplay.chordplayapiserver.global.util.FirebaseUtil;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,6 +17,9 @@ public class AcceptanceTest {
     private static String firebaseToken;
 
     @Autowired
+    private DatabaseCleanup databaseCleanup;
+
+    @Autowired
     public void setFirebaseUtil(FirebaseUtil firebaseUtil) {
         AcceptanceTest.firebaseUtil = firebaseUtil;
     }
@@ -27,6 +31,7 @@ public class AcceptanceTest {
         RestAssured.port = port;
         RestAssured.basePath = "/v1";
         if (firebaseToken == null) firebaseToken = firebaseUtil.getAdminTokenByUid();
+        databaseCleanup.execute();
     }
 
     public static String getFirebaseToken() {
