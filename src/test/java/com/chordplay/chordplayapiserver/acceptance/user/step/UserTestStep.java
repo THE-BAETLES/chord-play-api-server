@@ -6,12 +6,12 @@ import io.restassured.http.ContentType;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
+
 public class UserTestStep {
     public static ExtractableResponse<Response> 닉네임_추천_받기(){
         return RestAssured
