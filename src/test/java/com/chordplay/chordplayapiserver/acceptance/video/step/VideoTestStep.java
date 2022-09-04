@@ -49,7 +49,6 @@ public class VideoTestStep {
     public static void 비디오_검색_성공_검증하기(ExtractableResponse<Response> response){
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         List<VideoResponse> videoResponses = response.jsonPath().getList("data", VideoResponse.class);
-
         assertThat(videoResponses.size()).isNotEqualTo(0);
         for(VideoResponse v : videoResponses){
             assertThat(v.getTitle()).isNotNull();
