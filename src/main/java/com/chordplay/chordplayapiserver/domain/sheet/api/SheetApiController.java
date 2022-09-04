@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -38,24 +39,24 @@ public class SheetApiController {
     @GetMapping(value = "/data/{sheetId}")
     public ApiResponse<SheetDataResponse> getSheetData(@PathVariable("sheetId") String sheetId){
         SheetData sheetData = sheetService.getSheetData(sheetId);
-        return ApiResponse.success(new SheetDataResponse(sheetData),200);
+        return ApiResponse.success(new SheetDataResponse(sheetData), HttpStatus.OK.value());
     }
 
     @GetMapping("/{sheetId}")
     public ApiResponse<SheetResponse> getSheet(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.getSheet(sheetId);
-        return ApiResponse.success(new SheetResponse(sheet),200);
+        return ApiResponse.success(new SheetResponse(sheet),HttpStatus.OK.value());
     }
 
     @GetMapping()
     public ApiResponse<SheetsResponse> getSheetByVideoId(@RequestParam String videoId){
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
-        return ApiResponse.success(sheetsResponse,200);
+        return ApiResponse.success(sheetsResponse,HttpStatus.OK.value());
     }
     @DeleteMapping(value = "/{sheetId}")
     public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
-        return ApiResponse.success(new SheetResponse(sheet),200);
+        return ApiResponse.success(new SheetResponse(sheet),HttpStatus.OK.value());
     }
     @GetMapping("/shared")
     public ApiResponse<List<SheetResponse>> getSharedSheets(@RequestParam String videoId){
@@ -64,6 +65,6 @@ public class SheetApiController {
         for ( Sheet s : sharedSheets ) {
             sheetResponses.add(new SheetResponse(s));
         }
-        return ApiResponse.success(sheetResponses,200);
+        return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
     }
 }
