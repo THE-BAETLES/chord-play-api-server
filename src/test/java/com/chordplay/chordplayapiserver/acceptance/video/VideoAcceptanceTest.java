@@ -44,20 +44,21 @@ public class VideoAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("특정 video 조회하기")
+    @DisplayName("특정 video 조회 성공하기")
     void getVideo(){
 
         //given
         String searchTitle = "장범준";
         VideoResponse firstVideo = VideoTestStep.유튜브에서_비디오_검색하고_첫_video_가져오기(searchTitle);
         String videoId = firstVideo.getId();
+
         ExtractableResponse<Response> createResponse = VideoTestStep.비디오_생성하고_가져오기(videoId);
 
         //when
-
+        ExtractableResponse<Response> response = VideoTestStep.비디오_조회하기(videoId);
 
         //then
-
+        VideoTestStep.비디오_조회_성공_검증하기(createResponse,response);
     }
 
     @Test

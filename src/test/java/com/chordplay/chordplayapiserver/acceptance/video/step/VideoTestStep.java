@@ -39,6 +39,17 @@ public class VideoTestStep {
                 .then().log().all()
                 .extract();
     }
+    public static ExtractableResponse<Response> 비디오_조회하기(String videoId){
+        return RestAssured
+                .given().log().all()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + AcceptanceTest.getFirebaseToken())
+                .when()
+                .get("/videos/{videoId}",videoId)
+                .then().log().all()
+                .extract();
+    }
 
     public static VideoResponse 유튜브에서_비디오_검색하고_첫_video_가져오기(String searchTitle) {
         ExtractableResponse<Response> response = 비디오_검색하기(searchTitle);
@@ -59,6 +70,17 @@ public class VideoTestStep {
         assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
         VideoResponse receivedVideo = response.jsonPath().getObject("data", VideoResponse.class);
         assertThat(receivedVideo.equals(video)).isTrue();
+    }
+
+    public static void 비디오_조회_성공_검증하기(ExtractableResponse<Response> createdResponse, ExtractableResponse<Response> response){
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+        assertThat(videoResponseEquals(createdResponse, response)).isTrue();
+    }
+
+    private static Boolean videoResponseEquals(ExtractableResponse<Response> r1, ExtractableResponse<Response> r2){
+        VideoResponse vr1 = r1.jsonPath().getObject("data", VideoResponse.class);
+        VideoResponse vr2 = r2.jsonPath().getObject("data", VideoResponse.class);
+        return vr1.equals(vr2);
     }
 
 }
