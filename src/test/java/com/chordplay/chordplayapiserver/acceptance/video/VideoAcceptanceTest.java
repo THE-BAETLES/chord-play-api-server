@@ -33,7 +33,7 @@ public class VideoAcceptanceTest extends AcceptanceTest {
     
         //given
         String searchTitle = "장범준";
-        VideoResponse firstVideo = VideoTestStep.비디오_검색하고_첫_video_가져오기(searchTitle);
+        VideoResponse firstVideo = VideoTestStep.유튜브에서_비디오_검색하고_첫_video_가져오기(searchTitle);
         String videoId = firstVideo.getId();
 
         //when
