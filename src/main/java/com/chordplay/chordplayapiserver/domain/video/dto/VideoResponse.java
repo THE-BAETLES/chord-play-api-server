@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @ToString
 @Getter
@@ -115,5 +116,27 @@ public class VideoResponse {
     private int convertToMs(String youtubeDuration){
         Duration dur = Duration.parse(youtubeDuration);
         return (dur.toSecondsPart() + dur.toMinutesPart()*60 + dur.toHoursPart()*3600) *1000;
+    }
+
+    /*
+     *  search 시 tag,length 정보가 불러와지지 않기 떄문에 이부분을 제외함
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VideoResponse that = (VideoResponse) o;
+        return  difficultyAvg == that.difficultyAvg
+                && playCount == that.playCount && id.equals(that.id)
+                && thumbnailPath.equals(that.thumbnailPath) && title.equals(that.title)
+                && Objects.equals(genre, that.genre) && Objects.equals(singer, that.singer)
+                && createdAt.equals(that.createdAt)
+                && Objects.equals(sheetCount, that.sheetCount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, thumbnailPath, title, genre, singer,
+                tags, length, createdAt, difficultyAvg, playCount, sheetCount);
     }
 }
