@@ -37,10 +37,11 @@ public class VideoApiController{
         return ApiResponse.success(watchHistoryResponses, 200);
     }
     @PostMapping("/{videoId}")
-    public ApiResponse<VideoResponse> createVideo(@PathVariable("videoId") String videoId){
+    public ResponseEntity<ApiResponse<VideoResponse>>  createVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.create(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
-        return ApiResponse.success(videoResponse, 201);
+        ApiResponse<VideoResponse> body = ApiResponse.success(videoResponse, 201);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @GetMapping("/grade-collection")
