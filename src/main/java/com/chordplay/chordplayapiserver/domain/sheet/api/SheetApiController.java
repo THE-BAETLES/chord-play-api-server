@@ -25,10 +25,7 @@ import java.util.List;
 public class SheetApiController {
     private final SheetService sheetService;
     private final NotificationService notificationService;
-    @PostMapping("/ai")
-    public SseEmitter sheetAi(@RequestBody SheetAiRequest req){
-        return sheetService.createSheetProcess(req.getVideoId());
-    }
+
     @GetMapping("/ai/{videoId}")
     public SseEmitter sheetAi(@PathVariable String videoId){
         log.info("sse request : "+ videoId);
