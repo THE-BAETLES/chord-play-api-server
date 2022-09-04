@@ -102,6 +102,7 @@ public class VideoResponse {
         this.singer = youtubeSearchResult.getSnippet().getChannelTitle();
         String rfc3339String = youtubeSearchResult.getSnippet().getPublishedAt().toString();
         this.createdAt = OffsetDateTime.parse(rfc3339String).toString();
+        this.createdAt = this.createdAt.substring(0,this.createdAt.length()-1);
         this.tags = new ArrayList<String>();
         this.difficultyAvg = 0;
         this.playCount = 0;
