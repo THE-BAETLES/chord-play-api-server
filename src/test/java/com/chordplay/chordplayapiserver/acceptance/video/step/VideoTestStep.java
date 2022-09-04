@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.acceptance.video.step;
 
 import com.chordplay.chordplayapiserver.acceptance.global.AcceptanceTest;
 import com.chordplay.chordplayapiserver.acceptance.video.dto.VideoTestResponse;
+import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -27,6 +28,24 @@ public class VideoTestStep {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> 비디오_생성하고_가져오기(String videoId){
+        return RestAssured
+                .given().log().all()
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + AcceptanceTest.getFirebaseToken())
+                .when()
+                .post("/videos/{videoId}",videoId)
+                .then().log().all()
+                .extract();
+    }
+
+    public static VideoResponse 비디오_검색하고_첫_video_가져오기(String searchTitle) {
+        ExtractableResponse<Response> response = 비디오_검색하기(searchTitle);
+        VideoResponse firstVideo = response.jsonPath().getObject("data[0]", VideoResponse.class);
+        return firstVideo;
+    }
+
     public static void 비디오_검색_성공_검증하기(ExtractableResponse<Response> response){
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         List<VideoResponse> videoResponses = response.jsonPath().getList("data", VideoResponse.class);
@@ -36,4 +55,11 @@ public class VideoTestStep {
             assertThat(v.getTitle()).isNotNull();
         }
     }
+
+    public static void 비디오_생성하고_가져오기_성공_검증하기(ExtractableResponse<Response> response, VideoResponse video){
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+        VideoResponse receivedVideo = response.jsonPath().getObject("data", VideoResponse.class);
+        assertThat(receivedVideo.equals(video)).isTrue();
+    }
+
 }
