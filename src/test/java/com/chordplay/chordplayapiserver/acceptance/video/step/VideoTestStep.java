@@ -40,7 +40,7 @@ public class VideoTestStep {
                 .extract();
     }
 
-    public static VideoResponse 비디오_검색하고_첫_video_가져오기(String searchTitle) {
+    public static VideoResponse 유튜브에서_비디오_검색하고_첫_video_가져오기(String searchTitle) {
         ExtractableResponse<Response> response = 비디오_검색하기(searchTitle);
         VideoResponse firstVideo = response.jsonPath().getObject("data[0]", VideoResponse.class);
         return firstVideo;
