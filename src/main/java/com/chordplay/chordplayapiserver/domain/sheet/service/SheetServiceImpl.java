@@ -37,7 +37,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-@Transactional
 public class SheetServiceImpl implements SheetService{
 
     private final SheetDataRepository sheetDataRepository;
