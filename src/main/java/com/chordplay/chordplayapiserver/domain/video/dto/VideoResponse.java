@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.api.services.youtube.model.SearchResult;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -39,6 +40,7 @@ public class VideoResponse {
     private Long sheetCount;
 
 
+    @Builder
     public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
@@ -68,16 +70,7 @@ public class VideoResponse {
     }
 
     public VideoResponse(Video video, Long sheetCount){
-        this.id = video.getId();
-        this.thumbnailPath = video.getThumbnailPath();
-        this.title = video.getTitle();
-        this.genre = video.getGenre();
-        this.singer = video.getSinger();
-        this.tags = video.getTags();
-        this.length = video.getLength();
-        this.createdAt = video.getCreatedAt().toString();
-        this.difficultyAvg = video.getDifficultyAvg();
-        this.playCount = video.getPlayCount();
+        this(video);
         this.sheetCount = (sheetCount == null) ? 0 : sheetCount;
     }
 
