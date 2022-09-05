@@ -87,6 +87,7 @@ public class VideoResponse {
         this.difficultyAvg = 0;
         this.playCount = 0;
         this.sheetCount = 0L;
+        this.genre = "";
     }
 
     public VideoResponse(SearchResult youtubeSearchResult){
