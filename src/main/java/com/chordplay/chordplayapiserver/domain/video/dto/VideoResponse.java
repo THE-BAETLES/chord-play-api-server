@@ -39,9 +39,8 @@ public class VideoResponse {
     private int playCount;
     private Long sheetCount;
 
-
     @Builder
-    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
+    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, String createdAt, int difficultyAvg, int playCount, Long sheetCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -49,10 +48,10 @@ public class VideoResponse {
         this.singer = singer;
         this.tags = tags;
         this.length = length;
-        this.createdAt = createdAt.toString();
+        this.createdAt = createdAt;
         this.difficultyAvg = difficultyAvg;
         this.playCount = playCount;
-        this.sheetCount = (sheetCount == null) ? 0 : sheetCount;
+        this.sheetCount = sheetCount;
     }
 
     public VideoResponse(Video video){
