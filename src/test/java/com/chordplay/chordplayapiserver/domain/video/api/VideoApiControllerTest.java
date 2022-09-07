@@ -113,15 +113,31 @@ class VideoApiControllerTest {
         verifyWatchHistory(result);
     }
 
+    @Test
+    @DisplayName("난이도에 따른 목록 가져오기")
+    public void getGradeCollectionTest() throws Exception {
 
+        //given
+        String performerGrade = "BEGINNER";
+        List<VideoResponse> gradeCollection = createMockGradeCollection();
+        given(videoService.getGradeCollection(performerGrade)).willReturn(gradeCollection);
 
+        //when
+        ResultActions result = getGradeCollection(performerGrade);
 
+        //get
+        verifyWatchHistory(result);
+    }
 
     private List<VideoResponse> createMockSearchData(){
         return createMockVideDatas();
     }
 
     private List<VideoResponse> createMockWatchHistory(){
+        return createMockVideDatas();
+    }
+
+    private List<VideoResponse> createMockGradeCollection(){
         return createMockVideDatas();
     }
 
@@ -179,6 +195,12 @@ class VideoApiControllerTest {
 
     }
 
+    private ResultActions getGradeCollection(String performerGrade) throws Exception {
+        return mockMvc.perform(get("/videos/grade-collection")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("performerGrade", performerGrade));
+    }
+
     private ResultActions getWatchHistory() throws Exception {
         return mockMvc.perform(get("/videos/watch-history")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -213,6 +235,11 @@ class VideoApiControllerTest {
     }
 
     private void verifyWatchHistory(ResultActions result) throws Exception {
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.length()").value(2));
+    }
+
+    private void verifyGradeCollection(ResultActions result) throws Exception {
         verifyOK(result);
         result.andExpect(jsonPath("$.data.length()").value(2));
     }
