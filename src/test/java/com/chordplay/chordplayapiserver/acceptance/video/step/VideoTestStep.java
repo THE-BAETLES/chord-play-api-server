@@ -57,6 +57,11 @@ public class VideoTestStep {
         return firstVideo;
     }
 
+    public static VideoResponse 비디오_생성하고_VideoResponse_객체로_가져오기(String videoId){
+        ExtractableResponse<Response> response = 비디오_생성하고_가져오기(videoId);
+        return response.jsonPath().getObject("data", VideoResponse.class);
+    }
+
     public static void 비디오_검색_성공_검증하기(ExtractableResponse<Response> response){
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
         List<VideoResponse> videoResponses = response.jsonPath().getList("data", VideoResponse.class);
