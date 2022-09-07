@@ -5,6 +5,7 @@ import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
+import org.checkerframework.checker.signature.qual.DotSeparatedIdentifiers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ class VideoApiControllerTest {
 
     @Test
     @DisplayName("비디오 생성 후 가져오기")
-    public void createVideo() throws Exception {
+    public void createVideoTest() throws Exception {
 
         //given
         Video video = createMockVideoData();
@@ -68,7 +69,7 @@ class VideoApiControllerTest {
 
     @Test
     @DisplayName("비디오 가져오기")
-    public void getVideo() throws Exception{
+    public void getVideoTest() throws Exception{
 
         //given
         Video video = createMockVideoData();
@@ -83,11 +84,11 @@ class VideoApiControllerTest {
 
     @Test
     @DisplayName("비디오 유튜브에서 검색하기")
-    public void searchYoutubeVideo() throws Exception {
+    public void searchYoutubeVideoTest() throws Exception {
 
         //given
         String searchTitle = "장범준";
-        List<VideoResponse> searchData = createSearchData();
+        List<VideoResponse> searchData = createMockSearchData();
         given(videoService.search(searchTitle)).willReturn(searchData);
 
         //when
@@ -97,9 +98,49 @@ class VideoApiControllerTest {
         verifySearchingYoutubeVideo(result);
     }
 
+    @Test
+    @DisplayName("시청한 비디오 목록 가져오기")
+    public void getWatchHistoryTest() throws Exception {
+
+        //given
+        List<VideoResponse> watchHistory = createMockWatchHistory();
+        given(videoService.getWatchHistory(0,2)).willReturn(watchHistory);
+
+        //when
+        ResultActions result = getWatchHistory();
+
+        //get
+        verifyWatchHistory(result);
+    }
 
 
-    private List<VideoResponse> createSearchData(){
+
+
+
+    private List<VideoResponse> createMockSearchData(){
+        return createMockVideDatas();
+    }
+
+    private List<VideoResponse> createMockWatchHistory(){
+        return createMockVideDatas();
+    }
+
+    private Video createMockVideoData(){
+        return Video.builder()
+                .id("RFMmK9E-cbc")
+                .thumbnailPath("https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg")
+                .title("Go Back (고백)")
+                .genre("")
+                .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
+                .difficultyAvg(0)
+                .length(210000)
+                .playCount(0)
+                .singer("Jang Beom June - Topic")
+                .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
+                .build();
+    }
+
+    private List<VideoResponse> createMockVideDatas(){
 
         List<VideoResponse> videoResponses = new ArrayList<>();
         VideoResponse videoResponse = VideoResponse.builder()
@@ -120,20 +161,6 @@ class VideoApiControllerTest {
 
         return videoResponses;
     }
-    private Video createMockVideoData(){
-        return Video.builder()
-                .id("RFMmK9E-cbc")
-                .thumbnailPath("https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg")
-                .title("Go Back (고백)")
-                .genre("")
-                .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
-                .difficultyAvg(0)
-                .length(210000)
-                .playCount(0)
-                .singer("Jang Beom June - Topic")
-                .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
-                .build();
-    }
 
     private ResultActions createVideo(Video video) throws Exception {
         return mockMvc.perform(post("/videos/{videoId}", video.getId())
@@ -152,40 +179,44 @@ class VideoApiControllerTest {
 
     }
 
+    private ResultActions getWatchHistory() throws Exception {
+        return mockMvc.perform(get("/videos/watch-history")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("offset", "0")
+                .param("limit", "2"));
+    }
 
-    private void verifyCreatingVideo(ResultActions result) throws Exception {
-        result.andExpect(status().isCreated())
-                .andExpect(jsonPath("$.code").value(HttpStatus.CREATED.value()))
-                .andExpect(jsonPath("$.message").value("success"))
-                .andExpect(jsonPath("$.data.thumbnail_path").value("https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg"))
-                .andExpect(jsonPath("$.data.title").value("Go Back (고백)"))
-                .andExpect(jsonPath("$.data.genre").value(""))
-                .andExpect(jsonPath("$.data.created_at").value("2021-07-19T09:05:32"))
-                .andExpect(jsonPath("$.data.difficulty_avg").value("0"))
-                .andExpect(jsonPath("$.data.length").value(210000))
-                .andExpect(jsonPath("$.data.play_count").value("0"))
-                .andExpect(jsonPath("$.data.singer").value("Jang Beom June - Topic"))
-                .andExpect(jsonPath("$.data.tags.length()").value(5));
-    }
-    private void  verifyGettingVideo(ResultActions result) throws Exception {
-        result.andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
-                .andExpect(jsonPath("$.message").value("success"))
-                .andExpect(jsonPath("$.data.thumbnail_path").value("https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg"))
-                .andExpect(jsonPath("$.data.title").value("Go Back (고백)"))
-                .andExpect(jsonPath("$.data.genre").value(""))
-                .andExpect(jsonPath("$.data.created_at").value("2021-07-19T09:05:32"))
-                .andExpect(jsonPath("$.data.difficulty_avg").value("0"))
-                .andExpect(jsonPath("$.data.length").value(210000))
-                .andExpect(jsonPath("$.data.play_count").value("0"))
-                .andExpect(jsonPath("$.data.singer").value("Jang Beom June - Topic"))
-                .andExpect(jsonPath("$.data.tags.length()").value(5));
-    }
-    private void verifySearchingYoutubeVideo(ResultActions result) throws Exception {
+    private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.message").value("success"));
     }
+    private void verifyCreated(ResultActions result) throws Exception {
+        result.andExpect(status().isCreated())
+                .andExpect(jsonPath("$.code").value(HttpStatus.CREATED.value()))
+                .andExpect(jsonPath("$.message").value("success"));
+    }
+
+    private void verifyCreatingVideo(ResultActions result) throws Exception {
+        verifyCreated(result);
+        result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
+    }
+
+    private void  verifyGettingVideo(ResultActions result) throws Exception {
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
+    }
+
+    private void verifySearchingYoutubeVideo(ResultActions result) throws Exception {
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.length()").value(2));
+    }
+
+    private void verifyWatchHistory(ResultActions result) throws Exception {
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.length()").value(2));
+    }
+
 
 
 
