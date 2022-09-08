@@ -11,7 +11,7 @@ public interface ApiDocumentUtils {
         return preprocessRequest(
                 modifyUris() // (1)
                         .scheme("https")
-                        .host("docs.api.com")
+                        .host("api.baetles.site")
                         .removePort(),
                 prettyPrint()); // (2)
     }
