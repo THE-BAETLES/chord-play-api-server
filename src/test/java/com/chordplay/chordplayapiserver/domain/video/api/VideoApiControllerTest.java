@@ -2,6 +2,7 @@ package com.chordplay.chordplayapiserver.domain.video.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
+import com.chordplay.chordplayapiserver.domain.video.docs.VideoTestDocs;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,10 +19,13 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.web.JsonPath;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.xml.transform.Result;
 import java.lang.reflect.Array;
@@ -29,10 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -80,6 +82,7 @@ class VideoApiControllerTest {
 
         //get
         verifyGettingVideo(result);
+        result.andDo(VideoTestDocs.documentOnGettingVideo());
     }
 
     @Test
@@ -184,7 +187,7 @@ class VideoApiControllerTest {
     }
 
     private ResultActions getVideo(Video video) throws Exception {
-        return mockMvc.perform(get("/videos/{videoId}", video.getId())
+        return mockMvc.perform(RestDocumentationRequestBuilders.get("/videos/{videoId}", video.getId())
                         .contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -224,7 +227,7 @@ class VideoApiControllerTest {
         result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
     }
 
-    private void  verifyGettingVideo(ResultActions result) throws Exception {
+    private void verifyGettingVideo(ResultActions result) throws Exception {
         verifyOK(result);
         result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
     }
