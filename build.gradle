@@ -2,16 +2,47 @@ plugins {
 	id 'org.springframework.boot' version '2.7.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.chord-play'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+	dependsOn test
+	inputs.dir snippetsDir
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+bootJar {
+	dependsOn asciidoctor
+	copy {
+		from "${asciidoctor.outputDir}"
+		into 'BOOT-INF/classes/static/docs'
+	}
+}
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("build/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+}
+
+build {
+	dependsOn copyDocument
 }
 
 repositories {
@@ -38,6 +69,7 @@ dependencies {
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.2'
 	implementation group: 'com.google.firebase', name: 'firebase-admin', version: '8.0.1'
 	implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.1'
+
 	implementation("io.netty:netty-resolver-dns-native-macos:4.1.79.Final") {
 		artifact {
 			classifier = "osx-aarch_64"
@@ -56,7 +88,7 @@ dependencies {
 	testImplementation ('io.rest-assured:rest-assured:5.1.1'){
 		exclude group: "org.codehaus.groovy", module: 'groovy-xml'
 	}
-
+	testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
 	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
