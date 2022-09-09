@@ -67,6 +67,7 @@ class VideoApiControllerTest {
 
         //then
         verifyCreatingVideo(result);
+        result.andDo(VideoTestDocs.documentOnVideo("Create a video"));
     }
 
     @Test
@@ -82,7 +83,7 @@ class VideoApiControllerTest {
 
         //get
         verifyGettingVideo(result);
-        result.andDo(VideoTestDocs.documentOnGettingVideo());
+        result.andDo(VideoTestDocs.documentOnVideo("Get a video"));
     }
 
     @Test
@@ -99,6 +100,8 @@ class VideoApiControllerTest {
 
         //then
         verifySearchingYoutubeVideo(result);
+        result.andDo(VideoTestDocs.documentOnVideo("Search Videos"));
+
     }
 
     @Test
@@ -114,6 +117,8 @@ class VideoApiControllerTest {
 
         //get
         verifyWatchHistory(result);
+        result.andDo(VideoTestDocs.documentOnVideo("Get watch-history"));
+
     }
 
     @Test
@@ -129,7 +134,9 @@ class VideoApiControllerTest {
         ResultActions result = getGradeCollection(performerGrade);
 
         //get
-        verifyWatchHistory(result);
+        verifyGradeCollection(result);
+        result.andDo(VideoTestDocs.documentOnVideo("Get grade-collection"));
+
     }
 
     private List<VideoResponse> createMockSearchData(){

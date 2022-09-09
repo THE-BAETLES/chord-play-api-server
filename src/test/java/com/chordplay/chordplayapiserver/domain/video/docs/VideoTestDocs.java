@@ -18,8 +18,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 
 public class VideoTestDocs {
 
-    public static RestDocumentationResultHandler documentOnGettingVideo (){
-        return document("get-video", // (4)
+    public static RestDocumentationResultHandler documentOnVideo (String name){
+        return document(name, // (4)
                 getDocumentRequest(),
                 getDocumentResponse(),
                 pathParameters(
