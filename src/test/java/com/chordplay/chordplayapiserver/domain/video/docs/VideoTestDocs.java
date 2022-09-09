@@ -10,6 +10,8 @@ import java.util.List;
 
 import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocumentRequest;
 import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocumentResponse;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -18,15 +20,17 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 public class VideoTestDocs {
 
 
-    private static final String nameOfDocsThatCreateVideo = "Create_a_video";
-    private static final String nameOfDocsThatGetVideo = "Get_a_video";
-    private static final String nameOfDocsThatSearchVideos = "Search_videos";
+    private static final String nameOfDocsThatCreateVideo = "create_a_video";
+    private static final String nameOfDocsThatGetVideo = "get_a_video";
+    private static final String nameOfDocsThatSearchVideos = "search_videos";
     private static final String nameOfDocsThatGetGradeCollection = "get_grade_collection";
     private static final String nameOfDocsThatGetWatchHistory = "get_watch_history";
     public static RestDocumentationResultHandler documentOnCreatingVideo(){
         return document(nameOfDocsThatCreateVideo,
                 getDocumentRequest(),
                 getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
                 pathParameters(
                         parameterWithName("videoId").description("아이디")
                 ),
@@ -37,6 +41,8 @@ public class VideoTestDocs {
         return document(nameOfDocsThatGetVideo,
                 getDocumentRequest(),
                 getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
                 pathParameters(
                         parameterWithName("videoId").description("아이디")
                 ),
@@ -47,6 +53,8 @@ public class VideoTestDocs {
         return document(nameOfDocsThatSearchVideos,
                 getDocumentRequest(),
                 getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
                 requestParameters(parameterWithName("searchTitle").description(searchTitle)),
                 responseFields(CommonTestDocs.commonDocsOfArray())
                         .andWithPrefix("data[0].",videoResponse()));
@@ -56,15 +64,23 @@ public class VideoTestDocs {
         return document(nameOfDocsThatGetGradeCollection,
                 getDocumentRequest(),
                 getDocumentResponse(),
-                requestParameters(parameterWithName("performerGrade").description(performerGrade)),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                requestParameters(parameterWithName("performerGrade").description("BEGINNER, INTERMEDIATE, EXPERT 를 선택할 수 있습니다")),
                 responseFields(CommonTestDocs.commonDocsOfArray())
                         .andWithPrefix("data[0].",videoResponse()));
     }
 
-    public static RestDocumentationResultHandler documentOnGetWatchHistory () {
+    public static RestDocumentationResultHandler documentOnGetWatchHistory() {
         return document(nameOfDocsThatGetWatchHistory,
                 getDocumentRequest(),
                 getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                requestParameters(
+                        parameterWithName("offset").description("특정 위치부터 정보를 받아옵니다"),
+                        parameterWithName("limit").description("특정 갯수만큼 정보를 받아옵니다")
+                        ),
                 responseFields(CommonTestDocs.commonDocsOfArray())
                         .andWithPrefix("data[0].",videoResponse()));
     }

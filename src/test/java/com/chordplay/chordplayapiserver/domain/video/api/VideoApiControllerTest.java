@@ -181,17 +181,20 @@ class VideoApiControllerTest {
 
     private ResultActions createVideo(Video video) throws Exception {
         return mockMvc.perform(post("/videos/{videoId}", video.getId())
-                        .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions getVideo(Video video) throws Exception {
         return mockMvc.perform(get("/videos/{videoId}", video.getId())
-                        .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions searchYoutubeVideo(String searchTitle) throws Exception {
         return mockMvc.perform(get("/videos/search")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("searchTitle", "장범준"));
 
     }
@@ -199,12 +202,14 @@ class VideoApiControllerTest {
     private ResultActions getGradeCollection(String performerGrade) throws Exception {
         return mockMvc.perform(get("/videos/grade-collection")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("performerGrade", performerGrade));
     }
 
     private ResultActions getWatchHistory() throws Exception {
         return mockMvc.perform(get("/videos/watch-history")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("offset", "0")
                 .param("limit", "2"));
     }
