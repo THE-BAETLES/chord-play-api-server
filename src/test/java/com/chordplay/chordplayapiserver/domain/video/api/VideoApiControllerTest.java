@@ -2,39 +2,31 @@ package com.chordplay.chordplayapiserver.domain.video.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
+import com.chordplay.chordplayapiserver.domain.video.docs.VideoTestDocs;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
-import org.checkerframework.checker.signature.qual.DotSeparatedIdentifiers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.web.JsonPath;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
-import javax.xml.transform.Result;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         excludeAutoConfiguration = {SecurityAutoConfiguration.class},
         excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class) })
 @WithMockCustomUser
+@AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.baetles.site")
 class VideoApiControllerTest {
 
     @Autowired
@@ -64,7 +57,8 @@ class VideoApiControllerTest {
         ResultActions result = createVideo(video);
 
         //then
-        verifyCreatingVideo(result);
+        result = verifyCreatingVideo(result);
+        result.andDo(VideoTestDocs.documentOnCreatingVideo());
     }
 
     @Test
@@ -79,7 +73,8 @@ class VideoApiControllerTest {
         ResultActions result = getVideo(video);
 
         //get
-        verifyGettingVideo(result);
+        result = verifyGettingVideo(result);
+        result.andDo(VideoTestDocs.documentOnGettingVideo());
     }
 
     @Test
@@ -95,7 +90,9 @@ class VideoApiControllerTest {
         ResultActions result = searchYoutubeVideo(searchTitle);
 
         //then
-        verifySearchingYoutubeVideo(result);
+        result = verifySearchingYoutubeVideo(result);
+        result.andDo(VideoTestDocs.documentOnVideoBySearching(searchTitle));
+
     }
 
     @Test
@@ -110,7 +107,9 @@ class VideoApiControllerTest {
         ResultActions result = getWatchHistory();
 
         //get
-        verifyWatchHistory(result);
+        result = verifyWatchHistory(result);
+        result.andDo(VideoTestDocs.documentOnGetWatchHistory());
+
     }
 
     @Test
@@ -126,7 +125,9 @@ class VideoApiControllerTest {
         ResultActions result = getGradeCollection(performerGrade);
 
         //get
-        verifyWatchHistory(result);
+        result = verifyGradeCollection(result);
+        result.andDo(VideoTestDocs.documentOnGetGradeCollection("Get grade-collection"));
+
     }
 
     private List<VideoResponse> createMockSearchData(){
@@ -180,17 +181,20 @@ class VideoApiControllerTest {
 
     private ResultActions createVideo(Video video) throws Exception {
         return mockMvc.perform(post("/videos/{videoId}", video.getId())
-                        .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions getVideo(Video video) throws Exception {
         return mockMvc.perform(get("/videos/{videoId}", video.getId())
-                        .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions searchYoutubeVideo(String searchTitle) throws Exception {
         return mockMvc.perform(get("/videos/search")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("searchTitle", "장범준"));
 
     }
@@ -198,12 +202,14 @@ class VideoApiControllerTest {
     private ResultActions getGradeCollection(String performerGrade) throws Exception {
         return mockMvc.perform(get("/videos/grade-collection")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("performerGrade", performerGrade));
     }
 
     private ResultActions getWatchHistory() throws Exception {
         return mockMvc.perform(get("/videos/watch-history")
                 .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
                 .param("offset", "0")
                 .param("limit", "2"));
     }
@@ -219,29 +225,29 @@ class VideoApiControllerTest {
                 .andExpect(jsonPath("$.message").value("success"));
     }
 
-    private void verifyCreatingVideo(ResultActions result) throws Exception {
+    private ResultActions verifyCreatingVideo(ResultActions result) throws Exception {
         verifyCreated(result);
-        result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
+        return result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
     }
 
-    private void  verifyGettingVideo(ResultActions result) throws Exception {
+    private ResultActions verifyGettingVideo(ResultActions result) throws Exception {
         verifyOK(result);
-        result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
+       return result.andExpect(jsonPath("$.data.title").value("Go Back (고백)"));
     }
 
-    private void verifySearchingYoutubeVideo(ResultActions result) throws Exception {
+    private ResultActions verifySearchingYoutubeVideo(ResultActions result) throws Exception {
         verifyOK(result);
-        result.andExpect(jsonPath("$.data.length()").value(2));
+        return result.andExpect(jsonPath("$.data.length()").value(2));
     }
 
-    private void verifyWatchHistory(ResultActions result) throws Exception {
+    private ResultActions verifyWatchHistory(ResultActions result) throws Exception {
         verifyOK(result);
-        result.andExpect(jsonPath("$.data.length()").value(2));
+        return result.andExpect(jsonPath("$.data.length()").value(2));
     }
 
-    private void verifyGradeCollection(ResultActions result) throws Exception {
+    private ResultActions verifyGradeCollection(ResultActions result) throws Exception {
         verifyOK(result);
-        result.andExpect(jsonPath("$.data.length()").value(2));
+        return result.andExpect(jsonPath("$.data.length()").value(2));
     }
 
 

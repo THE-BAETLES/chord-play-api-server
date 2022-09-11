@@ -1,0 +1,54 @@
+:doctype: book
+:icons: font
+:source-highlighter: highlights
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+== TEST DOCS
+
+*빈행이* __문단으로__ `구분하게` #된다.#
+
+[%hardbreaks]
+위 내용 작성시 자동 + 효과
+https://narusas.github.io/2018/03/21/Asciidoc-basic.html
+\https://narusas.github.io/2018/03/21/Asciidoc-basic.html
+아스키독 문서 내부로 링크를하고 싶다면 <<TEST DOCS>> 로 이동
+
+Dairy::
+* Milk
+* Eggs
+
+//-
+
+[upperroman]
+. a
+. b
+
+TIP: 팁입니다
+
+IMPORTANT: 중요합니다.
+
+.블럭1
+----
+블럭생성
+----
+
+[%header%autowidth]
+|===
+| 코드 | 내용
+| 40 | 성공
+|===
+
+[#img-sunset]
+.reference
+[link=https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/]
+image::sunset.jpg[Sunset,100,100]
+
+== 상품
+== 상품 등록
+include::{snippets}/product-controller-test/regist/http-request.adoc[]
+=== request
+include::{snippets}/product-controller-test/regist/request-fields.adoc[]
+=== response
+include::{snippets}/product-controller-test/regist/http-response.adoc[]
