@@ -6,6 +6,8 @@ import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.docs.SheetTestDocs;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
 import com.chordplay.chordplayapiserver.domain.video.api.VideoApiController;
@@ -30,6 +32,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -41,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.*;
 /*
  * @GetMapping("/ai/{videoId}")
  *  * @GetMapping()
- * @GetMapping(value = "/data/{sheetId}")
  * @GetMapping()
  * @GetMapping("/shared")
  */
@@ -83,6 +85,26 @@ class SheetApiControllerTest {
         result.andDo(SheetTestDocs.documentOnGettingSheet());
     }
     
+    @Test
+    @DisplayName("특정 비디오에 관련된 유저의 악보들을 가져오기")
+    public void getSheetsByVideoIdTest() throws Exception {
+        
+        //get
+        String videoId = "dinia_m0HGE";
+        SheetsResponse sheetsResponse = createMockSheets();
+        given(sheetService.getSheetsByVideoId(videoId)).willReturn(sheetsResponse);
+
+        //when
+        ResultActions result = getSheetsByVideoId(videoId);
+
+        //then
+        result = verifyGettingSheetsByVideoId(result);
+
+    }
+
+
+
+
     @Test
     @DisplayName("sheet and sheet data 삭제하기")
     public void deleteSheetAndSheetDataTest() throws Exception {
@@ -149,10 +171,25 @@ class SheetApiControllerTest {
                 .id("6300d7e8aeeb0778c43ea37d")
                 .chordInfos(chordInfos).build();
     }
+
+    private SheetsResponse createMockSheets() {
+
+        return SheetsResponse.builder()
+                .likeSheet(Arrays.asList(createMockSheet()))
+                .mySheet(Arrays.asList(createMockSheet()))
+                .sharedSheet(Arrays.asList(createMockSheet())).build();
+    }
     private ResultActions getSheet(String sheetId) throws Exception {
         return mockMvc.perform(get("/sheets/{sheetId}",sheetId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getSheetsByVideoId(String videoId) throws Exception {
+        return mockMvc.perform(get("/sheets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
+                .param("videoId", videoId));
     }
 
     private ResultActions deleteSheetAndSheetData(String sheetId) throws Exception {
@@ -181,6 +218,12 @@ class SheetApiControllerTest {
     private ResultActions verifyGettingSheet(ResultActions result) throws Exception {
         verifyOK(result);
         return result.andExpect(jsonPath("$.data.title").value("Chord Play"));
+    }
+    private ResultActions verifyGettingSheetsByVideoId(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data.my[0].title").value("Chord Play"))
+                .andExpect(jsonPath("$.data.like[0].title").value("Chord Play"))
+                .andExpect(jsonPath("$.data.shared[0].title").value("Chord Play"));
     }
 
     private ResultActions verifyDeletingSheet(ResultActions result) throws Exception {
