@@ -140,7 +140,7 @@ class SheetApiControllerTest {
 
     private Sheet createMockSheet(){
 
-        User user = new User("ContextUtil.getPrincipalUserId()");
+        User user = new User(ContextUtil.getPrincipalUserId());
         return Sheet.builder()
                 .updatedAt(ZonedDateTime.parse("2022-08-20T12:47:36.426+00:00").toLocalDateTime())
                 .video(new Video("KZH-MpiwmaU"))
