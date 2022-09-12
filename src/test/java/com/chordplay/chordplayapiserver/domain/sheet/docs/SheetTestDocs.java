@@ -66,6 +66,20 @@ public class SheetTestDocs {
                         .andWithPrefix("data.", getSheetDataResponseFields()));
     }
 
+    public static ResultHandler documentOnGettingSheetsByVideoId() {
+        return document(nameOfDocsThatGetSheetData,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                requestParameters(parameterWithName("videoId").description("비디오 ID")),
+                responseFields(CommonTestDocs.commonDocs())
+                        .andWithPrefix("data.", getSheetsFieldsByResponse())
+                        .andWithPrefix("data.my[0].", getSheetResponseFields())
+                        .andWithPrefix("data.shared[0].", getSheetResponseFields())
+                        .andWithPrefix("data.like[0].", getSheetResponseFields()));
+
+    }
     private static List<FieldDescriptor> getSheetResponseFields(){
 
         return Arrays.asList(
@@ -78,6 +92,8 @@ public class SheetTestDocs {
                 fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수")
         );
     }
+
+
 
     private static List<FieldDescriptor> getSheetDataResponseFields(){
 
@@ -92,6 +108,18 @@ public class SheetTestDocs {
                 fieldWithPath("chord_infos[0].chord").type(JsonFieldType.STRING).description("코드")
         );
     }
+
+    private static List<FieldDescriptor> getSheetsFieldsByResponse(){
+        return Arrays.asList(
+                fieldWithPath("my").type(JsonFieldType.ARRAY).description("내가 쓴 악보"),
+                fieldWithPath("like").type(JsonFieldType.ARRAY).description("내가 좋아한 악보"),
+                fieldWithPath("shared").type(JsonFieldType.ARRAY).description("공유된 악보"),
+                fieldWithPath("my.[]").type(JsonFieldType.ARRAY).description("악보 response"),
+                fieldWithPath("like.[]").type(JsonFieldType.ARRAY).description("악보 response"),
+                fieldWithPath("shared.[]").type(JsonFieldType.ARRAY).description("악보 response")
+        );
+    }
+
 
 
 }

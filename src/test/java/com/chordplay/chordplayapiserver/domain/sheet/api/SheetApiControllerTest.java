@@ -99,11 +99,8 @@ class SheetApiControllerTest {
 
         //then
         result = verifyGettingSheetsByVideoId(result);
-
+        result.andDo(SheetTestDocs.documentOnGettingSheetsByVideoId());
     }
-
-
-
 
     @Test
     @DisplayName("sheet and sheet data 삭제하기")
@@ -135,7 +132,6 @@ class SheetApiControllerTest {
         //then
         result = verifyGetSheetData(result);
         result.andDo(SheetTestDocs.documentOnGetSheetData());
-
     }
 
     private Sheet createMockSheet(){
