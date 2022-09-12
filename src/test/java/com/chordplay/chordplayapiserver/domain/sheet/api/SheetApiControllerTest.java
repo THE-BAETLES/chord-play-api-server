@@ -1,8 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.sheet.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
+import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.docs.SheetTestDocs;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
@@ -27,6 +29,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
@@ -39,7 +43,6 @@ import static org.junit.jupiter.api.Assertions.*;
  *  * @GetMapping()
  * @GetMapping(value = "/data/{sheetId}")
  * @GetMapping()
- * @DeleteMapping(value = "/{sheetId}")
  * @GetMapping("/shared")
  */
 
@@ -95,8 +98,22 @@ class SheetApiControllerTest {
         result = verifyDeletingSheet(result);
         result.andDo(SheetTestDocs.documentOnDeleteingSheet());
     }
+    
+    @Test
+    @DisplayName("sheet data 가져오기")
+    public void getSheetDataTest() throws Exception {
 
+        //get
+        SheetData sheetData = createMockSheetData();
+        given(sheetService.getSheetData(sheetData.getId())).willReturn(sheetData);
 
+        //when
+        ResultActions result = getSheetData(sheetData.getId());
+
+        //then
+        result = verifyGetSheetData(result);
+
+    }
 
     private Sheet createMockSheet(){
 
@@ -111,6 +128,26 @@ class SheetApiControllerTest {
                 .build();
     }
 
+    private SheetData createMockSheetData() {
+        List<ChordInfo> chordInfos = new ArrayList<>();
+
+        chordInfos.add(ChordInfo.builder()
+                .chord("Am")
+                .start(0.0)
+                .end(2.23)
+                .position(0).build());
+
+        chordInfos.add(ChordInfo.builder()
+                .chord("C")
+                .start(2.23)
+                .end(4.06)
+                .position(1).build());
+
+        return SheetData.builder()
+                .bpm(123)
+                .id("6300d7e8aeeb0778c43ea37d")
+                .chordInfos(chordInfos).build();
+    }
     private ResultActions getSheet(String sheetId) throws Exception {
         return mockMvc.perform(get("/sheets/{sheetId}",sheetId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -122,6 +159,13 @@ class SheetApiControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
+
+    private ResultActions getSheetData(String sheetId) throws Exception {
+        return mockMvc.perform(get("/sheets/data/{sheetId}",sheetId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
 
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
@@ -142,5 +186,11 @@ class SheetApiControllerTest {
         verifyOK(result);
         return result;
     }
+
+    private ResultActions verifyGetSheetData(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data.bpm").value(123));
+    }
+
 
 }
