@@ -112,6 +112,7 @@ class SheetApiControllerTest {
 
         //then
         result = verifyGetSheetData(result);
+        result.andDo(SheetTestDocs.documentOnGetSheetData());
 
     }
 
