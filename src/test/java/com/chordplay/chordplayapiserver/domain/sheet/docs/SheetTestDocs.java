@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.global.docs.CommonTestDocs;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +23,23 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 public class SheetTestDocs {
 
     public static final String nameOfDocsThatGetSheet = "get_a_sheet";
+    public static final String nameOfDocsThatDeleteSheet = "delete_a_sheet";
 
     public static RestDocumentationResultHandler documentOnGettingSheet() {
         return document(nameOfDocsThatGetSheet,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                pathParameters(
+                        parameterWithName("sheetId").description("악보 아이디")
+                ),
+                responseFields(CommonTestDocs.commonDocs())
+                        .andWithPrefix("data.", getSheetResponseFields()));
+    }
+
+    public static ResultHandler documentOnDeleteingSheet() {
+        return document(nameOfDocsThatDeleteSheet,
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
@@ -48,5 +63,6 @@ public class SheetTestDocs {
                 fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수")
         );
     }
+
 
 }

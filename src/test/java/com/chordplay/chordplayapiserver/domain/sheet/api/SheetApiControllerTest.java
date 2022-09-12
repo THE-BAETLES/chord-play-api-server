@@ -29,8 +29,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * @GetMapping("/ai/{videoId}")
  *  * @GetMapping()
  * @GetMapping(value = "/data/{sheetId}")
- * @GetMapping("/{sheetId}")
  * @GetMapping()
  * @DeleteMapping(value = "/{sheetId}")
  * @GetMapping("/shared")
@@ -68,7 +66,7 @@ class SheetApiControllerTest {
 
     @Test
     @DisplayName("sheet 정보 가져오기")
-    public void getSheet() throws Exception {
+    public void getSheetTest() throws Exception {
 
         //get
         Sheet sheet = createMockSheet();
@@ -81,6 +79,23 @@ class SheetApiControllerTest {
         result = verifyGettingSheet(result);
         result.andDo(SheetTestDocs.documentOnGettingSheet());
     }
+    
+    @Test
+    @DisplayName("sheet and sheet data 삭제하기")
+    public void deleteSheetAndSheetDataTest() throws Exception {
+        
+        //get
+        Sheet sheet = createMockSheet();
+        given(sheetService.deleteSheetAndSheetData(sheet.getId())).willReturn(sheet);
+
+        //when
+        ResultActions result = deleteSheetAndSheetData(sheet.getId());
+
+        //then
+        result = verifyDeletingSheet(result);
+        result.andDo(SheetTestDocs.documentOnDeleteingSheet());
+    }
+
 
 
     private Sheet createMockSheet(){
@@ -102,6 +117,12 @@ class SheetApiControllerTest {
                 .header("Authorization","Bearer {token}"));
     }
 
+    private ResultActions deleteSheetAndSheetData(String sheetId) throws Exception {
+        return mockMvc.perform(delete("/sheets/{sheetId}",sheetId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
@@ -116,4 +137,10 @@ class SheetApiControllerTest {
         verifyOK(result);
         return result.andExpect(jsonPath("$.data.title").value("Chord Play"));
     }
+
+    private ResultActions verifyDeletingSheet(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result;
+    }
+
 }
