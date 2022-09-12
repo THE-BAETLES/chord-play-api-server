@@ -27,10 +27,10 @@ public class SheetsResponse {
             this.shared.add(new SheetResponse(s));
         }
         for(Sheet s : likeSheet){
-            this.shared.add(new SheetResponse(s));
+            this.like.add(new SheetResponse(s));
         }
         for(Sheet s : mySheet){
-            this.shared.add(new SheetResponse(s));
+            this.my.add(new SheetResponse(s));
         }
 
     }
