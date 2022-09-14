@@ -43,8 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.jupiter.api.Assertions.*;
 /*
  * @GetMapping("/ai/{videoId}")
- *  * @GetMapping()
- * @GetMapping()
  * @GetMapping("/shared")
  */
 
@@ -91,7 +89,7 @@ class SheetApiControllerTest {
         
         //get
         String videoId = "dinia_m0HGE";
-        SheetsResponse sheetsResponse = createMockSheets();
+        SheetsResponse sheetsResponse = createMockSheetResponses();
         given(sheetService.getSheetsByVideoId(videoId)).willReturn(sheetsResponse);
 
         //when
@@ -133,6 +131,25 @@ class SheetApiControllerTest {
         result = verifyGetSheetData(result);
         result.andDo(SheetTestDocs.documentOnGetSheetData());
     }
+    
+    @Test
+    @DisplayName("특정 비디오에 공유된 악보 목록 가져오기")
+    public void getSharedSheetsTest() throws Exception {
+
+        //get
+        String videoId = "dinia_m0HGE";
+        List<Sheet> sheets = createMockSheets();
+        given(sheetService.getSharedSheets(videoId)).willReturn(sheets);
+
+        //when
+        ResultActions result = getSharedSheets(videoId);
+
+        //then
+        result = verifyGettingSharedSheets(result);
+
+    }
+
+
 
     private Sheet createMockSheet(){
 
@@ -168,12 +185,16 @@ class SheetApiControllerTest {
                 .chordInfos(chordInfos).build();
     }
 
-    private SheetsResponse createMockSheets() {
+    private SheetsResponse createMockSheetResponses() {
 
         return SheetsResponse.builder()
                 .likeSheet(Arrays.asList(createMockSheet()))
                 .mySheet(Arrays.asList(createMockSheet()))
                 .sharedSheet(Arrays.asList(createMockSheet())).build();
+    }
+
+    private List<Sheet> createMockSheets(){
+        return Arrays.asList(createMockSheet());
     }
     private ResultActions getSheet(String sheetId) throws Exception {
         return mockMvc.perform(get("/sheets/{sheetId}",sheetId)
@@ -198,6 +219,13 @@ class SheetApiControllerTest {
         return mockMvc.perform(get("/sheets/data/{sheetId}",sheetId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getSharedSheets(String videoId) throws Exception {
+        return mockMvc.perform(get("/sheets/shared")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}")
+                .param("videoId", videoId));
     }
 
 
@@ -231,6 +259,12 @@ class SheetApiControllerTest {
         verifyOK(result);
         return result.andExpect(jsonPath("$.data.bpm").value(123));
     }
+
+    private ResultActions verifyGettingSharedSheets(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data[0].title").value("Chord Play"));
+    }
+
 
 
 }
