@@ -146,10 +146,8 @@ class SheetApiControllerTest {
 
         //then
         result = verifyGettingSharedSheets(result);
-
+        result.andDo(SheetTestDocs.documentOnGetSharedSheets());
     }
-
-
 
     private Sheet createMockSheet(){
 

@@ -25,7 +25,8 @@ public class SheetTestDocs {
     public static final String nameOfDocsThatGetSheet = "get_a_sheet";
     public static final String nameOfDocsThatDeleteSheet = "delete_a_sheet";
     public static final String nameOfDocsThatGetSheetData = "get_a_sheet_data";
-
+    public static final String getNameOfDocsThatGetSheetsByVideoId = "get_sheets_by_video_id";
+    public static final String getNameOfDocsThatGetSharedSheets = "get_shared_sheets";
 
     public static RestDocumentationResultHandler documentOnGettingSheet() {
         return document(nameOfDocsThatGetSheet,
@@ -67,7 +68,7 @@ public class SheetTestDocs {
     }
 
     public static ResultHandler documentOnGettingSheetsByVideoId() {
-        return document(nameOfDocsThatGetSheetData,
+        return document(getNameOfDocsThatGetSheetsByVideoId,
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
@@ -79,6 +80,17 @@ public class SheetTestDocs {
                         .andWithPrefix("data.shared[0].", getSheetResponseFields())
                         .andWithPrefix("data.like[0].", getSheetResponseFields()));
 
+    }
+
+    public static ResultHandler documentOnGetSharedSheets() {
+        return document(getNameOfDocsThatGetSharedSheets,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                requestParameters(parameterWithName("videoId").description("비디오 ID")),
+                responseFields(CommonTestDocs.commonDocsOfArray())
+                        .andWithPrefix("data[0].", getSheetResponseFields()));
     }
     private static List<FieldDescriptor> getSheetResponseFields(){
 
@@ -119,7 +131,6 @@ public class SheetTestDocs {
                 fieldWithPath("shared.[]").type(JsonFieldType.ARRAY).description("악보 response")
         );
     }
-
 
 
 }
