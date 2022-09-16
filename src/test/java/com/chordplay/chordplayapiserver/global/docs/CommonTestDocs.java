@@ -11,7 +11,7 @@ import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocument
 import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocumentResponse;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 
@@ -21,7 +21,7 @@ public class CommonTestDocs {
         return Arrays.asList(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                fieldWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터")
+                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터")
         );
     }
 
@@ -29,7 +29,7 @@ public class CommonTestDocs {
         return Arrays.asList(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터 배열")
+                subsectionWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터 배열")
         );
     }
 }

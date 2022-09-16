@@ -137,88 +137,48 @@ operation::get_watch_history[snippets='http-request,request-headers,request-para
 operation::search_videos[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
 
 
+== SHEET
 
+악보와 관련된 API 입니다
 
+=== `GET` /sheets/ai/{videoId}
 
-[[resources_tags_create]]
-=== Creating a tag
+AI 악보 생성을 요청합니다
 
-A `POST` request is used to create a note
+현재로는 Int 값으로 0, 1, 2, 3으로 순차적으로 들어옵니다
+추후 객체를 업데이트 해 에러 상황까지 커버할 예정입니다
 
-operation::{snippets}/tags-create-example[snippets='request-fields,curl-request,http-response']
+operation::create_ai_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
+[[resources_notes_list]]
+=== `GET` /sheets/{sheetId}
 
+악보 정보를 가져옵니다
 
-[[resources_note]]
-== Note
+operation::get_a_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
 
-The Note resource is used to retrieve, update, and delete individual notes
+=== `GET` /sheets/data/{sheetId}
 
+악보 데이터 정보를 가져옵니다
 
+operation::get_a_sheet_data[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
 
-[[resources_note_links]]
-=== Links
+=== `DELETE` /sheets/{sheetId}
 
-include::{snippets}/note-get-example/links.adoc[]
+악보와 악보 데이터를 삭제합니다
+악보의 주인만 악보를 삭제할 수 있습니다
 
+operation::delete_a_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
 
+=== `GET` /sheets
 
-[[resources_note_retrieve]]
-=== Retrieve a note
+특정 비디오에 관한 악보를 내 악보, 좋아요 한 악보, 공유된 악보 세 분류로 나누어 가져옵니다
 
-A `GET` request will retrieve the details of a note
+operation::get_sheets_by_video_id[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
 
-operation::note-get-example[snippets='response-fields,curl-request,http-response']
+=== `GET` /sheets/shared
 
+특정 비디오에 공유된 악보 목록을 가져옵니다
 
+operation::get_shared_sheets[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
 
-[[resources_note_update]]
-=== Update a note
-
-A `PATCH` request is used to update a note
-
-==== Request structure
-
-include::{snippets}/note-update-example/request-fields.adoc[]
-
-To leave an attribute of a note unchanged, any of the above may be omitted from the request.
-
-==== Example request
-
-include::{snippets}/note-update-example/curl-request.adoc[]
-
-==== Example response
-
-include::{snippets}/note-update-example/http-response.adoc[]
-
-
-
-[[resources_tag]]
-== Tag
-
-The Tag resource is used to retrieve, update, and delete individual tags
-
-
-
-[[resources_tag_links]]
-=== Links
-
-include::{snippets}/tag-get-example/links.adoc[]
-
-
-
-[[resources_tag_retrieve]]
-=== Retrieve a tag
-
-A `GET` request will retrieve the details of a tag
-
-operation::tag-get-example[snippets='response-fields,curl-request,http-response']
-
-
-
-[[resources_tag_update]]
-=== Update a tag
-
-A `PATCH` request is used to update a tag
-
-operation::tag-update-example[snippets='request-fields,curl-request,http-response']

@@ -50,11 +50,13 @@ public class SheetApiController {
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
         return ApiResponse.success(sheetsResponse,HttpStatus.OK.value());
     }
+
     @DeleteMapping(value = "/{sheetId}")
     public ApiResponse<SheetResponse> deleteSheetAndSheetData(@PathVariable("sheetId") String sheetId){
         Sheet sheet = sheetService.deleteSheetAndSheetData(sheetId);
         return ApiResponse.success(new SheetResponse(sheet),HttpStatus.OK.value());
     }
+
     @GetMapping("/shared")
     public ApiResponse<List<SheetResponse>> getSharedSheets(@RequestParam String videoId){
         List<SheetResponse> sheetResponses = new ArrayList<>();

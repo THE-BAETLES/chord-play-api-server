@@ -18,7 +18,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
         UserDetails userDetails = new PrincipalDetails(user);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        context.setAuthentication(authentication);
         return context;
     }
     private User getAdminUser(){
