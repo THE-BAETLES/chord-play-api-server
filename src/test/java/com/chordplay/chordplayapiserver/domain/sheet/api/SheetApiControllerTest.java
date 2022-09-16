@@ -196,32 +196,32 @@ class SheetApiControllerTest {
     }
     private ResultActions getSheet(String sheetId) throws Exception {
         return mockMvc.perform(get("/sheets/{sheetId}",sheetId)
-                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions getSheetsByVideoId(String videoId) throws Exception {
         return mockMvc.perform(get("/sheets")
-                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}")
                 .param("videoId", videoId));
     }
 
     private ResultActions deleteSheetAndSheetData(String sheetId) throws Exception {
         return mockMvc.perform(delete("/sheets/{sheetId}",sheetId)
-                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions getSheetData(String sheetId) throws Exception {
         return mockMvc.perform(get("/sheets/data/{sheetId}",sheetId)
-                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
 
     private ResultActions getSharedSheets(String videoId) throws Exception {
         return mockMvc.perform(get("/sheets/shared")
-                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}")
                 .param("videoId", videoId));
     }
