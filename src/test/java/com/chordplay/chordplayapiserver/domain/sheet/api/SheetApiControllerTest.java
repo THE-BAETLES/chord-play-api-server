@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -149,6 +150,24 @@ class SheetApiControllerTest {
         result.andDo(SheetTestDocs.documentOnGetSharedSheets());
     }
 
+    @Test
+    @DisplayName("AI sheet 생성 요청하기_videoId_Status_응답")
+    public void createAiSheet() throws Exception {
+
+        //get
+        final Long DEFAULT_TIMEOUT = 60L * 1000 * 5;
+        String videoId = "dinia_m0HGE";
+        List<Sheet> sheets = createMockSheets();
+        given(sheetService.createSheetProcess(videoId)).willReturn(new SseEmitter(DEFAULT_TIMEOUT));
+
+        //when
+        ResultActions result = createAiSheet(videoId);
+
+        //then
+        result = verifyCreateAiSheet(result);
+        result.andDo(SheetTestDocs.documentOnCreatingAiSheet());
+    }
+
     private Sheet createMockSheet(){
 
         User user = new User(ContextUtil.getPrincipalUserId());
@@ -226,6 +245,12 @@ class SheetApiControllerTest {
                 .param("videoId", videoId));
     }
 
+    private ResultActions createAiSheet(String videoId) throws Exception {
+        return mockMvc.perform(get("/sheets/ai/{videoId}",videoId)
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .header("Authorization","Bearer {token}"));
+    }
+
 
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
@@ -263,6 +288,9 @@ class SheetApiControllerTest {
         return result.andExpect(jsonPath("$.data[0].title").value("Chord Play"));
     }
 
+    private ResultActions verifyCreateAiSheet(ResultActions result) throws Exception {
+        return result.andExpect(status().isOk());
+    }
 
 
 }

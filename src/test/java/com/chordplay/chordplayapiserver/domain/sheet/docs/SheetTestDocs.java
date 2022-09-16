@@ -17,7 +17,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 public class SheetTestDocs {
@@ -27,6 +29,7 @@ public class SheetTestDocs {
     public static final String nameOfDocsThatGetSheetData = "get_a_sheet_data";
     public static final String getNameOfDocsThatGetSheetsByVideoId = "get_sheets_by_video_id";
     public static final String getNameOfDocsThatGetSharedSheets = "get_shared_sheets";
+    public static final String getNameOfDocsThatCreateAiSheet = "create_ai_sheet";
 
     public static RestDocumentationResultHandler documentOnGettingSheet() {
         return document(nameOfDocsThatGetSheet,
@@ -76,9 +79,8 @@ public class SheetTestDocs {
                 requestParameters(parameterWithName("videoId").description("비디오 ID")),
                 responseFields(CommonTestDocs.commonDocs())
                         .andWithPrefix("data.", getSheetsFieldsByResponse())
-                        .andWithPrefix("data.my[0].", getSheetResponseFields())
-                        .andWithPrefix("data.shared[0].", getSheetResponseFields())
-                        .andWithPrefix("data.like[0].", getSheetResponseFields()));
+                        .andWithPrefix("data.my[0].", getSheetResponseFields()));
+
 
     }
 
@@ -89,8 +91,27 @@ public class SheetTestDocs {
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer {token}")),
                 requestParameters(parameterWithName("videoId").description("비디오 ID")),
-                responseFields(CommonTestDocs.commonDocsOfArray())
-                        .andWithPrefix("data[0].", getSheetResponseFields()));
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
+
+
+                        //.andWithPrefix("data[0].", getSheetResponseFields()));
+//                responseFields(CommonTestDocs.commonDocsOfArray())
+//                        .andWithPrefix("data[0].", getSheetResponseFields()));
+    }
+
+    public static ResultHandler documentOnCreatingAiSheet() {
+
+        return document(getNameOfDocsThatCreateAiSheet,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                pathParameters(
+                        parameterWithName("videoId").description("비디오 아이디")
+                )
+
+        );
     }
     private static List<FieldDescriptor> getSheetResponseFields(){
 
@@ -124,13 +145,11 @@ public class SheetTestDocs {
     private static List<FieldDescriptor> getSheetsFieldsByResponse(){
         return Arrays.asList(
                 fieldWithPath("my").type(JsonFieldType.ARRAY).description("내가 쓴 악보"),
-                fieldWithPath("like").type(JsonFieldType.ARRAY).description("내가 좋아한 악보"),
-                fieldWithPath("shared").type(JsonFieldType.ARRAY).description("공유된 악보"),
-                fieldWithPath("my.[]").type(JsonFieldType.ARRAY).description("악보 response"),
-                fieldWithPath("like.[]").type(JsonFieldType.ARRAY).description("악보 response"),
-                fieldWithPath("shared.[]").type(JsonFieldType.ARRAY).description("악보 response")
+                subsectionWithPath("shared").type(JsonFieldType.ARRAY).description("공유된 악보"),
+                subsectionWithPath("like").type(JsonFieldType.ARRAY).description("내가 좋아요 누른 악보")
         );
     }
+
 
 
 }
