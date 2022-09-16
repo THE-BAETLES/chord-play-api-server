@@ -21,7 +21,7 @@ public class CommonTestDocs {
         return Arrays.asList(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("응답 Data")
+                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("결과 데이터")
         );
     }
 
@@ -29,7 +29,7 @@ public class CommonTestDocs {
         return Arrays.asList(
                 fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                subsectionWithPath("data").type(JsonFieldType.ARRAY).description("응답 Data")
+                subsectionWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터 배열")
         );
     }
 }

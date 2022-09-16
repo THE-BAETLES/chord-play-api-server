@@ -21,6 +21,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.subsecti
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.snippet.Attributes.attributes;
+import static org.springframework.restdocs.snippet.Attributes.key;
 
 public class SheetTestDocs {
 
@@ -40,8 +42,8 @@ public class SheetTestDocs {
                 pathParameters(
                         parameterWithName("sheetId").description("악보 아이디")
                 ),
-                responseFields(CommonTestDocs.commonDocs())
-                        .andWithPrefix("data.", getSheetResponseFields()));
+                responseFields(CommonTestDocs.commonDocs()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
     }
 
     public static ResultHandler documentOnDeleteingSheet() {
@@ -53,8 +55,8 @@ public class SheetTestDocs {
                 pathParameters(
                         parameterWithName("sheetId").description("악보 아이디")
                 ),
-                responseFields(CommonTestDocs.commonDocs())
-                        .andWithPrefix("data.", getSheetResponseFields()));
+                responseFields(CommonTestDocs.commonDocs()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
     }
 
     public static ResultHandler documentOnGetSheetData() {
@@ -66,8 +68,8 @@ public class SheetTestDocs {
                 pathParameters(
                         parameterWithName("sheetId").description("악보 아이디")
                 ),
-                responseFields(CommonTestDocs.commonDocs())
-                        .andWithPrefix("data.", getSheetDataResponseFields()));
+                responseFields(CommonTestDocs.commonDocs()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetDataResponseFields()));
     }
 
     public static ResultHandler documentOnGettingSheetsByVideoId() {
@@ -78,8 +80,8 @@ public class SheetTestDocs {
                         headerWithName("Authorization").description("Bearer {token}")),
                 requestParameters(parameterWithName("videoId").description("비디오 ID")),
                 responseFields(CommonTestDocs.commonDocs())
-                        .andWithPrefix("data.", getSheetsFieldsByResponse())
-                        .andWithPrefix("data.my[0].", getSheetResponseFields()));
+                        .andWithPrefix("data.", getSheetsFieldsByResponse()),
+                responseFields(beneathPath("data.my[]").withSubsectionId("data"),getSheetResponseFields()));
 
 
     }
