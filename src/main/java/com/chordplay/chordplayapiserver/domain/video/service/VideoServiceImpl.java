@@ -34,9 +34,13 @@ public class VideoServiceImpl implements VideoService{
     private final SheetService sheetService;
     private final WatchHistoryRepository watchHistoryRepository;
 
-    private final List<String> beginnerList = Arrays.asList("fbmStVcCL8s", "Gh-NrqgNd5E", "VY_BU1Ja_TM", "G-ujL8GsIFM", "0M4QMVQJRsw", "XZ8XsvGLoNE", "M7X8W1HbtRQ", "gWvQrC_wjCI", "BKNYZpVo0Vo");
-    private final List<String> intermediateList = Arrays.asList("Nx3h23xCsbA", "Wk3Vxt3knnI", "0EK_M2taRIM", "R9TPed_ohKM", "OlXr5YD-MWA", "btGlnFgCVX8", "c30ePrP5oi4", "TZPjRVScdkk", "t7hmovsG_f0");
-    private final List<String> expertList = Arrays.asList("QiziJ40kTz0", "kdOS94IjzzE", "hh5GKVa8VtM", "-uOShlFu1v8", "ghrlZIMDzbM", "r_RAv0JMB8s", "NF7oYY7Lhq4", "MBbqqWqLPlI", "aFoqCI75WoY");
+    protected static final List<String> beginnerList = Arrays.asList("fbmStVcCL8s", "Gh-NrqgNd5E", "VY_BU1Ja_TM", "G-ujL8GsIFM", "0M4QMVQJRsw", "XZ8XsvGLoNE", "M7X8W1HbtRQ", "gWvQrC_wjCI", "BKNYZpVo0Vo");
+    protected static final List<String> intermediateList = Arrays.asList("Nx3h23xCsbA", "Wk3Vxt3knnI", "0EK_M2taRIM", "R9TPed_ohKM", "OlXr5YD-MWA", "btGlnFgCVX8", "c30ePrP5oi4", "TZPjRVScdkk", "t7hmovsG_f0");
+    protected static final List<String> expertList = Arrays.asList("QiziJ40kTz0", "kdOS94IjzzE", "hh5GKVa8VtM", "-uOShlFu1v8", "ghrlZIMDzbM", "r_RAv0JMB8s", "NF7oYY7Lhq4", "MBbqqWqLPlI", "aFoqCI75WoY");
+
+    protected static final String BEGINNER = "beginner";
+    protected static final String INTERMEDIATE = "intermediate";
+    protected static final String EXPERT = "expert";
 
 
     @Override
@@ -79,12 +83,12 @@ public class VideoServiceImpl implements VideoService{
     public List<VideoResponse> getGradeCollection(String performerGrade) {
         List<VideoResponse> videoResponses = new ArrayList<VideoResponse>();
         List<Video> videos = null;
-        if (performerGrade.equals("beginner")) {
+        if (performerGrade.equals(BEGINNER)) {
             videos = getVideosByList(beginnerList);
 
-        } else if (performerGrade.equals("intermediate")) {
+        } else if (performerGrade.equals(INTERMEDIATE)) {
             videos = getVideosByList(intermediateList);
-        } else if (performerGrade.equals("expert")) {
+        } else if (performerGrade.equals(EXPERT)) {
             videos = getVideosByList(expertList);
         } else{
             throw new IncorrectGradeInputException();
