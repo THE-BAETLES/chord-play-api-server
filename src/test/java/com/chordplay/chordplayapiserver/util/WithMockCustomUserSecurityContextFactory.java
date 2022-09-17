@@ -14,14 +14,23 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
     @Override
     public SecurityContext createSecurityContext(WithMockCustomUser annotation) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
-        User user = getAdminUser();
+        User user = getAdminUser(annotation.hasNickname());
         UserDetails userDetails = new PrincipalDetails(user);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
         context.setAuthentication(authentication);
         return context;
     }
-    private User getAdminUser(){
+    private User getAdminUser(boolean hasNickname){
+        if (hasNickname){
+            return User.builder()
+                    .id("6313b2381f8fa3bb122eaa78")
+                    .username("최현준")
+                    .nickname("최현준")
+                    .roles("ROLE_USER")
+                    .build();
+        }
+
         return User.builder()
                 .id("6313b2381f8fa3bb122eaa78")
                 .username("최현준")
