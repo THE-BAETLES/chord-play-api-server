@@ -34,6 +34,7 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
 
         return User.builder()
                 .id("6313b2381f8fa3bb122eaa78")
+                .firebaseUid("firebaseUid123123")
                 .username("최현준")
                 .email("test@gmail.com")
                 .roles("ROLE_USER")
