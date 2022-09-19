@@ -17,6 +17,7 @@ public class UserTestDocs {
     private static String getNameOfDocsOfLoginSuccess = "login_success";
     private static String getNameOfDocsOfNicknameRecommendation = "get_nickname_recommendation";
     private static String getNameOfDocsOfNicknameDuplicationCheck = "post_nickname_duplication_check";
+    private static String getNameOfDocsOfJoining = "post_join";
     public static ResultHandler documentOnLoginSuccess() {
         return document(getNameOfDocsOfLoginSuccess,
                 getDocumentRequest(),
@@ -40,6 +41,17 @@ public class UserTestDocs {
 
     public static ResultHandler documentOnNicknameDuplicationCheck() {
         return document(getNameOfDocsOfNicknameDuplicationCheck,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                ),
+                requestBody()
+        );
+    }
+
+    public static ResultHandler documentOnJoining() {
+        return document(getNameOfDocsOfJoining,
                 getDocumentRequest(),
                 getDocumentResponse(),
                 requestHeaders(
