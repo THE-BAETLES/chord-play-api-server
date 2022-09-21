@@ -22,12 +22,12 @@ public class SheetData {
     private String id;
     private int bpm;
     @Field("chord_infos")
-    private List<ChordInfo> ChordInfos;
+    private List<ChordInfo> chordInfos;
 
     @Builder
     public SheetData(String id, int bpm, List<ChordInfo> chordInfos) {
         this.id = id;
         this.bpm = bpm;
-        ChordInfos = chordInfos;
+        this.chordInfos = chordInfos;
     }
 }
