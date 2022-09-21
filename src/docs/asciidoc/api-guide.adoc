@@ -95,10 +95,41 @@ links to navigate from resource to resource.
 
 The index provides the entry point into the service.
 
+== USER
 
+로그인, 화원가입과 관련된 API 입니다
 
+=== `GET` /user/login
 
+로그인 상태를 확인합니다
 
+operation::login_success[snippets='http-request,request-headers,http-response']
+
+=== `GET` /user/nickname
+
+추천 닉네임을 받습니다
+
+로그인한 계정의 email을 기반으로 추천 닉네임이 추출됩니다
+
+operation::get_nickname_recommendation[snippets='http-request,request-headers,http-response,response-fields']
+
+=== `POST` /user/check-duplication
+
+닉네임 중복을 확인합니다
+
+operation::post_nickname_duplication_check[snippets='http-request,request-headers,request-body,http-response']
+
+=== `POST` /user/join
+
+회원가입을 진행합니다
+
+"firebase_uid" : null,
+"username" : null,
+"email" : null,
+
+세 항목은 request body에 추가하지 않아도 됩니다
+
+operation::post_join[snippets='http-request,request-headers,request-body,http-response']
 
 == VIDEO
 
