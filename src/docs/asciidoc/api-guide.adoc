@@ -213,3 +213,12 @@ operation::get_sheets_by_video_id[snippets='http-request,request-headers,request
 
 operation::get_shared_sheets[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
 
+== RECOMMENDATION
+
+추천과 관련된 API 입니다
+
+=== `GET` /recommendation
+
+유저에 맞는 추천 비디오 목록을 가져옵니다
+
+operation::recommendation/get_recommended_videos[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
