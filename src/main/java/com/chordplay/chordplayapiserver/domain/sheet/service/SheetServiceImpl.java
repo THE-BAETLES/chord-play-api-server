@@ -37,7 +37,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-@Transactional
 public class SheetServiceImpl implements SheetService{
 
     private final SheetDataRepository sheetDataRepository;
@@ -51,6 +50,9 @@ public class SheetServiceImpl implements SheetService{
     private final WatchHistoryRepository watchHistoryRepository;
 
     private final String CREATE_AI_SHEET = "CREATE_AI_SHEET";
+
+    private final String adminUserName = "Chord Play";
+    private final String aiSheetTitle = "Chord Play";
 
     private void alertSheetCreationProgress(CustomSseEmitter sseEmitter, String videoId) {
         addRedisListener(sseEmitter); //ai서버 레디스 리스터를 sse
@@ -116,11 +118,11 @@ public class SheetServiceImpl implements SheetService{
     @Override
     public Sheet createOnlySheet(String videoId) {
         Video video = new Video(videoId);
-        User adminUser = userRepository.findByUsername("Chord Play");
+        User adminUser = userRepository.findByUsername(adminUserName);
         Sheet sheet = sheetRepository.save(Sheet.builder()
                 .video(video) //임시
                 .user(adminUser)
-                .title("Chord Play")
+                .title(aiSheetTitle)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build());

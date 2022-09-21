@@ -28,6 +28,8 @@ public class FirebaseInitializer {
                 .setStorageBucket("chordplay2022.appspot.com")
                 .build();
 
+        if(FirebaseApp.getApps().size() > 0)
+            return FirebaseApp.getApps().get(0);
         FirebaseApp app = FirebaseApp.initializeApp(options);
         //log.info("FirebaseApp initialized" + app.getName());
         return app;

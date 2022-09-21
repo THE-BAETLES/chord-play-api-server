@@ -1,0 +1,224 @@
+= CHORD PLAY API
+CHANWOO BAE;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+:snippets: ./build/generated-snippets
+
+[[overview]]
+= Overview
+
+ https://api.baetles.site/v1
+
+[[overview_http_verbs]]
+== HTTP verbs
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource
+
+| `POST`
+| Used to create a new resource
+
+| `PATCH`
+| Used to update an existing resource, including partial updates
+
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+[[overview_http_status_codes]]
+== HTTP status codes
+
+RESTful notes tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 Created`
+| A new resource has been created successfully. The resource's URI is available from the response's
+`Location` header
+
+| `204 No Content`
+| An update to an existing resource has been applied successfully
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `404 Not Found`
+| The requested resource did not exist
+|===
+
+[[overview_errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
+that describes the problem. The error object has the following structure:
+
+include::{snippets}/error-example/response-fields.adoc[]
+
+For example, a request that attempts to apply a non-existent tag to a note will produce a
+`400 Bad Request` response:
+
+include::{snippets}/error-example/http-response.adoc[]
+
+[[overview_hypermedia]]
+== Hypermedia
+
+RESTful Notes uses hypermedia and resources include links to other resources in their
+responses. Responses are in https://github.com/mikekelly/hal_specification[Hypertext
+Application Language (HAL)] format. Links can be found beneath the `_links` key. Users of
+the API should not create URIs themselves, instead they should use the above-described
+links to navigate from resource to resource.
+
+[[resources]]
+= Resources
+
+
+
+[[resources_index]]
+== Index
+
+The index provides the entry point into the service.
+
+== USER
+
+로그인, 화원가입과 관련된 API 입니다
+
+=== `GET` /user/login
+
+로그인 상태를 확인합니다
+
+operation::login_success[snippets='http-request,request-headers,http-response']
+
+=== `GET` /user/nickname
+
+추천 닉네임을 받습니다
+
+로그인한 계정의 email을 기반으로 추천 닉네임이 추출됩니다
+
+operation::get_nickname_recommendation[snippets='http-request,request-headers,http-response,response-fields']
+
+=== `POST` /user/check-duplication
+
+닉네임 중복을 확인합니다
+
+operation::post_nickname_duplication_check[snippets='http-request,request-headers,request-body,http-response']
+
+=== `POST` /user/join
+
+회원가입을 진행합니다
+
+"firebase_uid" : null,
+"username" : null,
+"email" : null,
+
+세 항목은 request body에 추가하지 않아도 됩니다
+
+operation::post_join[snippets='http-request,request-headers,request-body,http-response']
+
+== VIDEO
+
+비디오와 관련된 API 입니다
+
+
+[[resources_notes_list]]
+=== `GET` /videos/{videoId}
+
+비디오 정보를 가져옵니다
+
+operation::get_a_video[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== `POST` /videos/{videoId}
+
+비디오 정보를 생성합니다
+
+operation::create_a_video[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== `GET` /videos/grade-collection
+
+연주자 실력에 맞춘 비디오들을 가져옵니다
+
+operation::get_grade_collection[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+=== `GET` /videos/watch-video
+
+유저의 조회한 비디오 목록을 가져옵니다
+
+operation::get_watch_history[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+=== `GET` /videos/search
+
+검색을 통해 비디오 정보들을 가져옵니다
+
+operation::search_videos[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+
+== SHEET
+
+악보와 관련된 API 입니다
+
+=== `GET` /sheets/ai/{videoId}
+
+AI 악보 생성을 요청합니다
+
+현재로는 Int 값으로 0, 1, 2, 3으로 순차적으로 들어옵니다
+추후 객체를 업데이트 해 에러 상황까지 커버할 예정입니다
+
+operation::create_ai_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+[[resources_notes_list]]
+=== `GET` /sheets/{sheetId}
+
+악보 정보를 가져옵니다
+
+operation::get_a_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
+
+=== `GET` /sheets/data/{sheetId}
+
+악보 데이터 정보를 가져옵니다
+
+operation::get_a_sheet_data[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
+
+=== `DELETE` /sheets/{sheetId}
+
+악보와 악보 데이터를 삭제합니다
+악보의 주인만 악보를 삭제할 수 있습니다
+
+operation::delete_a_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields,response-fields-data']
+
+=== `GET` /sheets
+
+특정 비디오에 관한 악보를 내 악보, 좋아요 한 악보, 공유된 악보 세 분류로 나누어 가져옵니다
+
+operation::get_sheets_by_video_id[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
+
+=== `GET` /sheets/shared
+
+특정 비디오에 공유된 악보 목록을 가져옵니다
+
+operation::get_shared_sheets[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
+
+== RECOMMENDATION
+
+추천과 관련된 API 입니다
+
+=== `GET` /recommendation
+
+유저에 맞는 추천 비디오 목록을 가져옵니다
+
+operation::recommendation/get_recommended_videos[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
