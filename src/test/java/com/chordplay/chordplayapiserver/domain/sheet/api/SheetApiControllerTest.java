@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.docs.SheetTestDocs;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
@@ -15,6 +16,7 @@ import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +59,9 @@ class SheetApiControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     VideoService videoService;
@@ -168,6 +173,37 @@ class SheetApiControllerTest {
         result.andDo(SheetTestDocs.documentOnCreatingAiSheet());
     }
 
+    @Test
+    @DisplayName("악보데이터 코드 변경_정상 파라미터_정상 응답")
+    public void updateSheetChordTest() throws Exception {
+
+        //get
+        String sheetId= "abc";
+        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(3, "B");
+
+        //when
+        ResultActions result = updateSheetChord(sheetId, sheetChangeRequest);
+
+        //then
+        verifyOK(result);
+        result.andDo(SheetTestDocs.documentOnUpdatingSheetChord());
+    }
+
+    @Test
+    @DisplayName("악보데이터 코드 변경_비정상 파라미터_bad request 응답")
+    public void updateSheetChordFailTest() throws Exception {
+
+        //get
+        String sheetId= "abc";
+        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(-1, "B");
+
+        //when
+        ResultActions result = updateSheetChord(sheetId, sheetChangeRequest);
+
+        //then
+        result.andExpect(status().isBadRequest());
+    }
+
     private Sheet createMockSheet(){
 
         User user = new User(ContextUtil.getPrincipalUserId());
@@ -226,8 +262,10 @@ class SheetApiControllerTest {
                 .param("videoId", videoId));
     }
 
-    private ResultActions deleteSheetAndSheetData(String sheetId) throws Exception {
-        return mockMvc.perform(delete("/sheets/{sheetId}",sheetId)
+    private ResultActions updateSheetChord(String sheetId, SheetChangeRequest content) throws Exception {
+        return mockMvc.perform(patch("/sheets/data/{sheetId}",sheetId)
+                .content(objectMapper.writeValueAsString(content))
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
@@ -248,6 +286,13 @@ class SheetApiControllerTest {
     private ResultActions createAiSheet(String videoId) throws Exception {
         return mockMvc.perform(get("/sheets/ai/{videoId}",videoId)
                 .accept(MediaType.TEXT_EVENT_STREAM)
+                .header("Authorization","Bearer {token}"));
+    }
+
+
+    private ResultActions deleteSheetAndSheetData(String sheetId) throws Exception {
+        return mockMvc.perform(delete("/sheets/{sheetId}",sheetId)
+                .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
 
