@@ -17,6 +17,7 @@ public enum ErrorCode {
     INCORRECT_GRADE_INPUT_EXCEPTION(400, "V003", "Incorrect grade input exception"),
     IO_EXCEPTION_ERROR(500, "C001", "IoException: server error"),
     UNAUTHORIZED(401, "C401", "Unauthorized"),
+    FORBIDDEN(403, "C403", "Forbidden"),
     ;
 
 

@@ -26,6 +26,13 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(value = {ForbiddenException.class})
+    public ResponseEntity<ErrorResponse> ForbiddenException(ForbiddenException e){
+        log.error("ForbiddenException");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.FORBIDDEN);
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> validException(
             MethodArgumentNotValidException ex) {

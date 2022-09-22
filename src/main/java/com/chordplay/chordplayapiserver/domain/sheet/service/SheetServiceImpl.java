@@ -9,6 +9,7 @@ import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
+import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
@@ -147,6 +148,9 @@ public class SheetServiceImpl implements SheetService{
 
     @Override
     public void updateSheetChord(String sheetId, SheetChangeRequest dto) {
+        Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
+        if (!sheet.getUser().getId().equals(ContextUtil.getPrincipalUserId()))
+            throw new ForbiddenException();
         sheetDataRepository.updateSheetChord(sheetId,dto.getPosition(),dto.getChord());
     }
 
