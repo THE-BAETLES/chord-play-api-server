@@ -66,4 +66,11 @@ public class SheetApiController {
         }
         return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
     }
+    @PatchMapping("/data/{sheetId}")
+    public ApiResponse<String> updateSheet(@PathVariable("sheetId") String sheetId
+            , @RequestBody SheetChangeRequest dto){
+
+
+        return ApiResponse.success("",HttpStatus.OK.value());
+    }
 }
