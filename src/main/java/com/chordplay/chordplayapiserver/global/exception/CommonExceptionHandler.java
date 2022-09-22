@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.global.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -23,5 +24,16 @@ public class CommonExceptionHandler {
         log.error("UnauthorizedException");
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.UNAUTHORIZED);
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ErrorResponse> validException(
+            MethodArgumentNotValidException ex) {
+        log.error("MethodArgumentNotValidException ",ex);
+        String message = String.format("파라미터 유효성 검증 실패 : %s",ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(message, HttpStatus.BAD_REQUEST.value(), null, "M001");
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST); // 2
     }
 }
