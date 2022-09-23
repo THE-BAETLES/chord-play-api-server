@@ -9,6 +9,9 @@ import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
+import com.chordplay.chordplayapiserver.domain.user.api.UserApiController;
+import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
+import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +21,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.ZonedDateTime;
@@ -35,7 +43,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Sheet 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
 class SheetServiceImplTest {
-
 
     @InjectMocks
     SheetServiceImpl sheetService;
@@ -60,14 +67,18 @@ class SheetServiceImplTest {
         //then
     }
 
+    @Test
+    @DisplayName("악보 코드 변경하기_다른 유저_오류 반환")
+    @WithMockCustomUser
+    public void updateSheetChordUserExceptionTest() throws Exception {
 
         //get
         Sheet sheet = createMockSheetOfOtherUser();
-        given(sheetRepository.findById(sheet.getId())).willReturn(Optional.empty());
+        given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
 
         //when
         assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
-                .isInstanceOf(SheetNotFoundException.class);
+                .isInstanceOf(ForbiddenException.class);
         //then
     }
 
@@ -111,7 +122,6 @@ class SheetServiceImplTest {
                 .start(2.23)
                 .end(4.06)
                 .position(1).build());
-
         return SheetData.builder()
                 .bpm(123)
                 .id("6300d7e8aeeb0778c43ea37d")
