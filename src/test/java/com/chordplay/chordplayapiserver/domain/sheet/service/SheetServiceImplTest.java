@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -27,6 +29,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.ZonedDateTime;
@@ -37,6 +42,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -75,6 +81,9 @@ class SheetServiceImplTest {
         //get
         Sheet sheet = createMockSheetOfOtherUser();
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
+        User mockOtherUser = createMockOtherUser();
+        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
+        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockOtherUser.getId());
 
         //when
         assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
