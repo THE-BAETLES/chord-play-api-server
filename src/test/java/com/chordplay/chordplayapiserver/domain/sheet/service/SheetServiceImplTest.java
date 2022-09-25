@@ -127,4 +127,14 @@ class SheetServiceImplTest {
                 .id("6300d7e8aeeb0778c43ea37d")
                 .chordInfos(chordInfos).build();
     }
+
+    private User createMockOtherUser(){
+        return User.builder()
+                .id("6313b2381f8fa3bb122eaa78")
+                .username("최현준")
+                .email("test@gmail.com")
+                .nickname("test")
+                .roles("ROLE_USER")
+                .build();
+    }
 }
