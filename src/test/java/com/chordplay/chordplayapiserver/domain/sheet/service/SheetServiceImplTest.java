@@ -88,7 +88,15 @@ class SheetServiceImplTest {
         //then
     }
 
+    @Test
+    @DisplayName("악보 코드 변경하기_악보 주인 성공 반환")
+    public void updateSheetChordSuccessTest() throws Exception {
 
+        //get
+        Sheet sheet = createMockSheet();
+        given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
+        User mockUser = createMockUser();
+        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
         contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
 
         //when
