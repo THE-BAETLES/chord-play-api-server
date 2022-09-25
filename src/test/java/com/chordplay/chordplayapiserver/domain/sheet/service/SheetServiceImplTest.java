@@ -60,7 +60,6 @@ class SheetServiceImplTest {
 
     @Test
     @DisplayName("악보 코드 변경하기_없는 악보 호출_오류 반환")
-    @WithMockCustomUser
     public void updateSheetChordSheetExceptionTest() throws Exception {
 
         //get
@@ -75,7 +74,6 @@ class SheetServiceImplTest {
 
     @Test
     @DisplayName("악보 코드 변경하기_다른 유저_오류 반환")
-    @WithMockCustomUser
     public void updateSheetChordUserExceptionTest() throws Exception {
 
         //get
