@@ -39,12 +39,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Sheet 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -73,15 +72,15 @@ class SheetServiceImplTest {
     }
 
     @Test
-    @DisplayName("악보 코드 변경하기_다른 유저_오류 반환")
+    @DisplayName("악보 코드 변경하기_다른 유저의 악보_오류 반환")
     public void updateSheetChordUserExceptionTest() throws Exception {
 
         //get
         Sheet sheet = createMockSheetOfOtherUser();
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
-        User mockOtherUser = createMockOtherUser();
+        User mockUser = createMockUser();
         MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
-        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockOtherUser.getId());
+        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
 
         //when
         assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
@@ -90,10 +89,17 @@ class SheetServiceImplTest {
     }
 
 
+        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
+
+        //when
+        assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); }).doesNotThrowAnyException();
+        //then
+    
+    }
 
     private Sheet createMockSheet(){
 
-        User user = new User(ContextUtil.getPrincipalUserId());
+        User user = createMockUser();
         return Sheet.builder()
                 .updatedAt(ZonedDateTime.parse("2022-08-20T12:47:36.426+00:00").toLocalDateTime())
                 .video(new Video("KZH-MpiwmaU"))
@@ -135,7 +141,9 @@ class SheetServiceImplTest {
                 .chordInfos(chordInfos).build();
     }
 
-    private User createMockOtherUser(){
+
+
+    private User createMockUser(){
         return User.builder()
                 .id("6313b2381f8fa3bb122eaa78")
                 .username("최현준")
