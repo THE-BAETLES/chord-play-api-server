@@ -14,6 +14,8 @@ import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +34,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.ZonedDateTime;
@@ -57,6 +60,13 @@ class SheetServiceImplTest {
     @Mock
     SheetDataRepository sheetDataRepository;
 
+    @BeforeAll
+    public static void staticInit(){
+        User mockUser = createStaticMockUser();
+        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
+        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
+    }
+
     @Test
     @DisplayName("악보 코드 변경하기_없는 악보 호출_오류 반환")
     public void updateSheetChordSheetExceptionTest() throws Exception {
@@ -78,9 +88,7 @@ class SheetServiceImplTest {
         //get
         Sheet sheet = createMockSheetOfOtherUser();
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
-        User mockUser = createMockUser();
-        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
-        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
+
 
         //when
         assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
@@ -95,9 +103,6 @@ class SheetServiceImplTest {
         //get
         Sheet sheet = createMockSheet();
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
-        User mockUser = createMockUser();
-        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
-        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
 
         //when
         assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); }).doesNotThrowAnyException();
@@ -149,7 +154,15 @@ class SheetServiceImplTest {
                 .chordInfos(chordInfos).build();
     }
 
-
+    private static User createStaticMockUser(){
+        return User.builder()
+                .id("6313b2381f8fa3bb122eaa78")
+                .username("최현준")
+                .email("test@gmail.com")
+                .nickname("test")
+                .roles("ROLE_USER")
+                .build();
+    }
 
     private User createMockUser(){
         return User.builder()
