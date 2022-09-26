@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,5 +66,12 @@ public class SheetApiController {
             sheetResponses.add(new SheetResponse(s));
         }
         return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
+    }
+    @PatchMapping("/data/{sheetId}")
+    public ApiResponse<String> updateSheet(@PathVariable("sheetId") String sheetId
+            , @RequestBody @Valid SheetChangeRequest dto){
+
+
+        return ApiResponse.success("",HttpStatus.OK.value());
     }
 }

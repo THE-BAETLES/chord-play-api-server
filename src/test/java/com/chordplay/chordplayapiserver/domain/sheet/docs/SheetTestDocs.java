@@ -16,10 +16,7 @@ import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocument
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.snippet.Attributes.attributes;
 import static org.springframework.restdocs.snippet.Attributes.key;
@@ -32,6 +29,7 @@ public class SheetTestDocs {
     public static final String getNameOfDocsThatGetSheetsByVideoId = "get_sheets_by_video_id";
     public static final String getNameOfDocsThatGetSharedSheets = "get_shared_sheets";
     public static final String getNameOfDocsThatCreateAiSheet = "create_ai_sheet";
+    public static final String getNameOfDocsThatUpdateSheetChord = "sheet/update_sheet_chord";
 
     public static RestDocumentationResultHandler documentOnGettingSheet() {
         return document(nameOfDocsThatGetSheet,
@@ -115,6 +113,21 @@ public class SheetTestDocs {
 
         );
     }
+
+    public static ResultHandler documentOnUpdatingSheetChord() {
+        return document(getNameOfDocsThatUpdateSheetChord,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestBody(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                pathParameters(
+                        parameterWithName("sheetId").description("악보 아이디")
+                )
+
+        );
+    }
+
     private static List<FieldDescriptor> getSheetResponseFields(){
 
         return Arrays.asList(
