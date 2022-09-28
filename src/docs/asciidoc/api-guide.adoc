@@ -217,7 +217,7 @@ operation::get_shared_sheets[snippets='http-request,request-headers,request-para
 
 악보 데이터의 특정 구간을 변경합니다
 
-operation::sheet/update_sheet_chord[snippets='http-request,request-headers,path-parameters,request-body,http-response,response-fields,response-fields-data']
+operation::sheet/update_sheet_chord[snippets='http-request,request-headers,path-parameters,request-body,http-response']
 
 == RECOMMENDATION
 
