@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import com.chordplay.chordplayapiserver.global.sse.service.NotificationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -70,8 +71,13 @@ public class SheetApiController {
     @PatchMapping("/data/{sheetId}")
     public ApiResponse<String> updateSheet(@PathVariable("sheetId") String sheetId
             , @RequestBody @Valid SheetChangeRequest dto){
-
-
         return ApiResponse.success("",HttpStatus.OK.value());
+    }
+
+    @PostMapping("/duplicate")
+    public ResponseEntity<ApiResponse<String>> duplicateSheet(@RequestBody @Valid SheetDuplicationRequest dto){
+        sheetService.duplacateSheet(dto);
+        ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 }
