@@ -13,10 +13,9 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class SheetDuplicationRequest {
-    @NotBlank(message = "코드")
+    @NotBlank(message = "악보 아이디")
     String sheetId;
 
-    @Builder.Default
     String title = "no title";
 
     @Builder
