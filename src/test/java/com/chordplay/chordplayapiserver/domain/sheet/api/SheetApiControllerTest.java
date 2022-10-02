@@ -222,6 +222,34 @@ class SheetApiControllerTest {
         result.andDo(SheetTestDocs.documentOnDuplicatingSheet());
     }
 
+    @Test
+    @DisplayName("악보 복제하기_제목 미입력_정상 응답")
+    public void duplicateSheetWithNoTitleTest() throws Exception {
+
+        //get
+        SheetDuplicationRequest dto = new SheetDuplicationRequest("sheet_id");
+
+        //when
+        ResultActions result = duplicateSheet(dto);
+
+        //then
+        verifyCreated(result);
+    }
+
+    @Test
+    @DisplayName("악보 복제하기_악보아이디 미입력_비정상 응답")
+    public void duplicateSheetWithNoSheetIdTest() throws Exception {
+
+        //get
+        SheetDuplicationRequest dto = new SheetDuplicationRequest();
+
+        //when
+        ResultActions result = duplicateSheet(dto);
+
+        //then
+        result.andExpect(status().isBadRequest());
+    }
+
 
 
     private Sheet createMockSheet(){

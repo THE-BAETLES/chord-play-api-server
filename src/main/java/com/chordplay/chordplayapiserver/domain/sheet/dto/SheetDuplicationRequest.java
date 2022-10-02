@@ -18,6 +18,10 @@ public class SheetDuplicationRequest {
 
     String title = "no title";
 
+    public SheetDuplicationRequest(String sheetId) {
+        this.sheetId = sheetId;
+    }
+
     @Builder
     public SheetDuplicationRequest(String sheetId, String title) {
         this.sheetId = sheetId;
