@@ -30,6 +30,7 @@ public class SheetTestDocs {
     public static final String getNameOfDocsThatGetSharedSheets = "get_shared_sheets";
     public static final String getNameOfDocsThatCreateAiSheet = "create_ai_sheet";
     public static final String getNameOfDocsThatUpdateSheetChord = "sheet/update_sheet_chord";
+    public static final String getNameOfDocsThatDuplicateSheetChord = "sheet/duplicate_a_sheet";
 
     public static RestDocumentationResultHandler documentOnGettingSheet() {
         return document(nameOfDocsThatGetSheet,
@@ -125,6 +126,21 @@ public class SheetTestDocs {
                         parameterWithName("sheetId").description("악보 아이디")
                 )
 
+        );
+    }
+
+    public static ResultHandler documentOnDuplicatingSheet() {
+        return document(getNameOfDocsThatDuplicateSheetChord,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestBody(),
+                requestFields(
+                        fieldWithPath("sheet_id").type(JsonFieldType.STRING).description("악보 아이디"),
+                        fieldWithPath("title").type(JsonFieldType.STRING).description("악보 제목 (입력하지 않을 시 'no title'로 저장됨")
+                ),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                )
         );
     }
 
