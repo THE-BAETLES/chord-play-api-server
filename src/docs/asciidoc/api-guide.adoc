@@ -225,6 +225,12 @@ operation::sheet/update_sheet_chord[snippets='http-request,request-headers,path-
 
 operation::sheet/duplicate_a_sheet[snippets='http-request,request-headers,request-body,request-fields,http-response']
 
+오류 목록
+
+200 AI 악보 데이터가 아직 생성되지 않음 (ai)
+
+400 악보 or 악보 데이터가 존재하지 않음
+
 == RECOMMENDATION
 
 추천과 관련된 API 입니다
