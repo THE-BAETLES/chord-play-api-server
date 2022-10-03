@@ -485,6 +485,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_get_sheets"><code>GET</code> /sheets</a></li>
 <li><a href="#_get_sheetsshared"><code>GET</code> /sheets/shared</a></li>
 <li><a href="#_patch_sheetsdatasheetid"><code>PATCH</code> /sheets/data/{sheetId}</a></li>
+<li><a href="#_post_sheetsduplication"><code>POST</code> /sheets/duplication</a></li>
 </ul>
 </li>
 <li><a href="#_recommendation">RECOMMENDATION</a>
@@ -2940,17 +2941,115 @@ Content-Length: 60
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_patch_sheetsdatasheetid_response_fields"><a class="link" href="#_patch_sheetsdatasheetid_response_fields">Response fields</a></h4>
+</div>
+<div class="sect2">
+<h3 id="_post_sheetsduplication"><a class="link" href="#_post_sheetsduplication"><code>POST</code> /sheets/duplication</a></h3>
 <div class="paragraph">
-<p>Snippet response-fields not found for operation::sheet/update_sheet_chord</p>
+<p>악보를 복제하고 제목을 입력합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_post_sheetsduplication_http_request"><a class="link" href="#_post_sheetsduplication_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /sheets/duplication HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: Bearer {token}
+Content-Length: 50
+Host: api.baetles.site
+
+{
+  "sheet_id" : "sheet_id",
+  "title" : "title"
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_patch_sheetsdatasheetid_response_fields-data"><a class="link" href="#_patch_sheetsdatasheetid_response_fields-data">Response fields-data</a></h4>
-<div class="paragraph">
-<p>Snippet response-fields-data not found for operation::sheet/update_sheet_chord</p>
+<h4 id="_post_sheetsduplication_request_headers"><a class="link" href="#_post_sheetsduplication_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<div class="sect3">
+<h4 id="_post_sheetsduplication_request_body"><a class="link" href="#_post_sheetsduplication_request_body">Request body</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "sheet_id" : "sheet_id",
+  "title" : "title"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_sheetsduplication_request_fields"><a class="link" href="#_post_sheetsduplication_request_fields">Request fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheet_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 제목 (입력하지 않을 시 'no title&#8217;로 저장됨</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_post_sheetsduplication_http_response"><a class="link" href="#_post_sheetsduplication_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "201",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>오류 목록</p>
+</div>
+<div class="paragraph">
+<p>200 AI 악보 데이터가 아직 생성되지 않음 (ai)</p>
+</div>
+<div class="paragraph">
+<p>400 악보 or 악보 데이터가 존재하지 않음</p>
 </div>
 </div>
 </div>
@@ -3178,7 +3277,7 @@ Content-Length: 918
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-09-26 16:04:38 +0900
+Last updated 2022-10-03 02:01:38 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
