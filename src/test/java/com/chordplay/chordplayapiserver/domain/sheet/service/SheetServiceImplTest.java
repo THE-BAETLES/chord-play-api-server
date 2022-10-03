@@ -8,6 +8,7 @@ import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.domain.user.api.UserApiController;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
@@ -37,12 +38,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
@@ -110,6 +114,31 @@ class SheetServiceImplTest {
     
     }
 
+    @Test
+    @DisplayName("악보 복제하기_정상 입력_성공 반환")
+    public void duplicateSheetSuccessTest() throws Exception {
+
+        //get
+        Sheet sheet = createMockSheet();
+        SheetData sheetData = createMockSheetData();
+        User user = createMockUser();
+        SheetDuplicationRequest dto = new SheetDuplicationRequest(sheet.getId(),"The Song - new version");
+        Sheet newSheet = createMockNewSheet(sheet ,user, dto.getTitle());
+
+        Sheet newSheetWithId = createMockNewSheetWithId(newSheet);
+        given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
+        given(sheetDataRepository.findById(sheet.getId())).willReturn(Optional.of(sheetData));
+        given(sheetRepository.save(any(Sheet.class))).willReturn(newSheetWithId);
+
+        //when
+        assertThatCode(() -> {
+            sheetService.duplicateSheet(dto);
+        }).doesNotThrowAnyException();
+
+        //then
+
+    }
+
     private Sheet createMockSheet(){
 
         User user = createMockUser();
@@ -134,6 +163,28 @@ class SheetServiceImplTest {
                 .id("6300d7e8aeeb0778c43ea37d")
                 .build();
     }
+
+    private Sheet createMockNewSheet(Sheet sheet,User user, String title){
+        return Sheet.builder()
+                .video(sheet.getVideo())
+                .user(user)
+                .title(title)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+    }
+
+    private Sheet createMockNewSheetWithId(Sheet sheet){
+        return Sheet.builder()
+                .id("newID")
+                .video(sheet.getVideo())
+                .user(sheet.getUser())
+                .title(sheet.getTitle())
+                .createdAt(sheet.getCreatedAt())
+                .updatedAt(sheet.getUpdatedAt())
+                .build();
+    }
+
     private SheetData createMockSheetData() {
         List<ChordInfo> chordInfos = new ArrayList<>();
 
