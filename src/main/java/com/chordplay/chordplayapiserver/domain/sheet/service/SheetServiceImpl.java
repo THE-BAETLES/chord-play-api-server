@@ -5,10 +5,8 @@ import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
 import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
+import com.chordplay.chordplayapiserver.domain.sheet.exception.AiSheetNotCreatedException;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
@@ -180,5 +178,38 @@ public class SheetServiceImpl implements SheetService{
             throw new RuntimeException("emitter error");    // 예외처리
         });
 
+    }
+
+    @Override
+    public void duplicateSheet(SheetDuplicationRequest dto) {
+
+        Sheet sheet = sheetRepository.findById(dto.getSheetId()).orElseThrow(() -> new SheetNotFoundException());
+        Sheet finalSheet = sheet;
+        SheetData sheetData = sheetDataRepository.findById(dto.getSheetId()).orElseThrow(() -> {
+            if ( finalSheet.getUser().getUsername().equals(adminUserName)){
+                return new AiSheetNotCreatedException();
+            }
+            return new SheetDataNotFoundException();
+        });
+        User user = new User(ContextUtil.getPrincipalUserId());
+
+        Sheet newSheet = Sheet.builder()
+                .video(sheet.getVideo())
+                .user(user)
+                .title(dto.getTitle())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        sheet = sheetRepository.save(newSheet);
+
+        System.out.println("sheet id : " + sheet.getId());
+        SheetData newSheetData = SheetData.builder()
+                .id(sheet.getId())
+                .bpm(sheetData.getBpm())
+                .chordInfos(sheetData.getChordInfos())
+                .build();
+
+        sheetDataRepository.save(newSheetData);
     }
 }
