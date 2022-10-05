@@ -12,11 +12,13 @@ public enum ErrorCode {
     SHEET_CREATION_FAIL(500, "S001", "Sheet creation failed : ai server failed"),
     SHEET_DATA_NOT_FOUND(400, "S002", "Sheet data not found"),
     SHEET_NOT_FOUND(400, "S003", "Sheet not found"),
+    AI_SHEET_NOT_CREATED(200, "S004", "Ai sheet data has not yet been created"),
     YOUTUBE_SERVER_ERROR(500, "V001", "GoogleJsonResponseException: youtube server error"),
     VIDEO_NOT_FOUND(400, "V002", "Video not found"),
     INCORRECT_GRADE_INPUT_EXCEPTION(400, "V003", "Incorrect grade input exception"),
     IO_EXCEPTION_ERROR(500, "C001", "IoException: server error"),
     UNAUTHORIZED(401, "C401", "Unauthorized"),
+    FORBIDDEN(403, "C403", "Forbidden"),
     ;
 
 

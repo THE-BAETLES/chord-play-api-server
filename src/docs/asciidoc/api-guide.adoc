@@ -213,6 +213,24 @@ operation::get_sheets_by_video_id[snippets='http-request,request-headers,request
 
 operation::get_shared_sheets[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
 
+=== `PATCH` /sheets/data/{sheetId}
+
+악보 데이터의 특정 구간을 변경합니다
+
+operation::sheet/update_sheet_chord[snippets='http-request,request-headers,path-parameters,request-body,http-response']
+
+=== `POST` /sheets/duplication
+
+악보를 복제하고 제목을 입력합니다
+
+operation::sheet/duplicate_a_sheet[snippets='http-request,request-headers,request-body,request-fields,http-response']
+
+오류 목록
+
+200 AI 악보 데이터가 아직 생성되지 않음 (ai)
+
+400 악보 or 악보 데이터가 존재하지 않음
+
 == RECOMMENDATION
 
 추천과 관련된 API 입니다

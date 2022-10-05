@@ -36,4 +36,11 @@ public class SheetExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.SHEET_NOT_FOUND);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {AiSheetNotCreatedException.class})
+    public ResponseEntity<ErrorResponse> AiSheetNotCreatedException(AiSheetNotCreatedException e){
+        log.error("Ai sheet data has not yet been created ",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.AI_SHEET_NOT_CREATED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

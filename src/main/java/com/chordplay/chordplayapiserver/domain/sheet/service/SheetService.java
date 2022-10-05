@@ -2,9 +2,7 @@ package com.chordplay.chordplayapiserver.domain.sheet.service;
 
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetAiRequest;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDataResponse;
-import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
@@ -21,5 +19,9 @@ public interface SheetService {
     SheetsResponse getSheetsByVideoId(String videoId);
 
     List<Sheet> getSharedSheets(String videoId);
+
+    void updateSheetChord(String sheetId,SheetChangeRequest dto);
+
+    void duplicateSheet(SheetDuplicationRequest dto);
 
 }

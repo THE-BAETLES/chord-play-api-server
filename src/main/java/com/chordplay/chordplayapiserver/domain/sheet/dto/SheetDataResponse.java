@@ -18,12 +18,12 @@ public class SheetDataResponse {
     private String id;
     private int status;
     private int bpm;
-    private List<ChordInfo> ChordInfos;
+    private List<ChordInfo> chordInfos;
 
     public SheetDataResponse(SheetData sheetData) {
         this.id = sheetData.getId();
         this.bpm = sheetData.getBpm();
-        ChordInfos = sheetData.getChordInfos();
+        this.chordInfos = sheetData.getChordInfos();
         this.status = 3;
     }
 }

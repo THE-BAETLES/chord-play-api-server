@@ -19,11 +19,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public PrincipalDetails(User user) {
         this.user = user;
     }
-    //OAuth 로그
-    public PrincipalDetails(User user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
