@@ -8,6 +8,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+
+    @Override
+    public User getUser(String userId) {
+        return userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException());
+    }
 
     @Override
     @Transactional

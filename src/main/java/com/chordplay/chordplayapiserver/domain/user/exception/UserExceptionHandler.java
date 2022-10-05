@@ -26,4 +26,11 @@ public class UserExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.NOT_FULLY_JOINED);
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(value = {UserNotFoundException.class})
+    public ResponseEntity<Object> UserNotFoundException(UserNotFoundException e){
+        log.error("User not found Exception",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.USER_NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }
