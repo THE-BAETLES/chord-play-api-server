@@ -17,8 +17,10 @@ public enum ErrorCode {
     VIDEO_NOT_FOUND(400, "V002", "Video not found"),
     INCORRECT_GRADE_INPUT_EXCEPTION(400, "V003", "Incorrect grade input exception"),
     IO_EXCEPTION_ERROR(500, "C001", "IoException: server error"),
+    INVALID_INPUT(400, "C002", "Invalid input"),
     UNAUTHORIZED(401, "C401", "Unauthorized"),
     FORBIDDEN(403, "C403", "Forbidden"),
+
     ;
 
 
