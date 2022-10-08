@@ -18,4 +18,5 @@ public interface UserService {
     public void createSignupFavorite(SignupFavoriteRequest req);
 
     public User getUser(String userId);
+    void addVideoToMyCollection(String videoId);
 }
