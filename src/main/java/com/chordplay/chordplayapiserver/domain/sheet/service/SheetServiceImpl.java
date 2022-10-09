@@ -181,7 +181,7 @@ public class SheetServiceImpl implements SheetService{
     }
 
     @Override
-    public void duplicateSheet(SheetDuplicationRequest dto) {
+    public Sheet duplicateSheet(SheetDuplicationRequest dto) {
 
         Sheet sheet = sheetRepository.findById(dto.getSheetId()).orElseThrow(() -> new SheetNotFoundException());
         Sheet finalSheet = sheet;
@@ -211,5 +211,7 @@ public class SheetServiceImpl implements SheetService{
                 .build();
 
         sheetDataRepository.save(newSheetData);
+
+        return sheet;
     }
 }
