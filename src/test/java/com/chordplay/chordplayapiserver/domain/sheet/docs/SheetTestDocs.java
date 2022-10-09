@@ -140,7 +140,9 @@ public class SheetTestDocs {
                 ),
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer {token}")
-                )
+                ),
+                responseFields(CommonTestDocs.commonDocs()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields())
         );
     }
 
@@ -156,8 +158,6 @@ public class SheetTestDocs {
                 fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수")
         );
     }
-
-
 
     private static List<FieldDescriptor> getSheetDataResponseFields(){
 
