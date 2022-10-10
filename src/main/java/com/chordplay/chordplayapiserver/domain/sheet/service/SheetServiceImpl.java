@@ -203,7 +203,6 @@ public class SheetServiceImpl implements SheetService{
 
         sheet = sheetRepository.save(newSheet);
 
-        System.out.println("sheet id : " + sheet.getId());
         SheetData newSheetData = SheetData.builder()
                 .id(sheet.getId())
                 .bpm(sheetData.getBpm())
