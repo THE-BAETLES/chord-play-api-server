@@ -10,12 +10,8 @@ import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
-import com.chordplay.chordplayapiserver.domain.user.api.UserApiController;
-import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
-import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,22 +19,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
-import org.springframework.test.web.servlet.MockMvc;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -48,9 +31,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Sheet 서비스 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -131,12 +113,11 @@ class SheetServiceImplTest {
         given(sheetRepository.save(any(Sheet.class))).willReturn(newSheetWithId);
 
         //when
-        assertThatCode(() -> {
-            sheetService.duplicateSheet(dto);
-        }).doesNotThrowAnyException();
+        Sheet returnedSheet = sheetService.duplicateSheet(dto);
 
         //then
-
+        assertThat(returnedSheet.getTitle()).isEqualTo(newSheet.getTitle());
+        assertThat(returnedSheet.getUser().getId()).isEqualTo(newSheet.getUser().getId());
     }
 
     private Sheet createMockSheet(){
