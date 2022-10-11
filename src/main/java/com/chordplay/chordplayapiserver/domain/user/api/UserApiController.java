@@ -52,7 +52,7 @@ public class UserApiController {
         return ResponseEntity.status(201).build();
     }
 
-    @PostMapping("collection/{videoId}")
+    @PostMapping("my-collection/{videoId}")
     public ResponseEntity<ApiResponse<String>> addVideoToMyCollection(@PathVariable String videoId){
         ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
