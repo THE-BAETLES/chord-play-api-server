@@ -10,6 +10,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
 import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
+import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final VideoService videoService;
 
     @Override
     public User getUser(String userId) {
@@ -80,5 +82,12 @@ public class UserServiceImpl implements UserService{
         }
         String userId = ContextUtil.getPrincipalUserId();
         userRepository.findAndPushSignupFavoriteById(userId, signupFavorite);
+    }
+
+    @Override
+    public void addVideoIdToMyCollection(String videoId) {
+        Video video = videoService.create(videoId);
+        User user = getUser(ContextUtil.getPrincipalUserId());
+        userRepository.addVideoIdToCollectionById(user.getId(), video.getId());
     }
 }
