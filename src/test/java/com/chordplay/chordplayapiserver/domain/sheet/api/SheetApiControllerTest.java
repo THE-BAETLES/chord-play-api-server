@@ -34,12 +34,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.xml.transform.Result;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -212,13 +214,16 @@ class SheetApiControllerTest {
     public void duplicateSheetTest() throws Exception {
         
         //get
-        SheetDuplicationRequest dto = SheetDuplicationRequest.builder().sheetId("sheet_id").title("title").build();
-
+        String newTitle = "new title";
+        SheetDuplicationRequest dto = new SheetDuplicationRequest("sheet_id",newTitle);
+        Sheet sheet = createMockSheetWithTitle(newTitle);
+        given(sheetService.duplicateSheet(any(SheetDuplicationRequest.class))).willReturn(sheet);
         //when
         ResultActions result = duplicateSheet(dto);
 
         //then
         verifyCreated(result);
+
         result.andDo(SheetTestDocs.documentOnDuplicatingSheet());
     }
 
@@ -227,7 +232,10 @@ class SheetApiControllerTest {
     public void duplicateSheetWithNoTitleTest() throws Exception {
 
         //get
+        String newTitle = "new title";
         SheetDuplicationRequest dto = new SheetDuplicationRequest("sheet_id");
+        Sheet sheet = createMockSheetWithTitle(newTitle);
+        given(sheetService.duplicateSheet(any(SheetDuplicationRequest.class))).willReturn(sheet);
 
         //when
         ResultActions result = duplicateSheet(dto);
@@ -250,8 +258,6 @@ class SheetApiControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
-
-
     private Sheet createMockSheet(){
 
         User user = new User(ContextUtil.getPrincipalUserId());
@@ -262,6 +268,20 @@ class SheetApiControllerTest {
                 .title("Chord Play")
                 .createdAt(ZonedDateTime.parse("2022-08-20T12:47:36.426+00:00").toLocalDateTime())
                 .id("6300d7e8aeeb0778c43ea37d")
+                .build();
+    }
+
+
+    private Sheet createMockSheetWithTitle(String title){
+
+        User user = new User(ContextUtil.getPrincipalUserId());
+        return Sheet.builder()
+                .updatedAt(ZonedDateTime.parse("2022-08-20T12:47:36.426+00:00").toLocalDateTime())
+                .video(new Video("KZH-MpiwmaU"))
+                .user(user)
+                .title(title)
+                .createdAt(ZonedDateTime.parse("2022-08-20T12:47:36.426+00:00").toLocalDateTime())
+                .id("new_id")
                 .build();
     }
 
@@ -391,6 +411,5 @@ class SheetApiControllerTest {
     private ResultActions verifyCreateAiSheet(ResultActions result) throws Exception {
         return result.andExpect(status().isOk());
     }
-
 
 }

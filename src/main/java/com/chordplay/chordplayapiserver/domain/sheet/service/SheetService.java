@@ -22,6 +22,6 @@ public interface SheetService {
 
     void updateSheetChord(String sheetId,SheetChangeRequest dto);
 
-    void duplicateSheet(SheetDuplicationRequest dto);
+    Sheet duplicateSheet(SheetDuplicationRequest dto);
 
 }

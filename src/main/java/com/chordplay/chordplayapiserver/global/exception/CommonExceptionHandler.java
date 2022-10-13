@@ -35,12 +35,12 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> validException(
-            MethodArgumentNotValidException ex) {
-        log.error("MethodArgumentNotValidException ",ex);
-        String message = String.format("파라미터 유효성 검증 실패 : %s",ex.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+            MethodArgumentNotValidException e) {
+        log.error("MethodArgumentNotValidException ",e);
+        String message = String.format("파라미터 유효성 검증 실패 : %s",e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
 
-        ErrorResponse errorResponse = new ErrorResponse(message, HttpStatus.BAD_REQUEST.value(), null, "M001");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT, e.getBindingResult());
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST); // 2
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

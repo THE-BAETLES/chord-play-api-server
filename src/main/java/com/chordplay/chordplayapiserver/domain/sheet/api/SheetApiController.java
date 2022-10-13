@@ -75,9 +75,9 @@ public class SheetApiController {
     }
 
     @PostMapping("/duplication")
-    public ResponseEntity<ApiResponse<String>> duplicateSheet(@RequestBody @Valid SheetDuplicationRequest dto){
-        sheetService.duplicateSheet(dto);
-        ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
+    public ResponseEntity<ApiResponse<SheetResponse>> duplicateSheet(@RequestBody @Valid SheetDuplicationRequest dto){
+        SheetResponse sheetResponse = new SheetResponse(sheetService.duplicateSheet(dto));
+        ApiResponse<SheetResponse> body = ApiResponse.success(sheetResponse, HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 }
