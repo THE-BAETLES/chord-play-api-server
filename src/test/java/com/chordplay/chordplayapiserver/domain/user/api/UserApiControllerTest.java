@@ -119,6 +119,22 @@ class UserApiControllerTest {
         result.andDo(UserTestDocs.documentOnJoining());
     }
 
+    @Test
+    @DisplayName("my collection에 videoId 추가하기_video id_성공 반환(201)")
+    @WithMockCustomUser
+    public void addVideoIdToMyCollectionTest() throws Exception {
+
+        //get
+        String videoId = "video_id";
+
+        //when
+        ResultActions result = addVideoIdToMyCollection(videoId);
+
+        //then
+        verifyCreated(result);
+        result.andDo(UserTestDocs.documentOnAddingVideoIdToMyCollection());
+    }
+
     private JoinRequest CreateMockJoinRequestBody() {
         return JoinRequest.builder()
                 .country(Country.KR)
@@ -157,6 +173,12 @@ class UserApiControllerTest {
         return mockMvc.perform(post("/user/join")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions addVideoIdToMyCollection(String videoId) throws Exception{
+        return mockMvc.perform(post("/user/my-collection/{videoId}",videoId)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
