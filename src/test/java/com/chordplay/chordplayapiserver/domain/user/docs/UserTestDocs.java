@@ -18,6 +18,7 @@ public class UserTestDocs {
     private static String getNameOfDocsOfNicknameRecommendation = "get_nickname_recommendation";
     private static String getNameOfDocsOfNicknameDuplicationCheck = "post_nickname_duplication_check";
     private static String getNameOfDocsOfJoining = "post_join";
+    private static String getNameOfDocsOfAddingVideoIdToMyCollection = "user/add_video_id_to_my_collection";
     public static ResultHandler documentOnLoginSuccess() {
         return document(getNameOfDocsOfLoginSuccess,
                 getDocumentRequest(),
@@ -58,6 +59,19 @@ public class UserTestDocs {
                         headerWithName("Authorization").description("Bearer {token}")
                 ),
                 requestBody()
+        );
+    }
+
+    public static ResultHandler documentOnAddingVideoIdToMyCollection() {
+        return document(getNameOfDocsOfAddingVideoIdToMyCollection,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                ),
+                pathParameters(
+                        parameterWithName("videoId").description("비디오 아이디")
+                )
         );
     }
 }

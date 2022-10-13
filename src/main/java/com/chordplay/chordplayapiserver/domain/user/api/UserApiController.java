@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedExce
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +50,12 @@ public class UserApiController {
         dto.setFirebaseJwtInfo(principalDetails.getUser());
         userService.join(dto);
         return ResponseEntity.status(201).build();
+    }
+
+    @PostMapping("my-collection/{videoId}")
+    public ResponseEntity<ApiResponse<String>> addVideoIdToMyCollection(@PathVariable String videoId){
+        userService.addVideoIdToMyCollection(videoId);
+        ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 }

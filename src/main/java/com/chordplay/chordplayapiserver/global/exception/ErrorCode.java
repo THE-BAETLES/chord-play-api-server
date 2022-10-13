@@ -9,6 +9,7 @@ public enum ErrorCode {
     // Common
     NICKNAME_DUPLICATION(409,"U001","Nickname Duplication Exception"),
     NOT_FULLY_JOINED(401,"U002", "You did not sign up for details, Please continue to signup"),
+    USER_NOT_FOUND(400,"U003", "user not found exception"),
     SHEET_CREATION_FAIL(500, "S001", "Sheet creation failed : ai server failed"),
     SHEET_DATA_NOT_FOUND(400, "S002", "Sheet data not found"),
     SHEET_NOT_FOUND(400, "S003", "Sheet not found"),

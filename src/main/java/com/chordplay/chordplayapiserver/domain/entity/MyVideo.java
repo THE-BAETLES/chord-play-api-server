@@ -6,8 +6,10 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -16,11 +18,12 @@ public class MyVideo {
 
     @DBRef(lazy = true)
     private Video video;
+
     @Field("last_played")
-    private Timestamp lastPlayed;
+    private LocalDateTime lastPlayed;
 
     @Builder
-    public MyVideo(Video video, Timestamp lastPlayed) {
+    public MyVideo(Video video, LocalDateTime lastPlayed) {
         this.video = video;
         this.lastPlayed = lastPlayed;
     }
