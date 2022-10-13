@@ -131,6 +131,12 @@ operation::post_nickname_duplication_check[snippets='http-request,request-header
 
 operation::post_join[snippets='http-request,request-headers,request-body,http-response']
 
+=== `POST` /user/my-collection/{videoId}
+
+내 목록에 video id를 추가합니다
+
+operation::user/add_video_id_to_my_collection[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
 == VIDEO
 
 비디오와 관련된 API 입니다
@@ -181,7 +187,6 @@ AI 악보 생성을 요청합니다
 
 operation::create_ai_sheet[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
-[[resources_notes_list]]
 === `GET` /sheets/{sheetId}
 
 악보 정보를 가져옵니다
