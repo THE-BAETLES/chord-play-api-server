@@ -93,6 +93,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteVideoIdFromMyCollection(String videoId) {
         String userId = ContextUtil.getPrincipalUserId();
-        userRepository.deleteVideoIdToCollectionById(userId, videoId);
+        userRepository.deleteVideoIdFromCollectionById(userId, videoId);
     }
 }

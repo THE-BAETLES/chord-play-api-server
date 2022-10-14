@@ -22,5 +22,5 @@ public interface UserRepository extends MongoRepository<User, String>{
 
     @Query("{ '_id' : ?0 }")
     @Update("{ '$pull': { 'my_collection' : ?1 } }")
-    public void deleteVideoIdToCollectionById(String id, String videoId);
+    public void deleteVideoIdFromCollectionById(String id, String videoId);
 }

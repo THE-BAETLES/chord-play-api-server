@@ -65,7 +65,7 @@ class UserRepositoryTest {
         userRepository.addVideoIdToCollectionById(testUserId, video.getId());
 
         //when
-        userRepository.deleteVideoIdToCollectionById(testUserId, video.getId());
+        userRepository.deleteVideoIdFromCollectionById(testUserId, video.getId());
 
         //then
         User user = userRepository.findById(testUserId).orElseThrow(()-> new RuntimeException("유저 없음"));
