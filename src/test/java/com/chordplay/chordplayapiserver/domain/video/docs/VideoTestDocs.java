@@ -85,7 +85,7 @@ public class VideoTestDocs {
                         .andWithPrefix("data[0].",videoResponse()));
     }
 
-    private static List<FieldDescriptor> videoResponse(){
+    public static List<FieldDescriptor> videoResponse(){
         return Arrays.asList(
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("thumbnail_path").type(JsonFieldType.STRING).description("썸네일"),
