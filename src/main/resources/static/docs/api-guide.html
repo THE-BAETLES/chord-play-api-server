@@ -466,6 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_post_usercheck_duplication"><code>POST</code> /user/check-duplication</a></li>
 <li><a href="#_post_userjoin"><code>POST</code> /user/join</a></li>
 <li><a href="#_post_usermy_collectionvideoid"><code>POST</code> /user/my-collection/{videoId}</a></li>
+<li><a href="#_delete_usermy_collectionvideoid"><code>Delete</code> /user/my-collection/{videoId}</a></li>
 </ul>
 </li>
 <li><a href="#_video">VIDEO</a>
@@ -1008,6 +1009,88 @@ Content-Length: 60
 <h4 id="_post_usermy_collectionvideoid_response_fields"><a class="link" href="#_post_usermy_collectionvideoid_response_fields">Response fields</a></h4>
 <div class="paragraph">
 <p>Snippet response-fields not found for operation::user/add_video_id_to_my_collection</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_delete_usermy_collectionvideoid"><a class="link" href="#_delete_usermy_collectionvideoid"><code>Delete</code> /user/my-collection/{videoId}</a></h3>
+<div class="paragraph">
+<p>내 목록의 video id를 삭제합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_delete_usermy_collectionvideoid_http_request"><a class="link" href="#_delete_usermy_collectionvideoid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /user/my-collection/video_id HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_usermy_collectionvideoid_request_headers"><a class="link" href="#_delete_usermy_collectionvideoid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_usermy_collectionvideoid_path_parameters"><a class="link" href="#_delete_usermy_collectionvideoid_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /user/my-collection/{videoId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>videoId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비디오 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_usermy_collectionvideoid_http_response"><a class="link" href="#_delete_usermy_collectionvideoid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_usermy_collectionvideoid_response_fields"><a class="link" href="#_delete_usermy_collectionvideoid_response_fields">Response fields</a></h4>
+<div class="paragraph">
+<p>Snippet response-fields not found for operation::user/delete_video_id_to_my_collection</p>
 </div>
 </div>
 </div>
@@ -3456,7 +3539,7 @@ Content-Length: 918
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-12 19:52:41 +0900
+Last updated 2022-10-15 02:27:57 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

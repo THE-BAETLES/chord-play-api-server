@@ -58,4 +58,11 @@ public class UserApiController {
         ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+
+    @DeleteMapping("my-collection/{videoId}")
+    public ResponseEntity<ApiResponse<String>> deleteVideoIdFromMyCollection(@PathVariable String videoId){
+        userService.deleteVideoIdFromMyCollection(videoId);
+        ApiResponse<String> body = ApiResponse.success("", HttpStatus.OK.value());
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
 }

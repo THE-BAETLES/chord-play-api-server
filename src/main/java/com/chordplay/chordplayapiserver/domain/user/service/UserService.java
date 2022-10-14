@@ -19,4 +19,5 @@ public interface UserService {
 
     public User getUser(String userId);
     void addVideoIdToMyCollection(String videoId);
+    void deleteVideoIdFromMyCollection(String videoId);
 }
