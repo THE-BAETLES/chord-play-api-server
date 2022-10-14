@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails
 import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.global.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -65,4 +68,12 @@ public class UserApiController {
         ApiResponse<String> body = ApiResponse.success("", HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
+
+    @GetMapping("my-collection")
+    public ResponseEntity<ApiResponse<List<VideoResponse>>> getMyCollection(){
+        List<VideoResponse> myCollection = userService.getMyCollection();
+        ApiResponse<List<VideoResponse>> body = ApiResponse.success(myCollection, HttpStatus.OK.value());
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
 }

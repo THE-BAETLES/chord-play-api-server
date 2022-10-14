@@ -10,6 +10,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
 import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import lombok.RequiredArgsConstructor;
@@ -94,5 +95,22 @@ public class UserServiceImpl implements UserService{
     public void deleteVideoIdFromMyCollection(String videoId) {
         String userId = ContextUtil.getPrincipalUserId();
         userRepository.deleteVideoIdFromCollectionById(userId, videoId);
+    }
+
+    @Override
+    public List<VideoResponse> getMyCollection() {
+        List<VideoResponse> myCollectionResponse = new ArrayList<>();
+        User user = getUser(ContextUtil.getPrincipalUserId());
+
+        if (user.getMyCollection() == null){
+            return myCollectionResponse;
+        }
+
+        for (String videoId : user.getMyCollection()) {
+            VideoResponse videoResponse = new VideoResponse(videoService.get(videoId));
+            myCollectionResponse.add(videoResponse);
+        }
+
+        return myCollectionResponse;
     }
 }

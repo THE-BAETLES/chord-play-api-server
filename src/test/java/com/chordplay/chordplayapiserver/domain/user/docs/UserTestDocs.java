@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.user.docs;
 
+import com.chordplay.chordplayapiserver.domain.video.docs.VideoTestDocs;
 import com.chordplay.chordplayapiserver.global.docs.CommonTestDocs;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -20,6 +21,7 @@ public class UserTestDocs {
     private static String getNameOfDocsOfJoining = "post_join";
     private static String getNameOfDocsOfAddingVideoIdToMyCollection = "user/add_video_id_to_my_collection";
     private static String getNameOfDocsOfDeletingVideoIdFromMyCollection  = "user/delete_video_id_to_my_collection";
+    private static String getNameOfDocsOfGettingMyCollection  = "user/get_my_collection";
 
     public static ResultHandler documentOnLoginSuccess() {
         return document(getNameOfDocsOfLoginSuccess,
@@ -87,6 +89,18 @@ public class UserTestDocs {
                 pathParameters(
                         parameterWithName("videoId").description("비디오 아이디")
                 )
+        );
+    }
+
+    public static ResultHandler documentOnGettingMyCollection() {
+        return document(getNameOfDocsOfGettingMyCollection,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                ),
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),VideoTestDocs.videoResponse())
         );
     }
 }

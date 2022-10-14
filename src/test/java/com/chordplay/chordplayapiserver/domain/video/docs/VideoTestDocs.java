@@ -85,13 +85,13 @@ public class VideoTestDocs {
                         .andWithPrefix("data[0].",videoResponse()));
     }
 
-    private static List<FieldDescriptor> videoResponse(){
+    public static List<FieldDescriptor> videoResponse(){
         return Arrays.asList(
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("thumbnail_path").type(JsonFieldType.STRING).description("썸네일"),
                 fieldWithPath("title").type(JsonFieldType.STRING).description("이름"),
                 fieldWithPath("genre").type(JsonFieldType.STRING).description("장르"),
-                fieldWithPath("singer").type(JsonFieldType.STRING).description("가"),
+                fieldWithPath("singer").type(JsonFieldType.STRING).description("가수"),
                 fieldWithPath("tags").type(JsonFieldType.ARRAY).description("태그"),
                 fieldWithPath("length").type(JsonFieldType.NUMBER).description("영상 길이"),
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("영상 게시일"),

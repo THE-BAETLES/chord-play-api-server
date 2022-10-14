@@ -13,6 +13,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.CheckDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.NicknameResponse;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +33,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -150,6 +153,22 @@ class UserApiControllerTest {
         result.andDo(UserTestDocs.documentOnDeletingVideoIdFromMyCollection());
     }
 
+    @Test
+    @DisplayName("my collection 가져오기_ _성공 반환(200)")
+    @WithMockCustomUser
+    public void getMyCollectionTest() throws Exception {
+
+        //get
+        List<VideoResponse> videoResponses = createMockVideoResponses();
+        given(userService.getMyCollection()).willReturn(videoResponses);
+        //when
+        ResultActions result = getMyCollection();
+
+        //then
+        verifyGettingMyCollection(result);
+        result.andDo(UserTestDocs.documentOnGettingMyCollection());
+    }
+
     private JoinRequest CreateMockJoinRequestBody() {
         return JoinRequest.builder()
                 .country(Country.KR)
@@ -158,6 +177,26 @@ class UserApiControllerTest {
                 .gender(Gender.MALE)
                 .signupFavorite(Arrays.asList("videoId1", "videoId2"))
                 .build();
+    }
+
+    private List<VideoResponse> createMockVideoResponses(){
+
+        List<VideoResponse> videoResponses = new ArrayList<>();
+        VideoResponse videoResponse = VideoResponse.builder()
+                .sheetCount(0L)
+                .tags(new ArrayList<>())
+                .singer("불면증")
+                .playCount(0)
+                .length(0)
+                .difficultyAvg(0)
+                .genre("")
+                .title("장범준(with버스커버스커) 명곡 모음")
+                .thumbnailPath("https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg")
+                .id("dinia_m0HGE")
+                .createdAt("2020-09-27T20:19:09")
+                .build();
+        videoResponses.add(videoResponse);
+        return videoResponses;
     }
 
     private ResultActions loginCheck() throws Exception {
@@ -204,6 +243,11 @@ class UserApiControllerTest {
                 .header("Authorization","Bearer {token}"));
     }
 
+    private ResultActions getMyCollection() throws Exception {
+        return mockMvc.perform(get("/user/my-collection")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
@@ -220,6 +264,10 @@ class UserApiControllerTest {
         return result.andExpect(jsonPath("$.data.nickname").value("test"));
     }
 
+    private ResultActions verifyGettingMyCollection(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data.length()").value(1));
+    }
 
 }
 
