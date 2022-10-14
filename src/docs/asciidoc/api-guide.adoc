@@ -131,6 +131,12 @@ operation::post_nickname_duplication_check[snippets='http-request,request-header
 
 operation::post_join[snippets='http-request,request-headers,request-body,http-response']
 
+=== `GET` /user/my-collection
+
+ 내 곡 목록을 가져옵니다 (List of Video Response 형태)
+
+operation::user/get_my_collection[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
+
 === `POST` /user/my-collection/{videoId}
 
 내 목록에 video id를 추가합니다
