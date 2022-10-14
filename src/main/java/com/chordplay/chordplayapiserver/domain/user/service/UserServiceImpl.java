@@ -90,4 +90,9 @@ public class UserServiceImpl implements UserService{
         User user = getUser(ContextUtil.getPrincipalUserId());
         userRepository.addVideoIdToCollectionById(user.getId(), video.getId());
     }
+    @Override
+    public void deleteVideoIdFromMyCollection(String videoId) {
+        String userId = ContextUtil.getPrincipalUserId();
+        userRepository.deleteVideoIdToCollectionById(userId, videoId);
+    }
 }
