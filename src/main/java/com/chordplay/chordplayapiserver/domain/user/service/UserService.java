@@ -6,6 +6,7 @@ import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
+import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface UserService {
     public User getUser(String userId);
     void addVideoIdToMyCollection(String videoId);
     void deleteVideoIdFromMyCollection(String videoId);
+
+    List<VideoResponse> getMyCollection();
 }
