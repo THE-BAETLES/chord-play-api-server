@@ -36,8 +36,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -135,6 +134,22 @@ class UserApiControllerTest {
         result.andDo(UserTestDocs.documentOnAddingVideoIdToMyCollection());
     }
 
+    @Test
+    @DisplayName("my collection에 videoId 삭제하기_video id_성공 반환(200)")
+    @WithMockCustomUser
+    public void deleteVideoIdToMyCollectionTest() throws Exception {
+
+        //get
+        String videoId = "video_id";
+
+        //when
+        ResultActions result = deleteVideoIdFromMyCollection(videoId);
+
+        //then
+        verifyOK(result);
+        result.andDo(UserTestDocs.documentOnDeletingVideoIdFromMyCollection());
+    }
+
     private JoinRequest CreateMockJoinRequestBody() {
         return JoinRequest.builder()
                 .country(Country.KR)
@@ -179,6 +194,12 @@ class UserApiControllerTest {
 
     private ResultActions addVideoIdToMyCollection(String videoId) throws Exception{
         return mockMvc.perform(post("/user/my-collection/{videoId}",videoId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions deleteVideoIdFromMyCollection(String videoId) throws Exception{
+        return mockMvc.perform(delete("/user/my-collection/{videoId}",videoId)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
