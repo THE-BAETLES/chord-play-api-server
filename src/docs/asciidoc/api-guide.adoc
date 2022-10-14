@@ -137,6 +137,13 @@ operation::post_join[snippets='http-request,request-headers,request-body,http-re
 
 operation::user/add_video_id_to_my_collection[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
+=== `Delete` /user/my-collection/{videoId}
+
+내 목록의 video id를 삭제합니다
+
+operation::user/delete_video_id_to_my_collection[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+
 == VIDEO
 
 비디오와 관련된 API 입니다
