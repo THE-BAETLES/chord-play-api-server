@@ -99,8 +99,8 @@ public class UserTestDocs {
                 requestHeaders(
                         headerWithName("Authorization").description("Bearer {token}")
                 ),
-                responseFields(CommonTestDocs.commonDocsOfArray())
-                        .andWithPrefix("data[0].", VideoTestDocs.videoResponse())
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),VideoTestDocs.videoResponse())
         );
     }
 }
