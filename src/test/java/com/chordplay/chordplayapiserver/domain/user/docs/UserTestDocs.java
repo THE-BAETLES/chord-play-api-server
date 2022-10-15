@@ -6,6 +6,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultHandler;
 
+import java.util.Arrays;
+
 import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocumentRequest;
 import static com.chordplay.chordplayapiserver.util.ApiDocumentUtils.getDocumentResponse;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -22,6 +24,7 @@ public class UserTestDocs {
     private static String getNameOfDocsOfAddingVideoIdToMyCollection = "user/add_video_id_to_my_collection";
     private static String getNameOfDocsOfDeletingVideoIdFromMyCollection  = "user/delete_video_id_to_my_collection";
     private static String getNameOfDocsOfGettingMyCollection  = "user/get_my_collection";
+    private static String getNameOfDocsOfGettingMyCollectionVideoIdList  = "user/get_my_collection_video_id_list";
 
     public static ResultHandler documentOnLoginSuccess() {
         return document(getNameOfDocsOfLoginSuccess,
@@ -101,6 +104,21 @@ public class UserTestDocs {
                 ),
                 responseFields(CommonTestDocs.commonDocsOfArray()),
                 responseFields(beneathPath("data").withSubsectionId("data"),VideoTestDocs.videoResponse())
+        );
+    }
+
+    public static ResultHandler documentOnGettingMyCollectionVideoIdList() {
+        return document(getNameOfDocsOfGettingMyCollectionVideoIdList,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                ),
+                responseFields(Arrays.asList(
+                        fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                        subsectionWithPath("data").type(JsonFieldType.ARRAY).description("my collection의 video id만 가져온 배열")
+                ))
         );
     }
 }

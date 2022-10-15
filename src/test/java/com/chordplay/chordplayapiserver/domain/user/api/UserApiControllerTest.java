@@ -32,6 +32,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.sql.Array;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -169,6 +170,23 @@ class UserApiControllerTest {
         result.andDo(UserTestDocs.documentOnGettingMyCollection());
     }
 
+    @Test
+    @DisplayName("my collection의 video Id list 가져오기_ _성공 반환(200)")
+    @WithMockCustomUser
+    public void getMyCollectionVideoIdListTest() throws Exception {
+
+        //get
+        List<String> myCollectionVideoIdList= Arrays.asList("videoId1","videoId2","videoId3");
+        given(userService.getMyCollectionVideoIdList()).willReturn(myCollectionVideoIdList);
+
+        //when
+        ResultActions result = getMyCollectionVideoIdList();
+
+        //then
+        verifyGettingMyCollectionVideoIdList(result);
+        result.andDo(UserTestDocs.documentOnGettingMyCollectionVideoIdList());
+    }
+
     private JoinRequest CreateMockJoinRequestBody() {
         return JoinRequest.builder()
                 .country(Country.KR)
@@ -248,6 +266,11 @@ class UserApiControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
+    private ResultActions getMyCollectionVideoIdList() throws Exception {
+        return mockMvc.perform(get("/user/my-collection-video-id-list")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
@@ -267,6 +290,11 @@ class UserApiControllerTest {
     private ResultActions verifyGettingMyCollection(ResultActions result) throws Exception {
         verifyOK(result);
         return result.andExpect(jsonPath("$.data.length()").value(1));
+    }
+
+    private ResultActions verifyGettingMyCollectionVideoIdList(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data.length()").value(3));
     }
 
 }
