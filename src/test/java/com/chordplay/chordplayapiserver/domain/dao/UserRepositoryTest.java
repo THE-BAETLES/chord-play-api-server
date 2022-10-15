@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.dao;
 import com.chordplay.chordplayapiserver.domain.entity.MyVideo;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserRepositoryTest {
 
     @Autowired private UserRepository userRepository;
-    @Autowired private VideoRepository videoRepository;
+    @Autowired private VideoService videoService;
 
     String testVideoId = "dinia_m0HGE";
     String testUserId = "6313b2381f8fa3bb122eaa78";
@@ -30,7 +31,7 @@ class UserRepositoryTest {
     public void addVideoIdToCollectionTest() throws Exception {
 
         //get
-        Video video = videoRepository.findById(testVideoId).orElseThrow(()-> new RuntimeException("비디오 없음"));
+        Video video = videoService.create(testVideoId);
         User prevUser = userRepository.findById(testUserId).orElseThrow(()-> new RuntimeException("유저 없음"));
 
         //when
@@ -60,7 +61,7 @@ class UserRepositoryTest {
     public void deleteVideoIdToCollectionTest() throws Exception {
         
         //get
-        Video video = videoRepository.findById(testVideoId).orElseThrow(()-> new RuntimeException("비디오 없음"));
+        Video video = videoService.create(testVideoId);
         User prevUser = userRepository.findById(testUserId).orElseThrow(()-> new RuntimeException("유저 없음"));
         userRepository.addVideoIdToCollectionById(testUserId, video.getId());
 
