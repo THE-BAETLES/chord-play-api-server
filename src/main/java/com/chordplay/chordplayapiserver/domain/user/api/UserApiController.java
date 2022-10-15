@@ -76,4 +76,11 @@ public class UserApiController {
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
+    @GetMapping("my-collection-video-id-list")
+    public ResponseEntity<ApiResponse<List<String>>> getMyCollectionVideoIdList(){
+        List<String> myCollectionVideoIdList = userService.getMyCollectionVideoIdList();
+        ApiResponse<List<String>> body = ApiResponse.success(myCollectionVideoIdList, HttpStatus.OK.value());
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
 }
