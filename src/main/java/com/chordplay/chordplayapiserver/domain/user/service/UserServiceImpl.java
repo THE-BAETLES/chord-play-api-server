@@ -113,4 +113,16 @@ public class UserServiceImpl implements UserService{
 
         return myCollectionResponse;
     }
+
+    @Override
+    public List<String> getMyCollectionVideoIdList() {
+        List<String> videoIds = new ArrayList<>();
+        User user = getUser(ContextUtil.getPrincipalUserId());
+
+        if (user.getMyCollection() == null){
+            return videoIds;
+        }
+
+        return user.getMyCollection();
+    }
 }

@@ -23,4 +23,5 @@ public interface UserService {
     void deleteVideoIdFromMyCollection(String videoId);
 
     List<VideoResponse> getMyCollection();
+    List<String> getMyCollectionVideoIdList();
 }

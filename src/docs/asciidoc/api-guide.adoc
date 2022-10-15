@@ -135,7 +135,13 @@ operation::post_join[snippets='http-request,request-headers,request-body,http-re
 
  내 곡 목록을 가져옵니다 (List of Video Response 형태)
 
-operation::user/get_my_collection[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
+operation::user/get_my_collection[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+=== `GET` /user/my-collection-video-id-list
+
+내 곡 목록 데이터 중 video id 만 가져온 형태를 반환합니다
+
+operation::user/get_my_collection_video_id_list[snippets='http-request,request-headers,http-response,response-fields']
 
 === `POST` /user/my-collection/{videoId}
 
