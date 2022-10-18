@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class SheetLikeApiController {
 
-    SheetLikeService sheetLikeService;
+    private final SheetLikeService sheetLikeService;
 
     @PostMapping("/{sheetId}")
     public ResponseEntity<ApiResponse<String>> addLike(@PathVariable("sheetId") String sheetId){

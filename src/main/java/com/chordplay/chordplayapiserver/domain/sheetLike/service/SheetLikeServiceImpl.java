@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @Slf4j
 public class SheetLikeServiceImpl implements SheetLikeService {
 
-    SheetLikeRepository sheetLikeRepository;
-    SheetService sheetService;
-    UserService userService;
+    private final SheetLikeRepository sheetLikeRepository;
+    private final SheetService sheetService;
+    private final UserService userService;
 
     @Override
     public void addLike(String sheetId) {
