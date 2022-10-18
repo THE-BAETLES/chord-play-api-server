@@ -22,6 +22,12 @@ public class SheetLikeApiController {
         ApiResponse<String> body = ApiResponse.success("", HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+    @DeleteMapping("/{sheetId}")
+    public ResponseEntity<ApiResponse<String>> deleteLike(@PathVariable("sheetId") String sheetId){
+        sheetLikeService.deleteLike(sheetId);
+        ApiResponse<String> body = ApiResponse.success("", HttpStatus.OK.value());
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
 
 
 }
