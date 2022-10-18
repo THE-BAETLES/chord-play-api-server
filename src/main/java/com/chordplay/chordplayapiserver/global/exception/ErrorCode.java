@@ -14,6 +14,7 @@ public enum ErrorCode {
     SHEET_DATA_NOT_FOUND(400, "S002", "Sheet data not found"),
     SHEET_NOT_FOUND(400, "S003", "Sheet not found"),
     AI_SHEET_NOT_CREATED(200, "S004", "Ai sheet data has not yet been created"),
+    SHEET_LIKE_NOT_FOUND(400, "S005", "Sheet like not found"),
     YOUTUBE_SERVER_ERROR(500, "V001", "GoogleJsonResponseException: youtube server error"),
     VIDEO_NOT_FOUND(400, "V002", "Video not found"),
     INCORRECT_GRADE_INPUT_EXCEPTION(400, "V003", "Incorrect grade input exception"),
@@ -21,11 +22,7 @@ public enum ErrorCode {
     INVALID_INPUT(400, "C002", "Invalid input"),
     UNAUTHORIZED(401, "C401", "Unauthorized"),
     FORBIDDEN(403, "C403", "Forbidden"),
-
     ;
-
-
-
 
     private final String code;
     private final String message;
