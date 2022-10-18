@@ -71,6 +71,7 @@ public class SheetApiController {
     @PatchMapping("/data/{sheetId}")
     public ApiResponse<String> updateSheet(@PathVariable("sheetId") String sheetId
             , @RequestBody @Valid SheetChangeRequest dto){
+        sheetService.updateSheetChord(sheetId, dto);
         return ApiResponse.success("",HttpStatus.OK.value());
     }
 
