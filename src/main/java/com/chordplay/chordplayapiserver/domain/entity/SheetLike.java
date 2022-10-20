@@ -33,9 +33,14 @@ public class SheetLike {
     }
 
     public SheetLike(User user, Sheet sheet, LocalDateTime time) {
-        this.id = id;
         this.user = user;
         this.sheet = sheet;
         this.time = time;
+    }
+
+    public SheetLike(User user, Sheet sheet) {
+        this.user = user;
+        this.sheet = sheet;
+        this.time = LocalDateTime.now();
     }
 }
