@@ -24,11 +24,12 @@ class SheetLikeRepositoryTest extends AcceptanceTest {
     public void deleteSheetLikeTest() throws Exception {
         //get
         User user = new User("test");
+
         Sheet sheet = Sheet.builder().id("test").build();
         SheetLike sheetLike = saveSheetLike(user, sheet);
 
         //when
-        sheetLikeRepository.deleteBySheetAndUser(sheet, user);
+        Optional<SheetLike> deletedSheetLikeOptional = sheetLikeRepository.deleteBySheetAndUser(sheet, user);
 
         //then
         Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findById(sheetLike.getId());

@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface SheetLikeRepository extends MongoRepository<SheetLike,String> {
 
-    void deleteBySheetAndUser(Sheet sheet, User user);
+    Optional<SheetLike> deleteBySheetAndUser(Sheet sheet, User user);
 }

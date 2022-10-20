@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +37,6 @@ public class SheetLikeServiceImpl implements SheetLikeService {
     public void deleteLike(String sheetId) {
         Sheet sheet = sheetService.getSheet(sheetId);
         User user = userService.getUser(ContextUtil.getPrincipalUserId());
-        sheetLikeRepository.deleteBySheetAndUser(sheet, user);
+        sheetLikeRepository.deleteBySheetAndUser(sheet, user).orElseThrow(()-> new SheetLikeNotFoundException());
     }
 }
