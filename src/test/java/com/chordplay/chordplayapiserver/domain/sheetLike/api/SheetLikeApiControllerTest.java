@@ -20,8 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -54,8 +53,27 @@ class SheetLikeApiControllerTest {
         verifyCreated(result);
     }
 
+    @Test
+    @DisplayName("sheetlike 삭제하기_sheetId_성공")
+    public void deleteSheetLikeTest() throws Exception {
+        //get
+        String sheetId = "testSheetId";
+
+        //when
+        ResultActions result = deleteSheetLike(sheetId);
+
+        //then
+        verifyOK(result);
+    }
+
     private ResultActions addSheetLike(String sheetId) throws Exception {
-        return mockMvc.perform(post("/sheets/{sheetId}",sheetId)
+        return mockMvc.perform(post("/sheet-like/{sheetId}",sheetId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions deleteSheetLike(String sheetId) throws Exception {
+        return mockMvc.perform(delete("/sheet-like/{sheetId}",sheetId)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
