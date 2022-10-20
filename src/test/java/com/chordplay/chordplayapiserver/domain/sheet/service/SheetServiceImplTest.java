@@ -10,6 +10,7 @@ import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
+import com.chordplay.chordplayapiserver.global.ServiceUnitTest;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,8 +36,8 @@ import static org.mockito.Mockito.mockStatic;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Sheet 서비스 테스트")
-@ExtendWith(MockitoExtension.class)
-class SheetServiceImplTest {
+
+class SheetServiceImplTest extends ServiceUnitTest {
 
     @InjectMocks
     SheetServiceImpl sheetService;
@@ -46,12 +47,7 @@ class SheetServiceImplTest {
     @Mock
     SheetDataRepository sheetDataRepository;
 
-    @BeforeAll
-    public static void staticInit(){
-        User mockUser = createStaticMockUser();
-        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
-        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
-    }
+
 
     @Test
     @DisplayName("악보 코드 변경하기_없는 악보 호출_오류 반환")

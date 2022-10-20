@@ -7,10 +7,13 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
-@Document(collection = "LIKE")
+
+import java.time.LocalDateTime;
+
+@Document(collection = "SHEET_LIKE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Like {
+public class SheetLike {
 
     @Id
     private String id;
@@ -19,13 +22,25 @@ public class Like {
     @DBRef(lazy = true)
     private Sheet sheet;
 
-    private Time time;
+    private LocalDateTime time;
 
     @Builder
-    public Like(String id, User user, Sheet sheet, Time time) {
+    public SheetLike(String id, User user, Sheet sheet, LocalDateTime time) {
         this.id = id;
         this.user = user;
         this.sheet = sheet;
         this.time = time;
+    }
+
+    public SheetLike(User user, Sheet sheet, LocalDateTime time) {
+        this.user = user;
+        this.sheet = sheet;
+        this.time = time;
+    }
+
+    public SheetLike(User user, Sheet sheet) {
+        this.user = user;
+        this.sheet = sheet;
+        this.time = LocalDateTime.now();
     }
 }

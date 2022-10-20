@@ -57,4 +57,8 @@ public class FirebaseUtil {
     public String getAdminTokenByUid(){
         return getIdTokenByUid(adminUid);
     }
+
+    public String getAdminUid() {
+        return adminUid;
+    }
 }

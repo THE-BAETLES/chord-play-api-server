@@ -24,9 +24,6 @@ public class DatabaseCleanup implements InitializingBean {
 
     public void execute(){
         for(String name : collectionNames){
-            if(name.equals("USER")){
-                continue;
-            }
             mongoTemplate.dropCollection(name);
         }
     }
