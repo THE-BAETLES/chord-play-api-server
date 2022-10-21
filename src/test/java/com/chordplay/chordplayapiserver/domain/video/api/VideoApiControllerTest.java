@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@DisplayName("컨트롤러 테스트")
+@DisplayName("비디오 컨트롤러 테스트")
 @WebMvcTest(controllers = VideoApiController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class},
         excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class) })
