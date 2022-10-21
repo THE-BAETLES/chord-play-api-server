@@ -48,7 +48,7 @@ public class SheetApiController {
     }
 
     @GetMapping()
-    public ApiResponse<SheetsResponse> getSheetByVideoId(@RequestParam String videoId){
+    public ApiResponse<SheetsResponse> getSheetsByVideoId(@RequestParam String videoId){
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
         return ApiResponse.success(sheetsResponse,HttpStatus.OK.value());
     }

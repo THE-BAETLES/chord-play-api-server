@@ -1,12 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
-import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
-import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
+import com.chordplay.chordplayapiserver.domain.dao.*;
 import com.chordplay.chordplayapiserver.domain.entity.*;
-import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.AiSheetNotCreatedException;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
@@ -43,6 +41,7 @@ public class SheetServiceImpl implements SheetService{
     private final SheetRepository sheetRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final SheetLikeRepository sheetLikeRepository;
     private final ObjectMapper objectMapper;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final MessageQueue messageQueue;
@@ -131,11 +130,31 @@ public class SheetServiceImpl implements SheetService{
 
     @Override
     public SheetsResponse getSheetsByVideoId(String videoId) {
-        SheetsResponse sheetsResponse = SheetsResponse.builder()
-                .sharedSheet(sheetRepository.findAllByVideoId(videoId))
-                .mySheet(new ArrayList<Sheet>())
-                .likeSheet(new ArrayList<Sheet>()).build();
-        return sheetsResponse;
+
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<Sheet> sharedSheets = sheetRepository.findAllByVideoId(videoId);
+
+        List<SheetResponse> sharedSheetResponses = new ArrayList<>();
+        List<SheetResponse> likeSheetResponses = new ArrayList<>();
+        List<SheetResponse> mySheetResponses = new ArrayList<>();
+
+        for(Sheet sheet: sharedSheets){
+            SheetResponse sheetResponse = new SheetResponse(sheet);
+            sharedSheetResponses.add(sheetResponse);
+            Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
+
+            if (sheetLikeOptional.isPresent()){
+                sheetResponse.setLiked(true);
+                likeSheetResponses.add(sheetResponse);
+            }
+            if (sheet.getUser().equals(user)){
+                mySheetResponses.add(sheetResponse);
+            }
+        }
+
+        SheetsResponse sheetsResponse = new SheetsResponse(sharedSheetResponses,likeSheetResponses,likeSheetResponses);
+
+       return sheetsResponse;
     }
 
     @Override

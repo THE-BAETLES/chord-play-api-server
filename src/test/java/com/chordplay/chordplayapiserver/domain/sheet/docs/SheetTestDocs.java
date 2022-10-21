@@ -155,7 +155,8 @@ public class SheetTestDocs {
                 fieldWithPath("title").type(JsonFieldType.STRING).description("악보 이름"),
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("악보 생성 날짜"),
                 fieldWithPath("updated_at").type(JsonFieldType.STRING).description("악보 최종 수정 날짜"),
-                fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수")
+                fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수"),
+                fieldWithPath("liked").type(JsonFieldType.BOOLEAN).description("내가 좋아요를 누른 악보인지")
         );
     }
 

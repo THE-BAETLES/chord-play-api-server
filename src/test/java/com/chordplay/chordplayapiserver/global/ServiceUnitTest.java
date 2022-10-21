@@ -14,7 +14,6 @@ import static org.mockito.Mockito.mockStatic;
 @ExtendWith(MockitoExtension.class)
 public class ServiceUnitTest {
 
-
     private static MockedStatic<ContextUtil> contextUtilMockedStatic;
 
     @BeforeAll
@@ -29,7 +28,16 @@ public class ServiceUnitTest {
         contextUtilMockedStatic.close();
     }
 
-    private static User createStaticMockUser(){
+    public static User createStaticMockUser(){
+        return User.builder()
+                .id("6313b2381f8fa3bb122eaa78")
+                .username("최현준")
+                .email("test@gmail.com")
+                .nickname("test")
+                .roles("ROLE_USER")
+                .build();
+    }
+    protected User createMockUser(){
         return User.builder()
                 .id("6313b2381f8fa3bb122eaa78")
                 .username("최현준")
