@@ -2439,7 +2439,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 320
+Content-Length: 341
 
 {
   "code" : "200",
@@ -2451,6 +2451,7 @@ Content-Length: 320
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   }
 }</code></pre>
@@ -2541,6 +2542,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
 </tr>
 </tbody>
 </table>
@@ -2796,7 +2802,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 320
+Content-Length: 341
 
 {
   "code" : "200",
@@ -2808,6 +2814,7 @@ Content-Length: 320
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   }
 }</code></pre>
@@ -2899,6 +2906,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2967,7 +2979,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 953
+Content-Length: 1022
 
 {
   "code" : "200",
@@ -2980,6 +2992,7 @@ Content-Length: 953
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ],
     "like" : [ {
@@ -2989,6 +3002,7 @@ Content-Length: 953
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ],
     "my" : [ {
@@ -2998,6 +3012,7 @@ Content-Length: 953
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ]
   }
@@ -3105,6 +3120,11 @@ Content-Length: 953
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3173,7 +3193,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 324
+Content-Length: 345
 
 {
   "code" : "200",
@@ -3185,6 +3205,7 @@ Content-Length: 324
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   } ]
 }</code></pre>
@@ -3275,6 +3296,11 @@ Content-Length: 324
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
 </tr>
 </tbody>
 </table>
@@ -3464,7 +3490,7 @@ Host: api.baetles.site
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 301
+Content-Length: 322
 
 {
   "code" : "201",
@@ -3476,6 +3502,7 @@ Content-Length: 301
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "new_id"
   }
 }</code></pre>
@@ -3566,6 +3593,11 @@ Content-Length: 301
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
 </tr>
 </tbody>
 </table>
@@ -3805,7 +3837,7 @@ Content-Length: 918
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-15 22:29:15 +0900
+Last updated 2022-10-15 22:49:58 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
