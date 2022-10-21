@@ -38,6 +38,7 @@ public class VideoResponse {
     private int difficultyAvg;
     private int playCount;
     private Long sheetCount;
+    private Boolean isInMyCollection = false;
 
     @Builder
     public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, String createdAt, int difficultyAvg, int playCount, Long sheetCount) {
@@ -109,6 +110,10 @@ public class VideoResponse {
     private int convertToMs(String youtubeDuration){
         Duration dur = Duration.parse(youtubeDuration);
         return (dur.toSecondsPart() + dur.toMinutesPart()*60 + dur.toHoursPart()*3600) *1000;
+    }
+
+    public void setInMyCollection(Boolean inMyCollection) {
+        isInMyCollection = inMyCollection;
     }
 
     /*
