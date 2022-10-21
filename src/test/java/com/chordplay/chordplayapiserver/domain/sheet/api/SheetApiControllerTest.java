@@ -309,9 +309,9 @@ class SheetApiControllerTest {
     private SheetsResponse createMockSheetResponses() {
 
         return SheetsResponse.builder()
-                .likeSheet(Arrays.asList(createMockSheet()))
-                .mySheet(Arrays.asList(createMockSheet()))
-                .sharedSheet(Arrays.asList(createMockSheet())).build();
+                .like(Arrays.asList(new SheetResponse(createMockSheet())))
+                .my(Arrays.asList(new SheetResponse(createMockSheet())))
+                .shared(Arrays.asList(new SheetResponse(createMockSheet()))).build();
     }
 
     private List<Sheet> createMockSheets(){

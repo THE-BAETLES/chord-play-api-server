@@ -3,6 +3,7 @@ package com.chordplay.chordplayapiserver.domain.sheet.service;
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetLikeRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
@@ -44,6 +45,8 @@ class SheetServiceImplTest extends ServiceUnitTest {
     SheetServiceImpl sheetService;
     @Mock
     SheetRepository sheetRepository;
+    @Mock
+    UserRepository userRepository;
     @Mock
     SheetLikeRepository sheetLikeRepository;
     @Mock
@@ -127,17 +130,19 @@ class SheetServiceImplTest extends ServiceUnitTest {
 
         given(sheetRepository.findAllByVideoId(eq(videoId))).willReturn(Arrays.asList(sheet));
         given(sheetLikeRepository.findBySheetAndUser(eq(sheet),any(User.class))).willReturn(Optional.of(new SheetLike(user, sheet)));
-        given(sheetRepository.findAllByUserAndVideoId(any(User.class),eq(videoId))).willReturn(Arrays.asList(sheet));
-
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
         //when
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
 
-        System.out.println("hello");
 
         //then
         assertThat(sheetsResponse.getLike().get(0).getId()).isEqualTo(sheet.getId());
         assertThat(sheetsResponse.getMy().get(0).getId()).isEqualTo(sheet.getId());
         assertThat(sheetsResponse.getShared().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getShared().get(0).getLiked()).isTrue();
+        assertThat(sheetsResponse.getMy().get(0).getLiked()).isTrue();
+        assertThat(sheetsResponse.getLike().get(0).getLiked()).isTrue();
+
 
     }
 
