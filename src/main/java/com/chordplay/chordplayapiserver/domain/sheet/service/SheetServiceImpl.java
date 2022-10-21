@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.dao.*;
 import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.AiSheetNotCreatedException;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
@@ -130,20 +131,30 @@ public class SheetServiceImpl implements SheetService{
     @Override
     public SheetsResponse getSheetsByVideoId(String videoId) {
 
-        User user = new User(ContextUtil.getPrincipalUserId());
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
         List<Sheet> sharedSheets = sheetRepository.findAllByVideoId(videoId);
-        List<Sheet> likeSheet = new ArrayList<>();
+
+        List<SheetResponse> sharedSheetResponses = new ArrayList<>();
+        List<SheetResponse> likeSheetResponses = new ArrayList<>();
+        List<SheetResponse> mySheetResponses = new ArrayList<>();
+
         for(Sheet sheet: sharedSheets){
+            SheetResponse sheetResponse = new SheetResponse(sheet);
+            sharedSheetResponses.add(sheetResponse);
             Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
+
             if (sheetLikeOptional.isPresent()){
-                likeSheet.add(sheetLikeOptional.get().getSheet());
+                sheetResponse.setLiked(true);
+                likeSheetResponses.add(sheetResponse);
+            }
+            if (sheet.getUser().equals(user)){
+                mySheetResponses.add(sheetResponse);
             }
         }
-        SheetsResponse sheetsResponse = SheetsResponse.builder()
-                .sharedSheet(sharedSheets)
-                .mySheet(sheetRepository.findAllByUserAndVideoId(user,videoId))
-                .likeSheet(likeSheet).build();
-        return sheetsResponse;
+
+        SheetsResponse sheetsResponse = new SheetsResponse(sharedSheetResponses,likeSheetResponses,likeSheetResponses);
+
+       return sheetsResponse;
     }
 
     @Override
