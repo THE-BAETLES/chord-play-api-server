@@ -38,6 +38,23 @@ class SheetLikeRepositoryTest extends AcceptanceTest {
     
     }
 
+    @Test
+    @DisplayName("특정 유저의 악보 좋아요 찾기__성공")
+    public void findBySheetAndUserTest() throws Exception {
+        //get
+        User user = new User("test");
+
+        Sheet sheet = Sheet.builder().id("test").build();
+        SheetLike sheetLike = saveSheetLike(user, sheet);
+
+        //when
+        Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet, user);
+
+        //then
+        assertThat(sheetLikeOptional.get().getId()).isEqualTo(sheetLike.getId());
+
+    }
+
     private SheetLike saveSheetLike(User user, Sheet sheet){
         SheetLike sheetLike = new SheetLike(user, sheet);
         return sheetLikeRepository.save(sheetLike);
