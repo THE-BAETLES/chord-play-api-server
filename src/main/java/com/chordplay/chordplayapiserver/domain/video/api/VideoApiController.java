@@ -40,6 +40,9 @@ public class VideoApiController{
     public ResponseEntity<ApiResponse<VideoResponse>>  createVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.create(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
+        if (videoService.isInMyCollection(video.getId())){
+            videoResponse.setInMyCollection(true);
+        }
         ApiResponse<VideoResponse> body = ApiResponse.success(videoResponse, HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
@@ -54,6 +57,9 @@ public class VideoApiController{
     public ApiResponse<VideoResponse> getVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.get(videoId);
         VideoResponse videoResponse = new VideoResponse(video);
+        if (videoService.isInMyCollection(video.getId())){
+            videoResponse.setInMyCollection(true);
+        }
         return ApiResponse.success(videoResponse, HttpStatus.OK.value());
     }
 }
