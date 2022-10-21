@@ -1,14 +1,13 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
+import com.chordplay.chordplayapiserver.domain.dao.SheetLikeRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.entity.Sheet;
-import com.chordplay.chordplayapiserver.domain.entity.SheetData;
-import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.global.ServiceUnitTest;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
@@ -26,11 +25,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mockStatic;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,11 +44,10 @@ class SheetServiceImplTest extends ServiceUnitTest {
     SheetServiceImpl sheetService;
     @Mock
     SheetRepository sheetRepository;
-
+    @Mock
+    SheetLikeRepository sheetLikeRepository;
     @Mock
     SheetDataRepository sheetDataRepository;
-
-
 
     @Test
     @DisplayName("악보 코드 변경하기_없는 악보 호출_오류 반환")
@@ -107,13 +107,38 @@ class SheetServiceImplTest extends ServiceUnitTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
         given(sheetDataRepository.findById(sheet.getId())).willReturn(Optional.of(sheetData));
         given(sheetRepository.save(any(Sheet.class))).willReturn(newSheetWithId);
-
         //when
         Sheet returnedSheet = sheetService.duplicateSheet(dto);
 
         //then
         assertThat(returnedSheet.getTitle()).isEqualTo(newSheet.getTitle());
         assertThat(returnedSheet.getUser().getId()).isEqualTo(newSheet.getUser().getId());
+    }
+
+    @Test
+    @DisplayName("sheets 가져오기_videoId_shared,my,like 분류 성공")
+    public void getSheetsByVideoIdTest() throws Exception {
+
+        //get
+        Sheet sheet = createMockSheet();
+        User user = createMockUser();
+        String videoId = "videoId";
+
+
+        given(sheetRepository.findAllByVideoId(eq(videoId))).willReturn(Arrays.asList(sheet));
+        given(sheetLikeRepository.findBySheetAndUser(eq(sheet),any(User.class))).willReturn(Optional.of(new SheetLike(user, sheet)));
+        given(sheetRepository.findAllByUserAndVideoId(any(User.class),eq(videoId))).willReturn(Arrays.asList(sheet));
+
+        //when
+        SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
+
+        System.out.println("hello");
+
+        //then
+        assertThat(sheetsResponse.getLike().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getMy().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getShared().get(0).getId()).isEqualTo(sheet.getId());
+
     }
 
     private Sheet createMockSheet(){
@@ -180,25 +205,5 @@ class SheetServiceImplTest extends ServiceUnitTest {
                 .bpm(123)
                 .id("6300d7e8aeeb0778c43ea37d")
                 .chordInfos(chordInfos).build();
-    }
-
-    private static User createStaticMockUser(){
-        return User.builder()
-                .id("6313b2381f8fa3bb122eaa78")
-                .username("최현준")
-                .email("test@gmail.com")
-                .nickname("test")
-                .roles("ROLE_USER")
-                .build();
-    }
-
-    private User createMockUser(){
-        return User.builder()
-                .id("6313b2381f8fa3bb122eaa78")
-                .username("최현준")
-                .email("test@gmail.com")
-                .nickname("test")
-                .roles("ROLE_USER")
-                .build();
     }
 }
