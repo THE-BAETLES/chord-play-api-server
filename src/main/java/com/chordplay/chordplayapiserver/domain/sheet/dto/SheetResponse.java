@@ -28,6 +28,7 @@ public class SheetResponse {
     private String updatedAt;
 
     private Long likeCount;
+    private Boolean liked;
 
     public SheetResponse(Sheet sheet) {
         this.id = sheet.getId();
@@ -37,5 +38,10 @@ public class SheetResponse {
         this.createdAt = sheet.getCreatedAt().toString();
         this.updatedAt = sheet.getUpdatedAt().toString();
         this.likeCount = sheet.getLikeCount();
+        this.liked = false;
+    }
+
+    public void setLiked(Boolean liked) {
+        this.liked = liked;
     }
 }
