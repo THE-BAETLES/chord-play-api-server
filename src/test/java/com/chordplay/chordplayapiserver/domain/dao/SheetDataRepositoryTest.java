@@ -14,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DisplayName("SheetData Repository 테스트")
 class SheetDataRepositoryTest {
 
     @Autowired

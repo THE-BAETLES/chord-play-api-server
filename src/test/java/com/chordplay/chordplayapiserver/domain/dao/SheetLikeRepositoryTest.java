@@ -14,6 +14,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Sheet-Like Repository 테스트")
 class SheetLikeRepositoryTest extends AcceptanceTest {
 
     @Autowired
