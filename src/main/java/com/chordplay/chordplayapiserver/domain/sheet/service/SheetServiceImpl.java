@@ -1,10 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
-import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
-import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
+import com.chordplay.chordplayapiserver.domain.dao.*;
 import com.chordplay.chordplayapiserver.domain.entity.*;
-import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.AiSheetNotCreatedException;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
@@ -43,6 +40,7 @@ public class SheetServiceImpl implements SheetService{
     private final SheetRepository sheetRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final SheetLikeRepository sheetLikeRepository;
     private final ObjectMapper objectMapper;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final MessageQueue messageQueue;
@@ -131,10 +129,20 @@ public class SheetServiceImpl implements SheetService{
 
     @Override
     public SheetsResponse getSheetsByVideoId(String videoId) {
+
+        User user = new User(ContextUtil.getPrincipalUserId());
+        List<Sheet> sharedSheets = sheetRepository.findAllByVideoId(videoId);
+        List<Sheet> likeSheet = new ArrayList<>();
+        for(Sheet sheet: sharedSheets){
+            Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
+            if (sheetLikeOptional.isPresent()){
+                likeSheet.add(sheetLikeOptional.get().getSheet());
+            }
+        }
         SheetsResponse sheetsResponse = SheetsResponse.builder()
-                .sharedSheet(sheetRepository.findAllByVideoId(videoId))
-                .mySheet(new ArrayList<Sheet>())
-                .likeSheet(new ArrayList<Sheet>()).build();
+                .sharedSheet(sharedSheets)
+                .mySheet(sheetRepository.findAllByUserAndVideoId(user,videoId))
+                .likeSheet(likeSheet).build();
         return sheetsResponse;
     }
 
