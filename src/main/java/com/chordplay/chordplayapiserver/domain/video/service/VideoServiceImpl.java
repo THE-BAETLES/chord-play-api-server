@@ -1,12 +1,15 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.dao.VideoRepository;
 import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.WatchHistory;
 import com.chordplay.chordplayapiserver.domain.entity.item.PerformerGrade;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.dto.WatchHistoryResponse;
 import com.chordplay.chordplayapiserver.domain.video.exception.IncorrectGradeInputException;
@@ -31,6 +34,7 @@ public class VideoServiceImpl implements VideoService{
 
     private final YoutubeVideoSearch youtubeVideoSearch;
     private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
     private final SheetService sheetService;
     private final WatchHistoryRepository watchHistoryRepository;
 
@@ -117,6 +121,13 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public Video get(String videoId) {
         return videoRepository.findById(videoId).orElseThrow(() -> new VideoNotFoundException());
+    }
+
+    public Boolean isInMyCollection(String videoId){
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        return user.getMyCollection()
+                .stream()
+                .anyMatch(vidInCollection -> vidInCollection.equals(videoId));
     }
 
 

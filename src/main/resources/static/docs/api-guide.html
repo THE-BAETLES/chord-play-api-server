@@ -977,7 +977,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 428
+Content-Length: 463
 
 {
   "code" : "200",
@@ -993,6 +993,7 @@ Content-Length: 428
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -1103,6 +1104,11 @@ Content-Length: 428
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheet_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
 </tr>
 </tbody>
 </table>
@@ -1433,7 +1439,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 485
+Content-Length: 520
 
 {
   "code" : "200",
@@ -1449,6 +1455,7 @@ Content-Length: 485
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }
 }</code></pre>
@@ -1541,6 +1548,11 @@ Content-Length: 485
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1610,7 +1622,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 485
+Content-Length: 520
 
 {
   "code" : "201",
@@ -1626,6 +1638,7 @@ Content-Length: 485
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }
 }</code></pre>
@@ -1718,6 +1731,11 @@ Content-Length: 485
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1786,7 +1804,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -1802,6 +1820,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -1814,6 +1833,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -1906,6 +1926,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1978,7 +2003,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -1994,6 +2019,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -2006,6 +2032,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -2098,6 +2125,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2166,7 +2198,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -2182,6 +2214,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -2194,6 +2227,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -2285,6 +2319,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].sheet_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
 </tr>
 </tbody>
 </table>
@@ -3688,7 +3727,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 918
+Content-Length: 988
 
 {
   "code" : "200",
@@ -3704,6 +3743,7 @@ Content-Length: 918
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg",
@@ -3716,6 +3756,7 @@ Content-Length: 918
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   } ]
 }</code></pre>
@@ -3827,6 +3868,11 @@ Content-Length: 918
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3837,7 +3883,7 @@ Content-Length: 918
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-15 22:49:58 +0900
+Last updated 2022-10-22 05:09:31 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
