@@ -44,10 +44,10 @@ public class User {
     private Membership membership;
 
     @Field("signup_favorite")
-    private List<String> signupFavorite;
+    private List<String> signupFavorite = new ArrayList<>();
 
     @Field("my_collection")
-    private List<String> myCollection;
+    private List<String> myCollection = new ArrayList<>();
 
     public List<String> getRoleList(){
         if(this.roles.length() > 0){
@@ -72,7 +72,7 @@ public class User {
         this.performerGrade = performerGrade;
         this.membership = membership;
         this.signupFavorite = signupFavorite;
-        this.myCollection = new ArrayList<>();
+        this.myCollection = myCollection;
     }
 
     public User(String id){

@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.Country;
 import com.chordplay.chordplayapiserver.domain.entity.item.Gender;
@@ -16,6 +17,7 @@ import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
+import com.chordplay.chordplayapiserver.util.WithMockCustomUserSecurityContextFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -72,6 +74,25 @@ class UserApiControllerTest {
         //then
         result.andExpect(status().isOk());
         result.andDo(UserTestDocs.documentOnLoginSuccess());
+    }
+
+    @Test
+    @DisplayName("내 정보 반환 요청_닉네임 있는 유저_내 정보 반환")
+    @WithMockCustomUser(hasNickname = true)
+    public void getMyInformationTest() throws Exception {
+
+        //get
+        User user = WithMockCustomUserSecurityContextFactory.getAdminUser(true);
+
+        //when
+        ResultActions result = getMyInformation();
+
+        //then
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.nickname").value(user.getNickname()))
+                .andExpect(jsonPath("$.data.id").value(user.getId()))
+                .andExpect(jsonPath("$.data.roles").value(user.getRoles()));
+        result.andDo(UserTestDocs.documentOnMyInformation());
     }
 
     @Test
@@ -219,6 +240,12 @@ class UserApiControllerTest {
 
     private ResultActions loginCheck() throws Exception {
         return mockMvc.perform(post("/user/login")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getMyInformation() throws Exception {
+        return mockMvc.perform(get("/user")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
