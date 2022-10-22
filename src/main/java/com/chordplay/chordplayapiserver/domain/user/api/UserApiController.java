@@ -29,6 +29,11 @@ public class UserApiController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping()
+    public ApiResponse<MyInformationResponse> getMyInformation(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        MyInformationResponse myInformationResponse= new MyInformationResponse(principalDetails.getUser());
+        return ApiResponse.success(myInformationResponse, HttpStatus.OK.value());
+    }
     @GetMapping("/nickname")
     public ApiResponse<NicknameResponse> getNickname(@AuthenticationPrincipal PrincipalDetails principalDetails){
         String userEmail = principalDetails.getUser().getEmail();
