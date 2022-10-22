@@ -258,13 +258,13 @@ operation::sheet/duplicate_a_sheet[snippets='http-request,request-headers,reques
 
 == SHEET-LIKE
 
-=== 'POST' /sheet-like/{sheetId}
+=== `POST` /sheet-like/{sheetId}
 
 악보 좋아요 요청을 보냅니다
 
 operation::sheet-like/add_sheet_like[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
 
-=== 'DELETE' /sheet-like/{sheetId}
+=== `DELETE` /sheet-like/{sheetId}
 
 악보 좋아요를 취소합니다
 
