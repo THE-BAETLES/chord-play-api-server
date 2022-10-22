@@ -133,6 +133,10 @@ public class VideoServiceImpl implements VideoService{
                 .anyMatch(vidInCollection -> vidInCollection.equals(videoId));
     }
 
+    public Long getSheetCount(String videoId){
+       return videoRepository.getSheetCount(videoId);
+    }
+
 
     private List<Video> getVideosByList(List<String> videoIdList){
         List<Video> videos = new ArrayList<Video>();
