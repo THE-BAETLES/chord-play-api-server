@@ -152,7 +152,7 @@ public class SheetServiceImpl implements SheetService{
             }
         }
 
-        SheetsResponse sheetsResponse = new SheetsResponse(sharedSheetResponses,likeSheetResponses,likeSheetResponses);
+        SheetsResponse sheetsResponse = new SheetsResponse(sharedSheetResponses,likeSheetResponses,mySheetResponses);
 
        return sheetsResponse;
     }
