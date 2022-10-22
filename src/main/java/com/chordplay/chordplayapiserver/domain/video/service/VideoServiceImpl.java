@@ -113,7 +113,10 @@ public class VideoServiceImpl implements VideoService{
         List<VideoResponse> videoResponses = new ArrayList<VideoResponse>();
 
         for (WatchHistory w : watchHistories){
-            videoResponses.add(new VideoResponse(w.getVideo()));
+            Video watchedVideo = w.getVideo();
+            Long sheetCount = videoRepository.getSheetCount(watchedVideo.getId());
+
+            videoResponses.add(new VideoResponse(watchedVideo,sheetCount));
         }
         return videoResponses;
     }
