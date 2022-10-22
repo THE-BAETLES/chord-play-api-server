@@ -492,6 +492,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_post_sheetsduplication"><code>POST</code> /sheets/duplication</a></li>
 </ul>
 </li>
+<li><a href="#_sheet_like">SHEET-LIKE</a>
+<ul class="sectlevel2">
+<li><a href="#_post_sheet_likesheetid">'POST' /sheet-like/{sheetId}</a></li>
+<li><a href="#_delete_sheet_likesheetid">'DELETE' /sheet-like/{sheetId}</a></li>
+</ul>
+</li>
 <li><a href="#_recommendation">RECOMMENDATION</a>
 <ul class="sectlevel2">
 <li><a href="#_get_recommendation"><code>GET</code> /recommendation</a></li>
@@ -3654,6 +3660,231 @@ Content-Length: 322
 </div>
 </div>
 <div class="sect1">
+<h2 id="_sheet_like"><a class="link" href="#_sheet_like">SHEET-LIKE</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_post_sheet_likesheetid"><a class="link" href="#_post_sheet_likesheetid">'POST' /sheet-like/{sheetId}</a></h3>
+<div class="paragraph">
+<p>악보 좋아요 요청을 보냅니다</p>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_http_request"><a class="link" href="#_post_sheet_likesheetid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /sheet-like/testSheetId HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_request_headers"><a class="link" href="#_post_sheet_likesheetid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_path_parameters"><a class="link" href="#_post_sheet_likesheetid_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /sheet-like/{sheetId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheetId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_http_response"><a class="link" href="#_post_sheet_likesheetid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "201",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_response_fields"><a class="link" href="#_post_sheet_likesheetid_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빈 문자열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_delete_sheet_likesheetid"><a class="link" href="#_delete_sheet_likesheetid">'DELETE' /sheet-like/{sheetId}</a></h3>
+<div class="paragraph">
+<p>악보 좋아요를 취소합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_http_request"><a class="link" href="#_delete_sheet_likesheetid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /sheet-like/testSheetId HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_request_headers"><a class="link" href="#_delete_sheet_likesheetid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_path_parameters"><a class="link" href="#_delete_sheet_likesheetid_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /sheet-like/{sheetId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheetId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_http_response"><a class="link" href="#_delete_sheet_likesheetid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_response_fields"><a class="link" href="#_delete_sheet_likesheetid_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빈 문자열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_recommendation"><a class="link" href="#_recommendation">RECOMMENDATION</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -3883,7 +4114,7 @@ Content-Length: 988
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-22 05:09:31 +0900
+Last updated 2022-10-22 16:41:22 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

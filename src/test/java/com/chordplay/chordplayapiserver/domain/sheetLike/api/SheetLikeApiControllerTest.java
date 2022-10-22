@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.sheetLike.api;
 
 import com.chordplay.chordplayapiserver.domain.sheet.api.SheetApiController;
+import com.chordplay.chordplayapiserver.domain.sheetLike.docs.SheetLikeTestDocs;
 import com.chordplay.chordplayapiserver.domain.sheetLike.service.SheetLikeService;
 import com.chordplay.chordplayapiserver.domain.user.config.SecurityConfig;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
@@ -51,6 +52,7 @@ class SheetLikeApiControllerTest {
 
         //then
         verifyCreated(result);
+        result.andDo(SheetLikeTestDocs.documentOnAddSheetLike());
     }
 
     @Test
@@ -64,6 +66,8 @@ class SheetLikeApiControllerTest {
 
         //then
         verifyOK(result);
+        result.andDo(SheetLikeTestDocs.documentOnDeleteSheetLike());
+
     }
 
     private ResultActions addSheetLike(String sheetId) throws Exception {
