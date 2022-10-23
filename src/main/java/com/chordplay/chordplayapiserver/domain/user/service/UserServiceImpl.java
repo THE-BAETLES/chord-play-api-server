@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService{
         }
 
         for (String videoId : user.getMyCollection()) {
-            VideoResponse videoResponse = new VideoResponse(videoService.get(videoId));
+            VideoResponse videoResponse = new VideoResponse(videoService.create(videoId));
             myCollectionResponse.add(videoResponse);
         }
 
