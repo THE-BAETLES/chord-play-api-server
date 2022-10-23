@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
@@ -27,6 +28,12 @@ public class UserApiController {
     public ResponseEntity<Void> login(@AuthenticationPrincipal PrincipalDetails principalDetails){
         if (principalDetails.getUser().getNickname() == null) throw new NotFullyJoinedException("세부 회원가입이 필요합니다");
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}")
+    public ApiResponse<UserInformationResponse> getUserInformation(@PathVariable String userId){
+        UserInformationResponse userInformationResponse = userService.getUserInfo(userId);
+        return ApiResponse.success(userInformationResponse, HttpStatus.OK.value());
     }
 
     @GetMapping()

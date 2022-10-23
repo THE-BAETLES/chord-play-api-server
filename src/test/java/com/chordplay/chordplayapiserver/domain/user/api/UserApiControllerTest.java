@@ -13,6 +13,7 @@ import com.chordplay.chordplayapiserver.domain.user.docs.UserTestDocs;
 import com.chordplay.chordplayapiserver.domain.user.dto.CheckDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.NicknameResponse;
+import com.chordplay.chordplayapiserver.domain.user.dto.UserInformationResponse;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
@@ -93,6 +94,28 @@ class UserApiControllerTest {
                 .andExpect(jsonPath("$.data.id").value(user.getId()))
                 .andExpect(jsonPath("$.data.roles").value(user.getRoles()));
         result.andDo(UserTestDocs.documentOnMyInformation());
+    }
+
+    @Test
+    @DisplayName("유저정보 반환 정보 반환 요청_닉네임 있는 유저_내 정보 반환")
+    @WithMockCustomUser(hasNickname = true)
+    public void getUserInformationTest() throws Exception {
+
+        //get
+        User user = WithMockCustomUserSecurityContextFactory.getAdminUser(true);
+        UserInformationResponse userInformationResponse = new UserInformationResponse(user);
+        given(userService.getUserInfo(user.getId())).willReturn(userInformationResponse);
+        //when
+        ResultActions result = getUserInformation(user.getId());
+
+        //then
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.nickname").value(user.getNickname()))
+                .andExpect(jsonPath("$.data.id").value(user.getId()))
+                .andExpect(jsonPath("$.data.username").value(user.getUsername()))
+                .andExpect(jsonPath("$.data.email").value(user.getEmail()));
+
+        result.andDo(UserTestDocs.documentOnUserInformation());
     }
 
     @Test
@@ -250,6 +273,11 @@ class UserApiControllerTest {
                 .header("Authorization","Bearer {token}"));
     }
 
+    private ResultActions getUserInformation(String userId) throws Exception {
+        return mockMvc.perform(get("/user/{userId}", userId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
     private ResultActions recommendNickname() throws Exception {
         return mockMvc.perform(get("/user/nickname")
                 .accept(MediaType.APPLICATION_JSON)

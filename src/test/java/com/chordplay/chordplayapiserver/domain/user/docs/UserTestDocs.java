@@ -28,6 +28,7 @@ public class UserTestDocs {
     private static String getNameOfDocsOfDeletingVideoIdFromMyCollection  = "user/delete_video_id_to_my_collection";
     private static String getNameOfDocsOfGettingMyCollection  = "user/get_my_collection";
     private static String getNameOfDocsOfGettingMyInformation  = "user/get_my_information";
+    private static String getNameOfDocsOfGettingUserInformation  = "user/get_user_information";
     private static String getNameOfDocsOfGettingMyCollectionVideoIdList  = "user/get_my_collection_video_id_list";
     public static ResultHandler documentOnLoginSuccess() {
         return document(getNameOfDocsOfLoginSuccess,
@@ -47,11 +48,23 @@ public class UserTestDocs {
                         headerWithName("Authorization").description("Bearer {token}")
                 ),
                 responseFields(CommonTestDocs.commonDocs()),
-                responseFields(beneathPath("data").withSubsectionId("data"), MyInformationResponseFields())
+                responseFields(beneathPath("data").withSubsectionId("data"), myInformationResponseFields())
         );
     }
 
-    private static List<FieldDescriptor> MyInformationResponseFields() {
+    public static ResultHandler documentOnUserInformation() {
+        return document(getNameOfDocsOfGettingUserInformation,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")
+                ),
+                responseFields(CommonTestDocs.commonDocs()),
+                responseFields(beneathPath("data").withSubsectionId("data"), userInformationResponseFields())
+        );
+    }
+
+    private static List<FieldDescriptor> myInformationResponseFields() {
         return Arrays.asList(
                 fieldWithPath("id").type(JsonFieldType.STRING).description("유저 아이디"),
                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
@@ -66,9 +79,16 @@ public class UserTestDocs {
                 fieldWithPath("membership").type(JsonFieldType.STRING).description("유저의 등급"),
                 fieldWithPath("signup_favorite").type(JsonFieldType.ARRAY).description("유저의 초기 선택곡 리스트"),
                 fieldWithPath("my_collection").type(JsonFieldType.ARRAY).description("유저의 내 곡 목록 ")
-
         );
+    }
 
+    private static List<FieldDescriptor> userInformationResponseFields() {
+        return Arrays.asList(
+                fieldWithPath("id").type(JsonFieldType.STRING).description("유저 아이디"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("유저 닉네임"),
+                fieldWithPath("username").type(JsonFieldType.STRING).description("유저 이름"),
+                fieldWithPath("email").type(JsonFieldType.STRING).description("유저 email")
+        );
     }
 
     public static ResultHandler documentOnNicknameRecommendation() {

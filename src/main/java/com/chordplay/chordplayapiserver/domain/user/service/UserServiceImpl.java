@@ -3,10 +3,7 @@ package com.chordplay.chordplayapiserver.domain.user.service;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
-import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
 import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
@@ -124,5 +121,12 @@ public class UserServiceImpl implements UserService{
         }
 
         return user.getMyCollection();
+    }
+
+
+    @Override
+    public UserInformationResponse getUserInfo(String userId) {
+        User user = getUser(userId);
+        return new UserInformationResponse(user);
     }
 }
