@@ -105,7 +105,7 @@ public class SheetServiceImpl implements SheetService{
     @Override
     public Sheet deleteSheetAndSheetData(String sheetId) {
         Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
-        if (sheet.getUser().getId().equals(ContextUtil.getPrincipalUserId())) throw new UnauthorizedException();
+        if (!sheet.getUser().getId().equals(ContextUtil.getPrincipalUserId())) throw new UnauthorizedException();
 
         sheetRepository.delete(sheet);
         sheetDataRepository.findById(sheetId).ifPresent(sheetData->{
