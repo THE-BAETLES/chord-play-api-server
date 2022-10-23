@@ -103,9 +103,15 @@ The index provides the entry point into the service.
 
 === `GET` /user
 
-로그인 된 유저의 정보를 가져옵니다 password 정보는 제외됩니다
+로그인 된 내 정보를 가져옵니다 password 정보는 제외됩니다
 
 operation::user/get_my_information[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+=== `GET` /user/{userId}
+
+ 유저의 일부 정보를 가져옵니다
+
+operation::user/get_user_information[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
 
 === `GET` /user/login
 
