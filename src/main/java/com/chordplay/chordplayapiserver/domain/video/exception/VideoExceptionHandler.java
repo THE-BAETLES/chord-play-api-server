@@ -21,9 +21,9 @@ public class VideoExceptionHandler {
 
     @ExceptionHandler(value = {VideoNotFoundException.class})
     public ResponseEntity<ErrorResponse> VideoNotFoundException(VideoNotFoundException e){
-        log.error("Youtube Server Exception");
-        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.YOUTUBE_SERVER_ERROR);
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("Video Not Found Exception");
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.VIDEO_NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = {IncorrectGradeInputException.class})
     public ResponseEntity<ErrorResponse> IncorrectGradeInputException(IncorrectGradeInputException e){
