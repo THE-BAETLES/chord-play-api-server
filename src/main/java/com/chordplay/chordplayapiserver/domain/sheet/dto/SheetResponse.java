@@ -37,11 +37,15 @@ public class SheetResponse {
         this.title = sheet.getTitle();
         this.createdAt = sheet.getCreatedAt().toString();
         this.updatedAt = sheet.getUpdatedAt().toString();
-        this.likeCount = sheet.getLikeCount();
+        this.likeCount = 0L;
         this.liked = false;
     }
 
     public void setLiked(Boolean liked) {
         this.liked = liked;
+    }
+
+    public void setLikeCount(Long likeCount) {
+        this.likeCount = likeCount;
     }
 }
