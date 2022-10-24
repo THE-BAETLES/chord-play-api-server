@@ -152,6 +152,7 @@ public class SheetTestDocs {
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("video_id").type(JsonFieldType.STRING).description("악보의 비디오 ID"),
                 fieldWithPath("user_id").type(JsonFieldType.STRING).description("악보의 저자 ID"),
+                fieldWithPath("user_nickname").type(JsonFieldType.STRING).description("악보의 저자 닉네임"),
                 fieldWithPath("title").type(JsonFieldType.STRING).description("악보 이름"),
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("악보 생성 날짜"),
                 fieldWithPath("updated_at").type(JsonFieldType.STRING).description("악보 최종 수정 날짜"),
