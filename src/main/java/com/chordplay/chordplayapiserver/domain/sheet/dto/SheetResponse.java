@@ -23,12 +23,14 @@ public class SheetResponse {
     private String id;
     private String videoId;
     private String userId;
+    private String userNickname = "";
     private String title;
     private String createdAt;
     private String updatedAt;
 
     private Long likeCount;
     private Boolean liked;
+
 
     public SheetResponse(Sheet sheet) {
         this.id = sheet.getId();
@@ -47,5 +49,9 @@ public class SheetResponse {
 
     public void setLikeCount(Long likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public void setNickname(String userNickname) {
+        this.userNickname = userNickname;
     }
 }
