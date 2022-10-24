@@ -5,6 +5,7 @@ import com.chordplay.chordplayapiserver.domain.dao.SheetLikeRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.*;
+import com.chordplay.chordplayapiserver.domain.entity.item.Chord;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
@@ -65,7 +66,8 @@ class SheetServiceImplTest extends ServiceUnitTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.empty());
 
         //when
-        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
+        Chord chord = new Chord("B","m","none");
+        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); })
                 .isInstanceOf(SheetNotFoundException.class);
         //then
     }
@@ -80,7 +82,8 @@ class SheetServiceImplTest extends ServiceUnitTest {
 
 
         //when
-        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
+        Chord chord = new Chord("B","m","none");
+        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); })
                 .isInstanceOf(ForbiddenException.class);
         //then
     }
@@ -94,7 +97,8 @@ class SheetServiceImplTest extends ServiceUnitTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
 
         //when
-        assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); }).doesNotThrowAnyException();
+        Chord chord = new Chord("B","m","none");
+        assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); }).doesNotThrowAnyException();
         //then
     
     }
@@ -200,22 +204,17 @@ class SheetServiceImplTest extends ServiceUnitTest {
     }
 
     private SheetData createMockSheetData() {
-        List<ChordInfo> chordInfos = new ArrayList<>();
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("Am")
-                .start(0.0)
-                .end(2.23)
-                .position(0).build());
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("C")
-                .start(2.23)
-                .end(4.06)
-                .position(1).build());
+        Chord chord1 = new Chord("B","none","none");
+        Chord chord2 = new Chord("none","none","none");
+        Chord chord3 = new Chord("none","none","none");
+        ChordInfo chordInfo1 = new ChordInfo(chord1, 0.1111);
+        ChordInfo chordInfo2 = new ChordInfo(chord2, 0.1234);
+        ChordInfo chordInfo3 = new ChordInfo(chord3, 0.3);
         return SheetData.builder()
+                .id("abc")
                 .bpm(123)
-                .id("6300d7e8aeeb0778c43ea37d")
-                .chordInfos(chordInfos).build();
+                .chordInfos(
+                        Arrays.asList(chordInfo1,chordInfo2,chordInfo3)
+                ).build();
     }
 }
