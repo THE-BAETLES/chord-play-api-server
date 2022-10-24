@@ -102,6 +102,8 @@ public class SheetServiceImpl implements SheetService{
         return sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
     }
 
+
+
     @Override
     public Sheet deleteSheetAndSheetData(String sheetId) {
         Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
@@ -139,22 +141,17 @@ public class SheetServiceImpl implements SheetService{
         List<SheetResponse> mySheetResponses = new ArrayList<>();
 
         for(Sheet sheet: sharedSheets){
-            SheetResponse sheetResponse = new SheetResponse(sheet);
+            SheetResponse sheetResponse = toSheetResponse(sheet,user);
             sharedSheetResponses.add(sheetResponse);
-            Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
 
-            if (sheetLikeOptional.isPresent()){
-                sheetResponse.setLiked(true);
+            if (sheetResponse.getLiked()){
                 likeSheetResponses.add(sheetResponse);
             }
             if (sheet.getUser().equals(user)){
                 mySheetResponses.add(sheetResponse);
             }
         }
-
-        SheetsResponse sheetsResponse = new SheetsResponse(sharedSheetResponses,likeSheetResponses,mySheetResponses);
-
-       return sheetsResponse;
+       return new SheetsResponse(sharedSheetResponses,likeSheetResponses,mySheetResponses);
     }
 
     @Override
@@ -231,5 +228,17 @@ public class SheetServiceImpl implements SheetService{
         sheetDataRepository.save(newSheetData);
 
         return sheet;
+    }
+
+    protected SheetResponse toSheetResponse(Sheet sheet, User user){
+        SheetResponse sheetResponse = new SheetResponse(sheet);
+        Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
+        if (sheetLikeOptional.isPresent()){
+            sheetResponse.setLiked(true);
+        }
+        sheetResponse.setLikeCount(sheetRepository.getSheetLikeCount(sheet.getId()));
+
+        sheetResponse.setNickname(user.getNickname());
+        return sheetResponse;
     }
 }

@@ -8,6 +8,7 @@ import com.chordplay.chordplayapiserver.domain.entity.*;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
 import com.chordplay.chordplayapiserver.global.ServiceUnitTest;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -34,6 +36,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mockStatic;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,6 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SheetServiceImplTest extends ServiceUnitTest {
 
+    @Spy
     @InjectMocks
     SheetServiceImpl sheetService;
     @Mock
@@ -125,15 +129,18 @@ class SheetServiceImplTest extends ServiceUnitTest {
         //get
         Sheet sheet = createMockSheet();
         User user = createMockUser();
+        SheetResponse sheetResponse = new SheetResponse(sheet);
+        sheetResponse.setLiked(true);
+        sheetResponse.setLikeCount(3L);
+
         String videoId = "videoId";
 
-
-        given(sheetRepository.findAllByVideoId(eq(videoId))).willReturn(Arrays.asList(sheet));
-        given(sheetLikeRepository.findBySheetAndUser(eq(sheet),any(User.class))).willReturn(Optional.of(new SheetLike(user, sheet)));
         given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        given(sheetRepository.findAllByVideoId(eq(videoId))).willReturn(Arrays.asList(sheet));
+        doReturn(sheetResponse).when(sheetService).toSheetResponse(sheet,user);
+
         //when
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
-
 
         //then
         assertThat(sheetsResponse.getLike().get(0).getId()).isEqualTo(sheet.getId());
