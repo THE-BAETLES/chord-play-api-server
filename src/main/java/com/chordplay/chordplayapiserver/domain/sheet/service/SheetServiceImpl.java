@@ -238,6 +238,7 @@ public class SheetServiceImpl implements SheetService{
         }
         sheetResponse.setLikeCount(sheetRepository.getSheetLikeCount(sheet.getId()));
 
+        sheetResponse.setNickname(user.getNickname());
         return sheetResponse;
     }
 }
