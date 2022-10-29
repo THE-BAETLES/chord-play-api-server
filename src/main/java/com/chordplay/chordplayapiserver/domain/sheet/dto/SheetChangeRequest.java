@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.sheet.dto;
 
+import com.chordplay.chordplayapiserver.domain.entity.item.Chord;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
@@ -16,11 +17,10 @@ import javax.validation.constraints.NotBlank;
 public class SheetChangeRequest {
     @Min(value = 0, message = "위치")
     private int position;
-    @NotBlank(message = "코드")
-    private String chord;
+    private Chord chord;
 
     @Builder
-    public SheetChangeRequest(int position, String chord) {
+    public SheetChangeRequest(int position, Chord chord) {
         this.position = position;
         this.chord = chord;
     }

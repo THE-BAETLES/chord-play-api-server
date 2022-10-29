@@ -2934,7 +2934,7 @@ Content-Length: 367
 <h4 id="_get_sheetsdatasheetid_http_request"><a class="link" href="#_get_sheetsdatasheetid_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/data/6300d7e8aeeb0778c43ea37d HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/data/abc HTTP/1.1
 Accept: application/json
 Authorization: Bearer {token}
 Host: api.baetles.site</code></pre>
@@ -2990,7 +2990,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 347
+Content-Length: 542
 
 {
   "code" : "200",
@@ -2998,18 +2998,29 @@ Content-Length: 347
   "data" : {
     "status" : 3,
     "bpm" : 123,
-    "chord_infos" : [ {
-      "chord" : "Am",
-      "start" : 0.0,
-      "end" : 2.23,
-      "position" : 0
+    "_id" : "abc",
+    "infos" : [ {
+      "chord" : {
+        "root" : "B",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.1111
     }, {
-      "chord" : "C",
-      "start" : 2.23,
-      "end" : 4.06,
-      "position" : 1
-    } ],
-    "_id" : "6300d7e8aeeb0778c43ea37d"
+      "chord" : {
+        "root" : "none",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.1234
+    }, {
+      "chord" : {
+        "root" : "none",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.3
+    } ]
   }
 }</code></pre>
 </div>
@@ -3076,34 +3087,34 @@ Content-Length: 347
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 속도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">음표</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">박자 객체</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">악보 생성 완료 상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성 상태</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].start</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드 구간 시작 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].end</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드 구간 끝 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].position</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">악보 상 코드 위치</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].chord</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.root</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 root</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.triad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 triad</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.bass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 bass</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].beat_time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 박자의 시간(sec 기준)</p></td>
 </tr>
 </tbody>
 </table>
@@ -3704,6 +3715,15 @@ Content-Length: 371
 <div class="paragraph">
 <p>악보 데이터의 특정 구간을 변경합니다</p>
 </div>
+<div class="paragraph">
+<p>코드는 root, triad, bass 로 이루어져있으며 데이터가 없는 부분은 'none&#8217;으로 기입합니다</p>
+</div>
+<div class="paragraph">
+<p>Cm7/D 코드의 경우 root: C, triad : m7, bass: D 입니다.</p>
+</div>
+<div class="paragraph">
+<p>C 코드의 경우 root: C, triad : none, bass: none 입니다.</p>
+</div>
 <div class="sect3">
 <h4 id="_patch_sheetsdatasheetid_http_request"><a class="link" href="#_patch_sheetsdatasheetid_http_request">HTTP request</a></h4>
 <div class="listingblock">
@@ -3712,12 +3732,16 @@ Content-Length: 371
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer {token}
-Content-Length: 37
+Content-Length: 97
 Host: api.baetles.site
 
 {
   "position" : 3,
-  "chord" : "B"
+  "chord" : {
+    "root" : "A",
+    "triad" : "m7",
+    "bass" : "none"
+  }
 }</code></pre>
 </div>
 </div>
@@ -3771,7 +3795,11 @@ Host: api.baetles.site
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "position" : 3,
-  "chord" : "B"
+  "chord" : {
+    "root" : "A",
+    "triad" : "m7",
+    "bass" : "none"
+  }
 }</code></pre>
 </div>
 </div>
@@ -4468,7 +4496,7 @@ Content-Length: 988
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-23 20:15:17 +0900
+Last updated 2022-10-25 00:49:55 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

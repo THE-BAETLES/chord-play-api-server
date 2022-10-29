@@ -125,7 +125,6 @@ public class SheetTestDocs {
                 pathParameters(
                         parameterWithName("sheetId").description("악보 아이디")
                 )
-
         );
     }
 
@@ -166,12 +165,12 @@ public class SheetTestDocs {
         return Arrays.asList(
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("bpm").type(JsonFieldType.NUMBER).description("악보의 속도"),
-                fieldWithPath("chord_infos").type(JsonFieldType.ARRAY).description("음표"),
-                fieldWithPath("status").type(JsonFieldType.NUMBER).description("악보 생성 완료 상태"),
-                fieldWithPath("chord_infos[0].start").type(JsonFieldType.NUMBER).description("코드 구간 시작 시간"),
-                fieldWithPath("chord_infos[0].end").type(JsonFieldType.NUMBER).description("코드 구간 끝 시간"),
-                fieldWithPath("chord_infos[0].position").type(JsonFieldType.NUMBER).description("악보 상 코드 위치"),
-                fieldWithPath("chord_infos[0].chord").type(JsonFieldType.STRING).description("코드")
+                fieldWithPath("infos").type(JsonFieldType.ARRAY).description("박자 객체"),
+                fieldWithPath("status").type(JsonFieldType.NUMBER).description("생성 상태"),
+                fieldWithPath("infos[0].chord.root").type(JsonFieldType.STRING).description("코드의 root"),
+                fieldWithPath("infos[0].chord.triad").type(JsonFieldType.STRING).description("코드의 triad"),
+                fieldWithPath("infos[0].chord.bass").type(JsonFieldType.STRING).description("코드의 bass"),
+                fieldWithPath("infos[0].beat_time").type(JsonFieldType.NUMBER).description("해당 박자의 시간(sec 기준)")
         );
     }
 

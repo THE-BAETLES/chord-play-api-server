@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.domain.entity.Sheet;
 import com.chordplay.chordplayapiserver.domain.entity.SheetData;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.entity.item.Chord;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.docs.SheetTestDocs;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
@@ -183,7 +184,8 @@ class SheetApiControllerTest {
 
         //get
         String sheetId= "abc";
-        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(3, "B");
+        Chord chord = new Chord("A","m7","none");
+        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(3, chord);
 
         //when
         ResultActions result = updateSheetChord(sheetId, sheetChangeRequest);
@@ -199,7 +201,9 @@ class SheetApiControllerTest {
 
         //get
         String sheetId= "abc";
-        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(-1, "B");
+        Chord chord = new Chord("A","m7","none");
+
+        SheetChangeRequest sheetChangeRequest = new SheetChangeRequest(-1, chord);
 
         //when
         ResultActions result = updateSheetChord(sheetId, sheetChangeRequest);
@@ -286,24 +290,18 @@ class SheetApiControllerTest {
     }
 
     private SheetData createMockSheetData() {
-        List<ChordInfo> chordInfos = new ArrayList<>();
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("Am")
-                .start(0.0)
-                .end(2.23)
-                .position(0).build());
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("C")
-                .start(2.23)
-                .end(4.06)
-                .position(1).build());
-
+        Chord chord1 = new Chord("B","none","none");
+        Chord chord2 = new Chord("none","none","none");
+        Chord chord3 = new Chord("none","none","none");
+        ChordInfo chordInfo1 = new ChordInfo(chord1, 0.1111);
+        ChordInfo chordInfo2 = new ChordInfo(chord2, 0.1234);
+        ChordInfo chordInfo3 = new ChordInfo(chord3, 0.3);
         return SheetData.builder()
+                .id("abc")
                 .bpm(123)
-                .id("6300d7e8aeeb0778c43ea37d")
-                .chordInfos(chordInfos).build();
+                .chordInfos(
+                        Arrays.asList(chordInfo1,chordInfo2,chordInfo3)
+                ).build();
     }
 
     private SheetsResponse createMockSheetResponses() {

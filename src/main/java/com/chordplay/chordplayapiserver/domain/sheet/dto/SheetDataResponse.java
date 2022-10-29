@@ -18,6 +18,7 @@ public class SheetDataResponse {
     private String id;
     private int status;
     private int bpm;
+    @JsonProperty("infos")
     private List<ChordInfo> chordInfos;
 
     public SheetDataResponse(SheetData sheetData) {

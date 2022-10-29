@@ -21,7 +21,7 @@ public class SheetData {
     @Id
     private String id;
     private int bpm;
-    @Field("chord_infos")
+    @Field("infos")
     private List<ChordInfo> chordInfos;
 
     @Builder
