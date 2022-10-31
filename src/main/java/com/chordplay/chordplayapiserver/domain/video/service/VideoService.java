@@ -13,7 +13,6 @@ public interface VideoService {
     Video create(String videoId);
     Video get(String videoId);
     Boolean isInMyCollection(String videoId);
-    Long getSheetCount(String videoId);
     VideoResponse toVideoResponse(Video video);
 
 }

@@ -134,16 +134,6 @@ public class VideoServiceImpl implements VideoService{
                 .anyMatch(vidInCollection -> vidInCollection.equals(videoId));
     }
 
-    public Long getSheetCount(String videoId){
-       return videoRepository.getSheetCount(videoId);
-    }
-    public void setPlayCountAndSheetCount(VideoResponse videoResponse){
-        Long playCount = videoRepository.getPlayCount(videoResponse.getId());
-        Long sheetCount = videoRepository.getSheetCount(videoResponse.getId());
-        videoResponse.setPlayCount(playCount);
-        videoResponse.setSheetCount(sheetCount);
-    }
-
     public VideoResponse toVideoResponse(Video video){
         VideoResponse videoResponse = new VideoResponse(video);
         Long playCount = videoRepository.getPlayCount(videoResponse.getId());
