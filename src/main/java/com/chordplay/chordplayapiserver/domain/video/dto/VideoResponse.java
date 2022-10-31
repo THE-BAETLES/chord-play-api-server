@@ -133,11 +133,9 @@ public class VideoResponse {
         if (o == null || getClass() != o.getClass()) return false;
         VideoResponse that = (VideoResponse) o;
         return  difficultyAvg == that.difficultyAvg
-                && playCount == that.playCount && id.equals(that.id)
+                && id.equals(that.id)
                 && thumbnailPath.equals(that.thumbnailPath) && title.equals(that.title)
-                && Objects.equals(genre, that.genre) && Objects.equals(singer, that.singer)
-                && createdAt.equals(that.createdAt)
-                && Objects.equals(sheetCount, that.sheetCount);
+                && Objects.equals(genre, that.genre) && Objects.equals(singer, that.singer);
     }
 
     @Override
