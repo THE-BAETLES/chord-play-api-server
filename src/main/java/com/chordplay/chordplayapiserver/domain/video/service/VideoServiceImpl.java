@@ -50,7 +50,9 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public Video create(String videoId) {
         Optional<Video> videoOptional = videoRepository.findById(videoId);
-        if(videoOptional.isPresent()) return videoOptional.get();
+        if(videoOptional.isPresent()) {
+            return videoOptional.get();
+        }
         com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(videoId);
         Video video = new Video(youtubeVideo);
         videoRepository.save(video);
@@ -71,8 +73,7 @@ public class VideoServiceImpl implements VideoService{
             Optional<Video> optVideo = videoRepository.findById(youtubeSearchResult.getId().getVideoId());
             if (optVideo.isPresent()) {
                 Video video = optVideo.get();
-                Long sheetCount = videoRepository.getSheetCount(video.getId()) ;
-                videoResponse = new VideoResponse(video, sheetCount);
+                videoResponse= toVideoResponse(video);
             } else {
                 videoResponse = new VideoResponse(youtubeSearchResult);
             }
@@ -100,6 +101,7 @@ public class VideoServiceImpl implements VideoService{
 
         for (Video video : videos){
             System.out.println(video.getId());
+            VideoResponse videoResponse = toVideoResponse(video);
             videoResponses.add(new VideoResponse(video));
         }
         return videoResponses;
@@ -114,9 +116,8 @@ public class VideoServiceImpl implements VideoService{
 
         for (WatchHistory w : watchHistories){
             Video watchedVideo = w.getVideo();
-            Long sheetCount = videoRepository.getSheetCount(watchedVideo.getId());
-
-            videoResponses.add(new VideoResponse(watchedVideo,sheetCount));
+            VideoResponse videoResponse = toVideoResponse(watchedVideo);
+            videoResponses.add(videoResponse);
         }
         return videoResponses;
     }
@@ -136,7 +137,21 @@ public class VideoServiceImpl implements VideoService{
     public Long getSheetCount(String videoId){
        return videoRepository.getSheetCount(videoId);
     }
+    public void setPlayCountAndSheetCount(VideoResponse videoResponse){
+        Long playCount = videoRepository.getPlayCount(videoResponse.getId());
+        Long sheetCount = videoRepository.getSheetCount(videoResponse.getId());
+        videoResponse.setPlayCount(playCount);
+        videoResponse.setSheetCount(sheetCount);
+    }
 
+    public VideoResponse toVideoResponse(Video video){
+        VideoResponse videoResponse = new VideoResponse(video);
+        Long playCount = videoRepository.getPlayCount(videoResponse.getId());
+        Long sheetCount = videoRepository.getSheetCount(videoResponse.getId());
+        videoResponse.setPlayCount(playCount);
+        videoResponse.setSheetCount(sheetCount);
+        return videoResponse;
+    }
 
     private List<Video> getVideosByList(List<String> videoIdList){
         List<Video> videos = new ArrayList<Video>();

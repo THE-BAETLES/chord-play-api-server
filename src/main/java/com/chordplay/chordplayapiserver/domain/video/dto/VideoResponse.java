@@ -120,6 +120,10 @@ public class VideoResponse {
         this.playCount = playCount;
     }
 
+    public void setSheetCount(Long sheetCount) {
+        this.sheetCount = sheetCount;
+    }
+
     /*
      *  search 시 tag,length 정보가 불러와지지 않기 떄문에 이부분을 제외함
      */
