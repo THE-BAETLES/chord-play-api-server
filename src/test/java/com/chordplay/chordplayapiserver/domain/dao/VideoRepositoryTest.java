@@ -4,6 +4,7 @@ import com.chordplay.chordplayapiserver.acceptance.global.AcceptanceTest;
 import com.chordplay.chordplayapiserver.domain.entity.*;
 import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,9 +58,7 @@ class VideoRepositoryTest extends AcceptanceTest {
     public void getPlayCount_empty() throws Exception {
 
         //get
-        User user = new User(getTestUserId());
         Video video = new Video(getTestVideoId());
-
         videoRepository.save(video);
 
         //when
