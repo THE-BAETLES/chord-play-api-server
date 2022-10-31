@@ -280,6 +280,17 @@ operation::sheet/duplicate_a_sheet[snippets='http-request,request-headers,reques
 
 400 악보 or 악보 데이터가 존재하지 않음
 
+=== `GET` /sheets/my
+내가 쓴 악보 목록을 조회합니다
+
+operation::sheet/get_my_sheets[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+
+=== `GET` /sheets/my-like
+
+내가 좋아요 누른 악보 목록을 조회합니다
+
+operation::sheet/get_my_sheets[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
 
 == SHEET-LIKE
 
