@@ -262,6 +262,38 @@ class SheetApiControllerTest {
         result.andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("내 악보 조회하기__성공")
+    public void getMySheetsTest() throws Exception {
+
+        //get
+        SheetResponse sheetResponse = new SheetResponse(createMockSheet());
+        given(sheetService.getMySheets()).willReturn(Arrays.asList(sheetResponse));
+        //when
+        ResultActions result = getMySheets();
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].title").value(sheetResponse.getTitle()));
+    }
+
+
+    @Test
+    @DisplayName("내가 좋아요 누른 악보 조회하기__성공")
+    public void getSheetsOfMyLikeTest() throws Exception {
+
+        //get
+        SheetResponse sheetResponse = new SheetResponse(createMockSheet());
+        given(sheetService.getSheetsOfMyLike()).willReturn(Arrays.asList(sheetResponse));
+        //when
+        ResultActions result = getSheetsOfMyLike();
+
+        //then
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].title").value(sheetResponse.getTitle()));
+    }
+
+
     private Sheet createMockSheet(){
 
         User user = new User(ContextUtil.getPrincipalUserId());
@@ -366,6 +398,18 @@ class SheetApiControllerTest {
         return mockMvc.perform(post("/sheets/duplication")
                 .content(objectMapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getMySheets() throws Exception {
+        return mockMvc.perform(get("/sheets/my")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getSheetsOfMyLike() throws Exception {
+        return mockMvc.perform(get("/sheets/my-like")
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
