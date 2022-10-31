@@ -25,6 +25,7 @@ public class DatabaseCleanup implements InitializingBean {
     public void execute(){
         for(String name : collectionNames){
             mongoTemplate.dropCollection(name);
+            mongoTemplate.createCollection(name);
         }
     }
 }
