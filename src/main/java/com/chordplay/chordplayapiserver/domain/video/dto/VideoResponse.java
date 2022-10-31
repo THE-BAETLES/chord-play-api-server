@@ -36,12 +36,12 @@ public class VideoResponse {
     private int length;
     private String createdAt;
     private int difficultyAvg;
-    private int playCount;
+    private Long playCount;
     private Long sheetCount;
     private Boolean isInMyCollection = false;
 
     @Builder
-    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, String createdAt, int difficultyAvg, int playCount, Long sheetCount) {
+    public VideoResponse(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, String createdAt, int difficultyAvg, Long playCount, Long sheetCount) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -65,7 +65,7 @@ public class VideoResponse {
         this.length = video.getLength();
         this.createdAt = video.getCreatedAt().toString();
         this.difficultyAvg = video.getDifficultyAvg();
-        this.playCount = video.getPlayCount();
+        this.playCount = 0L;
         this.sheetCount = (sheetCount == null) ? 0 : sheetCount;
     }
 
@@ -85,7 +85,7 @@ public class VideoResponse {
         String rfc3339String =youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
         this.createdAt = OffsetDateTime.parse(rfc3339String).toString();
         this.difficultyAvg = 0;
-        this.playCount = 0;
+        this.playCount = 0L;
         this.sheetCount = 0L;
         this.genre = "";
     }
@@ -100,7 +100,7 @@ public class VideoResponse {
         this.createdAt = this.createdAt.substring(0,this.createdAt.length()-1);
         this.tags = new ArrayList<String>();
         this.difficultyAvg = 0;
-        this.playCount = 0;
+        this.playCount = 0L;
         this.sheetCount = 0L;
         this.length = 0;
         this.genre = "";
@@ -114,6 +114,10 @@ public class VideoResponse {
 
     public void setInMyCollection(Boolean inMyCollection) {
         isInMyCollection = inMyCollection;
+    }
+
+    public void setPlayCount(Long playCount) {
+        this.playCount = playCount;
     }
 
     /*
