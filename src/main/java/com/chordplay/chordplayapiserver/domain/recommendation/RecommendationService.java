@@ -42,7 +42,7 @@ public class RecommendationService {
         List<String> videoIdList = recommendationResponse.getPayload().getRecommendationList();
         List<VideoResponse> videoResponses = new ArrayList<>();
         for( String videoId : videoIdList ){
-            Video video = videoService.get(videoId);
+            Video video = videoService.create(videoId);
             Long sheetCount = videoService.getSheetCount(video.getId());
             videoResponses.add(new VideoResponse(video, sheetCount));
         }
