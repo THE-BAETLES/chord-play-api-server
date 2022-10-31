@@ -26,4 +26,7 @@ public interface SheetRepository extends MongoRepository<Sheet, String> {
     Long getSheetLikeCount(String sheetId);
 
     Sheet save(Sheet sheet);
+
+    @Query(sort = "{ created_at : 1 }")
+    List<Sheet> findAllByUser(User user);
 }

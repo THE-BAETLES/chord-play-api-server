@@ -241,4 +241,29 @@ public class SheetServiceImpl implements SheetService{
         sheetResponse.setNickname(user.getNickname());
         return sheetResponse;
     }
+
+    @Override
+    public List<SheetResponse> getSheetsOfMyLike() {
+
+        List<SheetResponse> sheetResponses = new ArrayList<>();
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<SheetLike> sheetLikes = sheetLikeRepository.findAllByUser(user);
+        sheetLikes.forEach(sheetLike -> {
+            Sheet sheet = sheetLike.getSheet();
+            sheetResponses.add(toSheetResponse(sheet,user));
+        });
+        return sheetResponses;
+    }
+
+    @Override
+    public List<SheetResponse> getMySheets() {
+        List<SheetResponse> sheetResponses = new ArrayList<>();
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<Sheet> sheets = sheetRepository.findAllByUser(user);
+
+        for (Sheet sheet: sheets) {
+            sheetResponses.add(toSheetResponse(sheet,user));
+        }
+        return sheetResponses;
+    }
 }

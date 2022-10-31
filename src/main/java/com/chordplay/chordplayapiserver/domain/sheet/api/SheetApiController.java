@@ -81,4 +81,18 @@ public class SheetApiController {
         ApiResponse<SheetResponse> body = ApiResponse.success(sheetResponse, HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+    @GetMapping("/my-like")
+    public ApiResponse<List<SheetResponse>> getSheetsOfMyLike(){
+        List<SheetResponse> sheetResponses = sheetService.getSheetsOfMyLike();
+        return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
+    }
+
+    @GetMapping("/my")
+    public ApiResponse<List<SheetResponse>> getMySheet(){
+        List<SheetResponse> sheetResponses = sheetService.getMySheets();
+        return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
+    }
+
+
+
 }

@@ -24,6 +24,9 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 public class SheetTestDocs {
 
     public static final String nameOfDocsThatGetSheet = "get_a_sheet";
+    public static final String nameOfDocsThatGetMySheets = "sheet/get_my_sheets";
+    public static final String nameOfDocsThatGetSheetsOfMyLike = "sheet/get_sheets_of_my_like";
+
     public static final String nameOfDocsThatDeleteSheet = "delete_a_sheet";
     public static final String nameOfDocsThatGetSheetData = "get_a_sheet_data";
     public static final String getNameOfDocsThatGetSheetsByVideoId = "get_sheets_by_video_id";
@@ -143,6 +146,26 @@ public class SheetTestDocs {
                 responseFields(CommonTestDocs.commonDocs()),
                 responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields())
         );
+    }
+
+    public static RestDocumentationResultHandler documentOnGettingSheetsOfMyLike() {
+        return document(nameOfDocsThatGetSheetsOfMyLike,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
+    }
+
+    public static RestDocumentationResultHandler documentOnGettingMySheets() {
+        return document(nameOfDocsThatGetMySheets,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
     }
 
     private static List<FieldDescriptor> getSheetResponseFields(){
