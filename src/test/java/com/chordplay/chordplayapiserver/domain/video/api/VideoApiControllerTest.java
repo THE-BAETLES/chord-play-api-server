@@ -149,9 +149,7 @@ class VideoApiControllerTest {
                 .title("Go Back (고백)")
                 .genre("")
                 .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
-                .difficultyAvg(0)
                 .length(210000)
-                .playCount(0)
                 .singer("Jang Beom June - Topic")
                 .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
                 .build();
@@ -164,7 +162,7 @@ class VideoApiControllerTest {
                 .sheetCount(0L)
                 .tags(new ArrayList<>())
                 .singer("불면증")
-                .playCount(0)
+                .playCount(0L)
                 .length(0)
                 .difficultyAvg(0)
                 .genre("")

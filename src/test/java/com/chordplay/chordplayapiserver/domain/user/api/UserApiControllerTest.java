@@ -248,7 +248,7 @@ class UserApiControllerTest {
                 .sheetCount(0L)
                 .tags(new ArrayList<>())
                 .singer("불면증")
-                .playCount(0)
+                .playCount(0L)
                 .length(0)
                 .difficultyAvg(0)
                 .genre("")
