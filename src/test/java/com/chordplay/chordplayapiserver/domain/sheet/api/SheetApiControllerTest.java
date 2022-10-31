@@ -275,6 +275,7 @@ class SheetApiControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].title").value(sheetResponse.getTitle()));
+        result.andDo(SheetTestDocs.documentOnGettingMySheets());
     }
 
 
@@ -291,6 +292,7 @@ class SheetApiControllerTest {
         //then
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].title").value(sheetResponse.getTitle()));
+        result.andDo(SheetTestDocs.documentOnGettingSheetsOfMyLike());
     }
 
 
