@@ -52,6 +52,7 @@ class VideoApiControllerTest {
         //given
         Video video = createMockVideoData();
         given(videoService.create(video.getId())).willReturn(video);
+        given(videoService.toVideoResponse(video)).willReturn(new VideoResponse(video));
 
         //when
         ResultActions result = createVideo(video);
@@ -68,6 +69,7 @@ class VideoApiControllerTest {
         //given
         Video video = createMockVideoData();
         given(videoService.get(video.getId())).willReturn(video);
+        given(videoService.toVideoResponse(video)).willReturn(new VideoResponse(video));
 
         //when
         ResultActions result = getVideo(video);
