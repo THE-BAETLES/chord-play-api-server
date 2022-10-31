@@ -12,4 +12,6 @@ public interface SheetLikeRepository extends MongoRepository<SheetLike,String> {
 
     Optional<SheetLike> findBySheetAndUser(Sheet sheet, User user);
     Optional<SheetLike> deleteBySheetAndUser(Sheet sheet, User user);
+
+    List<SheetLike> findAllByUser(User user);
 }
