@@ -81,9 +81,7 @@ class RecommendationControllerTest {
                 .title("Go Back (고백)")
                 .genre("")
                 .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
-                .difficultyAvg(0)
                 .length(210000)
-                .playCount(0)
                 .singer("Jang Beom June - Topic")
                 .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
                 .build();

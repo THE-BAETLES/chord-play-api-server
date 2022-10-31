@@ -39,7 +39,7 @@ public class VideoApiController{
     @PostMapping("/{videoId}")
     public ResponseEntity<ApiResponse<VideoResponse>>  createVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.create(videoId);
-        VideoResponse videoResponse = new VideoResponse(video);
+        VideoResponse videoResponse = videoService.toVideoResponse(video);
         if (videoService.isInMyCollection(video.getId())){
             videoResponse.setInMyCollection(true);
         }
@@ -56,7 +56,7 @@ public class VideoApiController{
     @GetMapping("/{videoId}")
     public ApiResponse<VideoResponse> getVideo(@PathVariable("videoId") String videoId){
         Video video = videoService.get(videoId);
-        VideoResponse videoResponse = new VideoResponse(video);
+        VideoResponse videoResponse = videoService.toVideoResponse(video);
         if (videoService.isInMyCollection(video.getId())){
             videoResponse.setInMyCollection(true);
         }
