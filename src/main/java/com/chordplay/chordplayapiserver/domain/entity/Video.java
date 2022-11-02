@@ -30,7 +30,7 @@ public class Video {
     private String id;
 
     @Builder
-    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, LocalDateTime createdAt, int difficultyAvg, int playCount) {
+    public Video(String id, String thumbnailPath, String title, String genre, String singer, List<String> tags, int length, LocalDateTime createdAt) {
         this.id = id;
         this.thumbnailPath = thumbnailPath;
         this.title = title;
@@ -40,7 +40,6 @@ public class Video {
         this.length = length;
         this.createdAt = createdAt;
         this.difficultyAvg = 0;
-        this.playCount = 0;
     }
 
     @Field("thumbnail_path")
@@ -55,8 +54,6 @@ public class Video {
     private LocalDateTime createdAt;
     @Field("difficulty_avg")
     private int difficultyAvg;
-    @Field("play_count")
-    private int playCount;
     public Video(String id){
         this.id = id;
     }
@@ -73,7 +70,6 @@ public class Video {
         String rfc3339String =youtubeVideo.getSnippet().getPublishedAt().toStringRfc3339();
         this.createdAt = OffsetDateTime.parse(rfc3339String).toLocalDateTime();
         this.difficultyAvg = 0;
-        this.playCount = 0;
     }
 
     private int convertToMs(String youtubeDuration){

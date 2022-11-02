@@ -97,7 +97,8 @@ public class VideoTestDocs {
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("영상 게시일"),
                 fieldWithPath("difficulty_avg").type(JsonFieldType.NUMBER).description("난이도"),
                 fieldWithPath("play_count").type(JsonFieldType.NUMBER).description("영상 조회수"),
-                fieldWithPath("sheet_count").type(JsonFieldType.NUMBER).description("악보 조회수")
+                fieldWithPath("sheet_count").type(JsonFieldType.NUMBER).description("악보 조회수"),
+                fieldWithPath("is_in_my_collection").type(JsonFieldType.BOOLEAN).description("내 곡 목록에 담았는지")
         );
     }
 }

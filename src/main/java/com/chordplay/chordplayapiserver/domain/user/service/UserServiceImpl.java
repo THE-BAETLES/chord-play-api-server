@@ -3,10 +3,7 @@ package com.chordplay.chordplayapiserver.domain.user.service;
 import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
-import com.chordplay.chordplayapiserver.domain.user.dto.FavoritesResponse;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.JoinTempSocialRequest;
-import com.chordplay.chordplayapiserver.domain.user.dto.SignupFavoriteRequest;
+import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NicknameDuplicationException;
 import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoRequest;
@@ -107,10 +104,29 @@ public class UserServiceImpl implements UserService{
         }
 
         for (String videoId : user.getMyCollection()) {
-            VideoResponse videoResponse = new VideoResponse(videoService.get(videoId));
+            VideoResponse videoResponse = new VideoResponse(videoService.create(videoId));
             myCollectionResponse.add(videoResponse);
         }
 
         return myCollectionResponse;
+    }
+
+    @Override
+    public List<String> getMyCollectionVideoIdList() {
+        List<String> videoIds = new ArrayList<>();
+        User user = getUser(ContextUtil.getPrincipalUserId());
+
+        if (user.getMyCollection() == null){
+            return videoIds;
+        }
+
+        return user.getMyCollection();
+    }
+
+
+    @Override
+    public UserInformationResponse getUserInfo(String userId) {
+        User user = getUser(userId);
+        return new UserInformationResponse(user);
     }
 }

@@ -24,6 +24,9 @@ import static org.springframework.restdocs.snippet.Attributes.key;
 public class SheetTestDocs {
 
     public static final String nameOfDocsThatGetSheet = "get_a_sheet";
+    public static final String nameOfDocsThatGetMySheets = "sheet/get_my_sheets";
+    public static final String nameOfDocsThatGetSheetsOfMyLike = "sheet/get_sheets_of_my_like";
+
     public static final String nameOfDocsThatDeleteSheet = "delete_a_sheet";
     public static final String nameOfDocsThatGetSheetData = "get_a_sheet_data";
     public static final String getNameOfDocsThatGetSheetsByVideoId = "get_sheets_by_video_id";
@@ -125,7 +128,6 @@ public class SheetTestDocs {
                 pathParameters(
                         parameterWithName("sheetId").description("악보 아이디")
                 )
-
         );
     }
 
@@ -146,16 +148,38 @@ public class SheetTestDocs {
         );
     }
 
+    public static RestDocumentationResultHandler documentOnGettingSheetsOfMyLike() {
+        return document(nameOfDocsThatGetSheetsOfMyLike,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
+    }
+
+    public static RestDocumentationResultHandler documentOnGettingMySheets() {
+        return document(nameOfDocsThatGetMySheets,
+                getDocumentRequest(),
+                getDocumentResponse(),
+                requestHeaders(
+                        headerWithName("Authorization").description("Bearer {token}")),
+                responseFields(CommonTestDocs.commonDocsOfArray()),
+                responseFields(beneathPath("data").withSubsectionId("data"),getSheetResponseFields()));
+    }
+
     private static List<FieldDescriptor> getSheetResponseFields(){
 
         return Arrays.asList(
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("video_id").type(JsonFieldType.STRING).description("악보의 비디오 ID"),
                 fieldWithPath("user_id").type(JsonFieldType.STRING).description("악보의 저자 ID"),
+                fieldWithPath("user_nickname").type(JsonFieldType.STRING).description("악보의 저자 닉네임"),
                 fieldWithPath("title").type(JsonFieldType.STRING).description("악보 이름"),
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("악보 생성 날짜"),
                 fieldWithPath("updated_at").type(JsonFieldType.STRING).description("악보 최종 수정 날짜"),
-                fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수")
+                fieldWithPath("like_count").type(JsonFieldType.NUMBER).description("악보의 좋아요 개수"),
+                fieldWithPath("liked").type(JsonFieldType.BOOLEAN).description("내가 좋아요를 누른 악보인지")
         );
     }
 
@@ -164,12 +188,12 @@ public class SheetTestDocs {
         return Arrays.asList(
                 fieldWithPath("_id").type(JsonFieldType.STRING).description("아이디"),
                 fieldWithPath("bpm").type(JsonFieldType.NUMBER).description("악보의 속도"),
-                fieldWithPath("chord_infos").type(JsonFieldType.ARRAY).description("음표"),
-                fieldWithPath("status").type(JsonFieldType.NUMBER).description("악보 생성 완료 상태"),
-                fieldWithPath("chord_infos[0].start").type(JsonFieldType.NUMBER).description("코드 구간 시작 시간"),
-                fieldWithPath("chord_infos[0].end").type(JsonFieldType.NUMBER).description("코드 구간 끝 시간"),
-                fieldWithPath("chord_infos[0].position").type(JsonFieldType.NUMBER).description("악보 상 코드 위치"),
-                fieldWithPath("chord_infos[0].chord").type(JsonFieldType.STRING).description("코드")
+                fieldWithPath("infos").type(JsonFieldType.ARRAY).description("박자 객체"),
+                fieldWithPath("status").type(JsonFieldType.NUMBER).description("생성 상태"),
+                fieldWithPath("infos[0].chord.root").type(JsonFieldType.STRING).description("코드의 root"),
+                fieldWithPath("infos[0].chord.triad").type(JsonFieldType.STRING).description("코드의 triad"),
+                fieldWithPath("infos[0].chord.bass").type(JsonFieldType.STRING).description("코드의 bass"),
+                fieldWithPath("infos[0].beat_time").type(JsonFieldType.NUMBER).description("해당 박자의 시간(sec 기준)")
         );
     }
 

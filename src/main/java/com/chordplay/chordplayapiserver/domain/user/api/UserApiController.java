@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.user.config.auth.PrincipalDetails;
 import com.chordplay.chordplayapiserver.domain.user.dto.*;
 import com.chordplay.chordplayapiserver.domain.user.exception.NotFullyJoinedException;
@@ -29,6 +30,17 @@ public class UserApiController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{userId}")
+    public ApiResponse<UserInformationResponse> getUserInformation(@PathVariable String userId){
+        UserInformationResponse userInformationResponse = userService.getUserInfo(userId);
+        return ApiResponse.success(userInformationResponse, HttpStatus.OK.value());
+    }
+
+    @GetMapping()
+    public ApiResponse<MyInformationResponse> getMyInformation(@AuthenticationPrincipal PrincipalDetails principalDetails){
+        MyInformationResponse myInformationResponse= new MyInformationResponse(principalDetails.getUser());
+        return ApiResponse.success(myInformationResponse, HttpStatus.OK.value());
+    }
     @GetMapping("/nickname")
     public ApiResponse<NicknameResponse> getNickname(@AuthenticationPrincipal PrincipalDetails principalDetails){
         String userEmail = principalDetails.getUser().getEmail();
@@ -73,6 +85,13 @@ public class UserApiController {
     public ResponseEntity<ApiResponse<List<VideoResponse>>> getMyCollection(){
         List<VideoResponse> myCollection = userService.getMyCollection();
         ApiResponse<List<VideoResponse>> body = ApiResponse.success(myCollection, HttpStatus.OK.value());
+        return ResponseEntity.status(HttpStatus.OK).body(body);
+    }
+
+    @GetMapping("my-collection-video-id-list")
+    public ResponseEntity<ApiResponse<List<String>>> getMyCollectionVideoIdList(){
+        List<String> myCollectionVideoIdList = userService.getMyCollectionVideoIdList();
+        ApiResponse<List<String>> body = ApiResponse.success(myCollectionVideoIdList, HttpStatus.OK.value());
         return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 

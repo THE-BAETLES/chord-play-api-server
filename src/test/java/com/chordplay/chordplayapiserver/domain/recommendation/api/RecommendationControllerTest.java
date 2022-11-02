@@ -81,9 +81,7 @@ class RecommendationControllerTest {
                 .title("Go Back (고백)")
                 .genre("")
                 .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
-                .difficultyAvg(0)
                 .length(210000)
-                .playCount(0)
                 .singer("Jang Beom June - Topic")
                 .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
                 .build();
@@ -138,7 +136,8 @@ class RecommendationControllerTest {
                 fieldWithPath("created_at").type(JsonFieldType.STRING).description("영상 게시일"),
                 fieldWithPath("difficulty_avg").type(JsonFieldType.NUMBER).description("난이도"),
                 fieldWithPath("play_count").type(JsonFieldType.NUMBER).description("영상 조회수"),
-                fieldWithPath("sheet_count").type(JsonFieldType.NUMBER).description("악보 조회수")
+                fieldWithPath("sheet_count").type(JsonFieldType.NUMBER).description("악보 조회수"),
+                fieldWithPath("is_in_my_collection").type(JsonFieldType.BOOLEAN).description("내 곡 목록에 담았는지")
         );
     }
 }

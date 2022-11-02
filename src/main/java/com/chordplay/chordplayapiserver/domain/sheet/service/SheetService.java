@@ -24,4 +24,6 @@ public interface SheetService {
 
     Sheet duplicateSheet(SheetDuplicationRequest dto);
 
+    List<SheetResponse> getSheetsOfMyLike();
+    List<SheetResponse> getMySheets();
 }

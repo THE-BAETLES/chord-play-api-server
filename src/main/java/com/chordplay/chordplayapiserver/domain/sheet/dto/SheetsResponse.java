@@ -18,20 +18,9 @@ public class SheetsResponse {
     List<SheetResponse> my;
 
     @Builder
-    public SheetsResponse(List<Sheet> sharedSheet, List<Sheet> likeSheet, List<Sheet> mySheet) {
-        this.shared = new ArrayList<SheetResponse>();
-        this.like = new ArrayList<SheetResponse>();
-        this.my = new ArrayList<SheetResponse>();
-
-        for(Sheet s : sharedSheet){
-            this.shared.add(new SheetResponse(s));
-        }
-        for(Sheet s : likeSheet){
-            this.like.add(new SheetResponse(s));
-        }
-        for(Sheet s : mySheet){
-            this.my.add(new SheetResponse(s));
-        }
-
+    public SheetsResponse(List<SheetResponse> shared, List<SheetResponse> like, List<SheetResponse> my) {
+        this.shared = shared;
+        this.like = like;
+        this.my = my;
     }
 }

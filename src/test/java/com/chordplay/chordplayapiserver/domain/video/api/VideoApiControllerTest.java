@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@DisplayName("컨트롤러 테스트")
+@DisplayName("비디오 컨트롤러 테스트")
 @WebMvcTest(controllers = VideoApiController.class,
         excludeAutoConfiguration = {SecurityAutoConfiguration.class},
         excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class) })
@@ -52,6 +52,7 @@ class VideoApiControllerTest {
         //given
         Video video = createMockVideoData();
         given(videoService.create(video.getId())).willReturn(video);
+        given(videoService.toVideoResponse(video)).willReturn(new VideoResponse(video));
 
         //when
         ResultActions result = createVideo(video);
@@ -68,6 +69,7 @@ class VideoApiControllerTest {
         //given
         Video video = createMockVideoData();
         given(videoService.get(video.getId())).willReturn(video);
+        given(videoService.toVideoResponse(video)).willReturn(new VideoResponse(video));
 
         //when
         ResultActions result = getVideo(video);
@@ -149,9 +151,7 @@ class VideoApiControllerTest {
                 .title("Go Back (고백)")
                 .genre("")
                 .createdAt(LocalDateTime.parse("2021-07-19T09:05:32"))
-                .difficultyAvg(0)
                 .length(210000)
-                .playCount(0)
                 .singer("Jang Beom June - Topic")
                 .tags(Arrays.asList("JANG BEOM JUNE", "장범준", "Go Back", "첫 번째 '고백'", "고백"))
                 .build();
@@ -164,7 +164,7 @@ class VideoApiControllerTest {
                 .sheetCount(0L)
                 .tags(new ArrayList<>())
                 .singer("불면증")
-                .playCount(0)
+                .playCount(0L)
                 .length(0)
                 .difficultyAvg(0)
                 .genre("")

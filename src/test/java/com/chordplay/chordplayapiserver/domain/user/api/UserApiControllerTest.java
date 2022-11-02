@@ -1,6 +1,7 @@
 package com.chordplay.chordplayapiserver.domain.user.api;
 
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.item.Country;
 import com.chordplay.chordplayapiserver.domain.entity.item.Gender;
@@ -12,10 +13,12 @@ import com.chordplay.chordplayapiserver.domain.user.docs.UserTestDocs;
 import com.chordplay.chordplayapiserver.domain.user.dto.CheckDuplicationRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.JoinRequest;
 import com.chordplay.chordplayapiserver.domain.user.dto.NicknameResponse;
+import com.chordplay.chordplayapiserver.domain.user.dto.UserInformationResponse;
 import com.chordplay.chordplayapiserver.domain.user.service.UserService;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.service.VideoService;
 import com.chordplay.chordplayapiserver.util.WithMockCustomUser;
+import com.chordplay.chordplayapiserver.util.WithMockCustomUserSecurityContextFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +35,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.sql.Array;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,6 +75,47 @@ class UserApiControllerTest {
         //then
         result.andExpect(status().isOk());
         result.andDo(UserTestDocs.documentOnLoginSuccess());
+    }
+
+    @Test
+    @DisplayName("내 정보 반환 요청_닉네임 있는 유저_내 정보 반환")
+    @WithMockCustomUser(hasNickname = true)
+    public void getMyInformationTest() throws Exception {
+
+        //get
+        User user = WithMockCustomUserSecurityContextFactory.getAdminUser(true);
+
+        //when
+        ResultActions result = getMyInformation();
+
+        //then
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.nickname").value(user.getNickname()))
+                .andExpect(jsonPath("$.data.id").value(user.getId()))
+                .andExpect(jsonPath("$.data.roles").value(user.getRoles()));
+        result.andDo(UserTestDocs.documentOnMyInformation());
+    }
+
+    @Test
+    @DisplayName("유저정보 반환 정보 반환 요청_닉네임 있는 유저_내 정보 반환")
+    @WithMockCustomUser(hasNickname = true)
+    public void getUserInformationTest() throws Exception {
+
+        //get
+        User user = WithMockCustomUserSecurityContextFactory.getAdminUser(true);
+        UserInformationResponse userInformationResponse = new UserInformationResponse(user);
+        given(userService.getUserInfo(user.getId())).willReturn(userInformationResponse);
+        //when
+        ResultActions result = getUserInformation(user.getId());
+
+        //then
+        verifyOK(result);
+        result.andExpect(jsonPath("$.data.nickname").value(user.getNickname()))
+                .andExpect(jsonPath("$.data.id").value(user.getId()))
+                .andExpect(jsonPath("$.data.username").value(user.getUsername()))
+                .andExpect(jsonPath("$.data.email").value(user.getEmail()));
+
+        result.andDo(UserTestDocs.documentOnUserInformation());
     }
 
     @Test
@@ -169,6 +214,23 @@ class UserApiControllerTest {
         result.andDo(UserTestDocs.documentOnGettingMyCollection());
     }
 
+    @Test
+    @DisplayName("my collection의 video Id list 가져오기_ _성공 반환(200)")
+    @WithMockCustomUser
+    public void getMyCollectionVideoIdListTest() throws Exception {
+
+        //get
+        List<String> myCollectionVideoIdList= Arrays.asList("videoId1","videoId2","videoId3");
+        given(userService.getMyCollectionVideoIdList()).willReturn(myCollectionVideoIdList);
+
+        //when
+        ResultActions result = getMyCollectionVideoIdList();
+
+        //then
+        verifyGettingMyCollectionVideoIdList(result);
+        result.andDo(UserTestDocs.documentOnGettingMyCollectionVideoIdList());
+    }
+
     private JoinRequest CreateMockJoinRequestBody() {
         return JoinRequest.builder()
                 .country(Country.KR)
@@ -186,7 +248,7 @@ class UserApiControllerTest {
                 .sheetCount(0L)
                 .tags(new ArrayList<>())
                 .singer("불면증")
-                .playCount(0)
+                .playCount(0L)
                 .length(0)
                 .difficultyAvg(0)
                 .genre("")
@@ -205,6 +267,17 @@ class UserApiControllerTest {
                 .header("Authorization","Bearer {token}"));
     }
 
+    private ResultActions getMyInformation() throws Exception {
+        return mockMvc.perform(get("/user")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
+
+    private ResultActions getUserInformation(String userId) throws Exception {
+        return mockMvc.perform(get("/user/{userId}", userId)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
     private ResultActions recommendNickname() throws Exception {
         return mockMvc.perform(get("/user/nickname")
                 .accept(MediaType.APPLICATION_JSON)
@@ -248,6 +321,11 @@ class UserApiControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer {token}"));
     }
+    private ResultActions getMyCollectionVideoIdList() throws Exception {
+        return mockMvc.perform(get("/user/my-collection-video-id-list")
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer {token}"));
+    }
     private void verifyOK(ResultActions result) throws Exception {
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(HttpStatus.OK.value()))
@@ -267,6 +345,11 @@ class UserApiControllerTest {
     private ResultActions verifyGettingMyCollection(ResultActions result) throws Exception {
         verifyOK(result);
         return result.andExpect(jsonPath("$.data.length()").value(1));
+    }
+
+    private ResultActions verifyGettingMyCollectionVideoIdList(ResultActions result) throws Exception {
+        verifyOK(result);
+        return result.andExpect(jsonPath("$.data.length()").value(3));
     }
 
 }

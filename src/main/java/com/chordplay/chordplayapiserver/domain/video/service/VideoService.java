@@ -12,6 +12,7 @@ public interface VideoService {
     List<VideoResponse> getGradeCollection(String performerGrade);
     Video create(String videoId);
     Video get(String videoId);
-
+    Boolean isInMyCollection(String videoId);
+    VideoResponse toVideoResponse(Video video);
 
 }

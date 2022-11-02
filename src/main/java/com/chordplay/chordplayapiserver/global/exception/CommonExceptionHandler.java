@@ -1,5 +1,6 @@
 package com.chordplay.chordplayapiserver.global.exception;
 
+import com.mongodb.MongoWriteException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,18 @@ public class CommonExceptionHandler {
         ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.INVALID_INPUT, e.getBindingResult());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({MongoWriteException.class})
+    public ResponseEntity<ErrorResponse> mongoWriteException(
+            MongoWriteException e) {
+        if (e.getCode() == 11000) { //duplication 에러
+            log.error("mongo db unique error: ",e);
+            ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.MONGO_UNIQUE_DUPLICATION);
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+        log.error("mongo write exception : ",e);
+        ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.MONGO_WRITE_ERROR);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

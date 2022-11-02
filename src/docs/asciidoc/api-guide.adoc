@@ -99,6 +99,20 @@ The index provides the entry point into the service.
 
 로그인, 화원가입과 관련된 API 입니다
 
+
+
+=== `GET` /user
+
+로그인 된 내 정보를 가져옵니다 password 정보는 제외됩니다
+
+operation::user/get_my_information[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+=== `GET` /user/{userId}
+
+ 유저의 일부 정보를 가져옵니다
+
+operation::user/get_user_information[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
 === `GET` /user/login
 
 로그인 상태를 확인합니다
@@ -135,7 +149,13 @@ operation::post_join[snippets='http-request,request-headers,request-body,http-re
 
  내 곡 목록을 가져옵니다 (List of Video Response 형태)
 
-operation::user/get_my_collection[snippets='http-request,request-headers,request-parameters,http-response,response-fields,response-fields-data']
+operation::user/get_my_collection[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+=== `GET` /user/my-collection-video-id-list
+
+내 곡 목록 데이터 중 video id 만 가져온 형태를 반환합니다
+
+operation::user/get_my_collection_video_id_list[snippets='http-request,request-headers,http-response,response-fields']
 
 === `POST` /user/my-collection/{videoId}
 
@@ -235,6 +255,17 @@ operation::get_shared_sheets[snippets='http-request,request-headers,request-para
 
 악보 데이터의 특정 구간을 변경합니다
 
+
+코드는 root, triad, bass 로 이루어져있으며 데이터가 없는 부분은 'none'으로 기입합니다
+
+
+Cm7/D 코드의 경우 root: C, triad : m7, bass: D 입니다.
+
+
+C 코드의 경우 root: C, triad : none, bass: none 입니다.
+
+
+
 operation::sheet/update_sheet_chord[snippets='http-request,request-headers,path-parameters,request-body,http-response']
 
 === `POST` /sheets/duplication
@@ -248,6 +279,33 @@ operation::sheet/duplicate_a_sheet[snippets='http-request,request-headers,reques
 200 AI 악보 데이터가 아직 생성되지 않음 (ai)
 
 400 악보 or 악보 데이터가 존재하지 않음
+
+=== `GET` /sheets/my
+내가 쓴 악보 목록을 조회합니다
+
+operation::sheet/get_my_sheets[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+
+=== `GET` /sheets/my-like
+
+내가 좋아요 누른 악보 목록을 조회합니다
+
+operation::sheet/get_my_sheets[snippets='http-request,request-headers,http-response,response-fields,response-fields-data']
+
+== SHEET-LIKE
+
+=== `POST` /sheet-like/{sheetId}
+
+악보 좋아요 요청을 보냅니다
+
+operation::sheet-like/add_sheet_like[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
+=== `DELETE` /sheet-like/{sheetId}
+
+악보 좋아요를 취소합니다
+
+operation::sheet-like/delete_sheet_like[snippets='http-request,request-headers,path-parameters,http-response,response-fields']
+
 
 == RECOMMENDATION
 

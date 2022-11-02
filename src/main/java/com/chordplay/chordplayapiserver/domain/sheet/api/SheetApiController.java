@@ -48,7 +48,7 @@ public class SheetApiController {
     }
 
     @GetMapping()
-    public ApiResponse<SheetsResponse> getSheetByVideoId(@RequestParam String videoId){
+    public ApiResponse<SheetsResponse> getSheetsByVideoId(@RequestParam String videoId){
         SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
         return ApiResponse.success(sheetsResponse,HttpStatus.OK.value());
     }
@@ -71,6 +71,7 @@ public class SheetApiController {
     @PatchMapping("/data/{sheetId}")
     public ApiResponse<String> updateSheet(@PathVariable("sheetId") String sheetId
             , @RequestBody @Valid SheetChangeRequest dto){
+        sheetService.updateSheetChord(sheetId, dto);
         return ApiResponse.success("",HttpStatus.OK.value());
     }
 
@@ -80,4 +81,18 @@ public class SheetApiController {
         ApiResponse<SheetResponse> body = ApiResponse.success(sheetResponse, HttpStatus.CREATED.value());
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
+    @GetMapping("/my-like")
+    public ApiResponse<List<SheetResponse>> getSheetsOfMyLike(){
+        List<SheetResponse> sheetResponses = sheetService.getSheetsOfMyLike();
+        return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
+    }
+
+    @GetMapping("/my")
+    public ApiResponse<List<SheetResponse>> getMySheet(){
+        List<SheetResponse> sheetResponses = sheetService.getMySheets();
+        return ApiResponse.success(sheetResponses,HttpStatus.OK.value());
+    }
+
+
+
 }

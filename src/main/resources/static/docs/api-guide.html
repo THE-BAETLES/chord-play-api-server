@@ -461,11 +461,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources_index">Index</a></li>
 <li><a href="#_user">USER</a>
 <ul class="sectlevel2">
+<li><a href="#_get_user"><code>GET</code> /user</a></li>
+<li><a href="#_get_useruserid"><code>GET</code> /user/{userId}</a></li>
 <li><a href="#_get_userlogin"><code>GET</code> /user/login</a></li>
 <li><a href="#_get_usernickname"><code>GET</code> /user/nickname</a></li>
 <li><a href="#_post_usercheck_duplication"><code>POST</code> /user/check-duplication</a></li>
 <li><a href="#_post_userjoin"><code>POST</code> /user/join</a></li>
 <li><a href="#_get_usermy_collection"><code>GET</code> /user/my-collection</a></li>
+<li><a href="#_get_usermy_collection_video_id_list"><code>GET</code> /user/my-collection-video-id-list</a></li>
 <li><a href="#_post_usermy_collectionvideoid"><code>POST</code> /user/my-collection/{videoId}</a></li>
 <li><a href="#_delete_usermy_collectionvideoid"><code>Delete</code> /user/my-collection/{videoId}</a></li>
 </ul>
@@ -489,6 +492,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_get_sheetsshared"><code>GET</code> /sheets/shared</a></li>
 <li><a href="#_patch_sheetsdatasheetid"><code>PATCH</code> /sheets/data/{sheetId}</a></li>
 <li><a href="#_post_sheetsduplication"><code>POST</code> /sheets/duplication</a></li>
+<li><a href="#_get_sheetsmy"><code>GET</code> /sheets/my</a></li>
+<li><a href="#_get_sheetsmy_like"><code>GET</code> /sheets/my-like</a></li>
+</ul>
+</li>
+<li><a href="#_sheet_like">SHEET-LIKE</a>
+<ul class="sectlevel2">
+<li><a href="#_post_sheet_likesheetid"><code>POST</code> /sheet-like/{sheetId}</a></li>
+<li><a href="#_delete_sheet_likesheetid"><code>DELETE</code> /sheet-like/{sheetId}</a></li>
 </ul>
 </li>
 <li><a href="#_recommendation">RECOMMENDATION</a>
@@ -640,6 +651,326 @@ links to navigate from resource to resource.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>로그인, 화원가입과 관련된 API 입니다</p>
+</div>
+<div class="sect2">
+<h3 id="_get_user"><a class="link" href="#_get_user"><code>GET</code> /user</a></h3>
+<div class="paragraph">
+<p>로그인 된 내 정보를 가져옵니다 password 정보는 제외됩니다</p>
+</div>
+<div class="sect3">
+<h4 id="_get_user_http_request"><a class="link" href="#_get_user_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /user HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_user_request_headers"><a class="link" href="#_get_user_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_user_http_response"><a class="link" href="#_get_user_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 485
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : {
+    "id" : "6313b2381f8fa3bb122eaa78",
+    "nickname" : "test",
+    "username" : "최현준",
+    "firebase_uid" : "firebase_uid",
+    "roles" : "ROLE_USER",
+    "email" : "test@gmail.com",
+    "country" : "KR",
+    "language" : "kr",
+    "gender" : "MALE",
+    "performer_grade" : "EXPERT",
+    "membership" : "NORMAL",
+    "signup_favorite" : [ "videoId1", "videoId2" ],
+    "my_collection" : [ "videoId3", "videoId4" ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_user_response_fields"><a class="link" href="#_get_user_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 데이터</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_user_response_fields-data"><a class="link" href="#_get_user_response_fields-data">Response fields-data</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>firebase_uid</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 firebase 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>roles</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 권한</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 email</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>country</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 국가</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>language</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 언어</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>gender</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 성별</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>performer_grade</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 기타 숙련도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>membership</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저의 등급</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>signup_favorite</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저의 초기 선택곡 리스트</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저의 내 곡 목록</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_useruserid"><a class="link" href="#_get_useruserid"><code>GET</code> /user/{userId}</a></h3>
+<div class="literalblock">
+<div class="content">
+<pre>유저의 일부 정보를 가져옵니다</pre>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_useruserid_http_request"><a class="link" href="#_get_useruserid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /user/6313b2381f8fa3bb122eaa78 HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_useruserid_request_headers"><a class="link" href="#_get_useruserid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_useruserid_http_response"><a class="link" href="#_get_useruserid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 188
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : {
+    "id" : "6313b2381f8fa3bb122eaa78",
+    "nickname" : "test",
+    "username" : "최현준",
+    "email" : "test@gmail.com"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_useruserid_response_fields"><a class="link" href="#_get_useruserid_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Object</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 데이터</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_useruserid_response_fields-data"><a class="link" href="#_get_useruserid_response_fields-data">Response fields-data</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">유저 email</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_get_userlogin"><a class="link" href="#_get_userlogin"><code>GET</code> /user/login</a></h3>
@@ -971,18 +1302,12 @@ Host: api.baetles.site</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_get_usermy_collection_request_parameters"><a class="link" href="#_get_usermy_collection_request_parameters">Request parameters</a></h4>
-<div class="paragraph">
-<p>Snippet request-parameters not found for operation::user/get_my_collection</p>
-</div>
-</div>
-<div class="sect3">
 <h4 id="_get_usermy_collection_http_response"><a class="link" href="#_get_usermy_collection_http_response">Example response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 428
+Content-Length: 463
 
 {
   "code" : "200",
@@ -998,6 +1323,7 @@ Content-Length: 428
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -1108,6 +1434,99 @@ Content-Length: 428
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheet_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_usermy_collection_video_id_list"><a class="link" href="#_get_usermy_collection_video_id_list"><code>GET</code> /user/my-collection-video-id-list</a></h3>
+<div class="paragraph">
+<p>내 곡 목록 데이터 중 video id 만 가져온 형태를 반환합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_get_usermy_collection_video_id_list_http_request"><a class="link" href="#_get_usermy_collection_video_id_list_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /user/my-collection-video-id-list HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_usermy_collection_video_id_list_request_headers"><a class="link" href="#_get_usermy_collection_video_id_list_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_usermy_collection_video_id_list_http_response"><a class="link" href="#_get_usermy_collection_video_id_list_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 96
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : [ "videoId1", "videoId2", "videoId3" ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_usermy_collection_video_id_list_response_fields"><a class="link" href="#_get_usermy_collection_video_id_list_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">my collection의 video id만 가져온 배열</p></td>
 </tr>
 </tbody>
 </table>
@@ -1350,7 +1769,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 485
+Content-Length: 520
 
 {
   "code" : "200",
@@ -1366,6 +1785,7 @@ Content-Length: 485
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }
 }</code></pre>
@@ -1458,6 +1878,11 @@ Content-Length: 485
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1527,7 +1952,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 485
+Content-Length: 520
 
 {
   "code" : "201",
@@ -1543,6 +1968,7 @@ Content-Length: 485
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }
 }</code></pre>
@@ -1635,6 +2061,11 @@ Content-Length: 485
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data.is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1703,7 +2134,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -1719,6 +2150,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -1731,6 +2163,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -1823,6 +2256,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1895,7 +2333,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -1911,6 +2349,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -1923,6 +2362,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -2015,6 +2455,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2083,7 +2528,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 796
+Content-Length: 866
 
 {
   "code" : "200",
@@ -2099,6 +2544,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/dinia_m0HGE/hqdefault.jpg",
@@ -2111,6 +2557,7 @@ Content-Length: 796
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "dinia_m0HGE"
   } ]
 }</code></pre>
@@ -2202,6 +2649,11 @@ Content-Length: 796
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].sheet_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data[0].is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
 </tr>
 </tbody>
 </table>
@@ -2356,7 +2808,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 320
+Content-Length: 367
 
 {
   "code" : "200",
@@ -2364,10 +2816,12 @@ Content-Length: 320
   "data" : {
     "video_id" : "KZH-MpiwmaU",
     "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
     "title" : "Chord Play",
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   }
 }</code></pre>
@@ -2440,6 +2894,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
@@ -2459,6 +2918,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2472,7 +2936,7 @@ Content-Length: 320
 <h4 id="_get_sheetsdatasheetid_http_request"><a class="link" href="#_get_sheetsdatasheetid_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/data/6300d7e8aeeb0778c43ea37d HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/data/abc HTTP/1.1
 Accept: application/json
 Authorization: Bearer {token}
 Host: api.baetles.site</code></pre>
@@ -2528,7 +2992,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 347
+Content-Length: 542
 
 {
   "code" : "200",
@@ -2536,18 +3000,29 @@ Content-Length: 347
   "data" : {
     "status" : 3,
     "bpm" : 123,
-    "chord_infos" : [ {
-      "chord" : "Am",
-      "start" : 0.0,
-      "end" : 2.23,
-      "position" : 0
+    "_id" : "abc",
+    "infos" : [ {
+      "chord" : {
+        "root" : "B",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.1111
     }, {
-      "chord" : "C",
-      "start" : 2.23,
-      "end" : 4.06,
-      "position" : 1
-    } ],
-    "_id" : "6300d7e8aeeb0778c43ea37d"
+      "chord" : {
+        "root" : "none",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.1234
+    }, {
+      "chord" : {
+        "root" : "none",
+        "triad" : "none",
+        "bass" : "none"
+      },
+      "beat_time" : 0.3
+    } ]
   }
 }</code></pre>
 </div>
@@ -2614,34 +3089,34 @@ Content-Length: 347
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 속도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">음표</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">박자 객체</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>status</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">악보 생성 완료 상태</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성 상태</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].start</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드 구간 시작 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].end</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드 구간 끝 시간</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].position</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">악보 상 코드 위치</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chord_infos[0].chord</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.root</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 root</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.triad</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 triad</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].chord.bass</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">코드의 bass</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>infos[0].beat_time</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">해당 박자의 시간(sec 기준)</p></td>
 </tr>
 </tbody>
 </table>
@@ -2713,7 +3188,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 320
+Content-Length: 367
 
 {
   "code" : "200",
@@ -2721,10 +3196,12 @@ Content-Length: 320
   "data" : {
     "video_id" : "KZH-MpiwmaU",
     "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
     "title" : "Chord Play",
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   }
 }</code></pre>
@@ -2797,6 +3274,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
@@ -2815,6 +3297,11 @@ Content-Length: 320
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
 </tr>
 </tbody>
 </table>
@@ -2884,7 +3371,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 953
+Content-Length: 1106
 
 {
   "code" : "200",
@@ -2893,28 +3380,34 @@ Content-Length: 953
     "shared" : [ {
       "video_id" : "KZH-MpiwmaU",
       "user_id" : "6313b2381f8fa3bb122eaa78",
+      "user_nickname" : "",
       "title" : "Chord Play",
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ],
     "like" : [ {
       "video_id" : "KZH-MpiwmaU",
       "user_id" : "6313b2381f8fa3bb122eaa78",
+      "user_nickname" : "",
       "title" : "Chord Play",
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ],
     "my" : [ {
       "video_id" : "KZH-MpiwmaU",
       "user_id" : "6313b2381f8fa3bb122eaa78",
+      "user_nickname" : "",
       "title" : "Chord Play",
       "created_at" : "2022-08-20T12:47:36.426",
       "updated_at" : "2022-08-20T12:47:36.426",
       "like_count" : 0,
+      "liked" : false,
       "_id" : "6300d7e8aeeb0778c43ea37d"
     } ]
   }
@@ -3003,6 +3496,11 @@ Content-Length: 953
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
@@ -3021,6 +3519,11 @@ Content-Length: 953
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
 </tr>
 </tbody>
 </table>
@@ -3090,7 +3593,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 324
+Content-Length: 371
 
 {
   "code" : "200",
@@ -3098,10 +3601,12 @@ Content-Length: 324
   "data" : [ {
     "video_id" : "KZH-MpiwmaU",
     "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
     "title" : "Chord Play",
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "6300d7e8aeeb0778c43ea37d"
   } ]
 }</code></pre>
@@ -3174,6 +3679,11 @@ Content-Length: 324
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
@@ -3193,6 +3703,11 @@ Content-Length: 324
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3202,6 +3717,15 @@ Content-Length: 324
 <div class="paragraph">
 <p>악보 데이터의 특정 구간을 변경합니다</p>
 </div>
+<div class="paragraph">
+<p>코드는 root, triad, bass 로 이루어져있으며 데이터가 없는 부분은 'none&#8217;으로 기입합니다</p>
+</div>
+<div class="paragraph">
+<p>Cm7/D 코드의 경우 root: C, triad : m7, bass: D 입니다.</p>
+</div>
+<div class="paragraph">
+<p>C 코드의 경우 root: C, triad : none, bass: none 입니다.</p>
+</div>
 <div class="sect3">
 <h4 id="_patch_sheetsdatasheetid_http_request"><a class="link" href="#_patch_sheetsdatasheetid_http_request">HTTP request</a></h4>
 <div class="listingblock">
@@ -3210,12 +3734,16 @@ Content-Length: 324
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
 Authorization: Bearer {token}
-Content-Length: 37
+Content-Length: 97
 Host: api.baetles.site
 
 {
   "position" : 3,
-  "chord" : "B"
+  "chord" : {
+    "root" : "A",
+    "triad" : "m7",
+    "bass" : "none"
+  }
 }</code></pre>
 </div>
 </div>
@@ -3269,7 +3797,11 @@ Host: api.baetles.site
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
   "position" : 3,
-  "chord" : "B"
+  "chord" : {
+    "root" : "A",
+    "triad" : "m7",
+    "bass" : "none"
+  }
 }</code></pre>
 </div>
 </div>
@@ -3381,7 +3913,7 @@ Host: api.baetles.site
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
 Content-Type: application/json;charset=UTF-8
-Content-Length: 301
+Content-Length: 348
 
 {
   "code" : "201",
@@ -3389,10 +3921,12 @@ Content-Length: 301
   "data" : {
     "video_id" : "KZH-MpiwmaU",
     "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
     "title" : "new title",
     "created_at" : "2022-08-20T12:47:36.426",
     "updated_at" : "2022-08-20T12:47:36.426",
     "like_count" : 0,
+    "liked" : false,
     "_id" : "new_id"
   }
 }</code></pre>
@@ -3465,6 +3999,11 @@ Content-Length: 301
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
@@ -3484,6 +4023,11 @@ Content-Length: 301
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3495,6 +4039,555 @@ Content-Length: 301
 </div>
 <div class="paragraph">
 <p>400 악보 or 악보 데이터가 존재하지 않음</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_sheetsmy"><a class="link" href="#_get_sheetsmy"><code>GET</code> /sheets/my</a></h3>
+<div class="paragraph">
+<p>내가 쓴 악보 목록을 조회합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_http_request"><a class="link" href="#_get_sheetsmy_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/my HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_request_headers"><a class="link" href="#_get_sheetsmy_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_http_response"><a class="link" href="#_get_sheetsmy_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 371
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : [ {
+    "video_id" : "KZH-MpiwmaU",
+    "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
+    "title" : "Chord Play",
+    "created_at" : "2022-08-20T12:47:36.426",
+    "updated_at" : "2022-08-20T12:47:36.426",
+    "like_count" : 0,
+    "liked" : false,
+    "_id" : "6300d7e8aeeb0778c43ea37d"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_response_fields"><a class="link" href="#_get_sheetsmy_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 데이터 배열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_response_fields-data"><a class="link" href="#_get_sheetsmy_response_fields-data">Response fields-data</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>video_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 비디오 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 최종 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_get_sheetsmy_like"><a class="link" href="#_get_sheetsmy_like"><code>GET</code> /sheets/my-like</a></h3>
+<div class="paragraph">
+<p>내가 좋아요 누른 악보 목록을 조회합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_like_http_request"><a class="link" href="#_get_sheetsmy_like_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /sheets/my HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_like_request_headers"><a class="link" href="#_get_sheetsmy_like_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_like_http_response"><a class="link" href="#_get_sheetsmy_like_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 371
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : [ {
+    "video_id" : "KZH-MpiwmaU",
+    "user_id" : "6313b2381f8fa3bb122eaa78",
+    "user_nickname" : "",
+    "title" : "Chord Play",
+    "created_at" : "2022-08-20T12:47:36.426",
+    "updated_at" : "2022-08-20T12:47:36.426",
+    "like_count" : 0,
+    "liked" : false,
+    "_id" : "6300d7e8aeeb0778c43ea37d"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_like_response_fields"><a class="link" href="#_get_sheetsmy_like_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 데이터 배열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_get_sheetsmy_like_response_fields-data"><a class="link" href="#_get_sheetsmy_like_response_fields-data">Response fields-data</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>video_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 비디오 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>user_nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 저자 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>created_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 생성 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>updated_at</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 최종 수정 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>like_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보의 좋아요 개수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>liked</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내가 좋아요를 누른 악보인지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sheet_like"><a class="link" href="#_sheet_like">SHEET-LIKE</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_post_sheet_likesheetid"><a class="link" href="#_post_sheet_likesheetid"><code>POST</code> /sheet-like/{sheetId}</a></h3>
+<div class="paragraph">
+<p>악보 좋아요 요청을 보냅니다</p>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_http_request"><a class="link" href="#_post_sheet_likesheetid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /sheet-like/testSheetId HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_request_headers"><a class="link" href="#_post_sheet_likesheetid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_path_parameters"><a class="link" href="#_post_sheet_likesheetid_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /sheet-like/{sheetId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheetId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_http_response"><a class="link" href="#_post_sheet_likesheetid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "201",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_post_sheet_likesheetid_response_fields"><a class="link" href="#_post_sheet_likesheetid_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빈 문자열</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_delete_sheet_likesheetid"><a class="link" href="#_delete_sheet_likesheetid"><code>DELETE</code> /sheet-like/{sheetId}</a></h3>
+<div class="paragraph">
+<p>악보 좋아요를 취소합니다</p>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_http_request"><a class="link" href="#_delete_sheet_likesheetid_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">DELETE /sheet-like/testSheetId HTTP/1.1
+Accept: application/json
+Authorization: Bearer {token}
+Host: api.baetles.site</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_request_headers"><a class="link" href="#_delete_sheet_likesheetid_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Bearer {token}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_path_parameters"><a class="link" href="#_delete_sheet_likesheetid_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /sheet-like/{sheetId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>sheetId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">악보 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_http_response"><a class="link" href="#_delete_sheet_likesheetid_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Content-Length: 60
+
+{
+  "code" : "200",
+  "message" : "success",
+  "data" : ""
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_delete_sheet_likesheetid_response_fields"><a class="link" href="#_delete_sheet_likesheetid_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">결과 메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">빈 문자열</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -3573,7 +4666,7 @@ Host: api.baetles.site</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 918
+Content-Length: 988
 
 {
   "code" : "200",
@@ -3589,6 +4682,7 @@ Content-Length: 918
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   }, {
     "thumbnail_path" : "https://i.ytimg.com/vi/RFMmK9E-cbc/hqdefault.jpg",
@@ -3601,6 +4695,7 @@ Content-Length: 918
     "difficulty_avg" : 0,
     "play_count" : 0,
     "sheet_count" : 0,
+    "is_in_my_collection" : false,
     "_id" : "RFMmK9E-cbc"
   } ]
 }</code></pre>
@@ -3712,6 +4807,11 @@ Content-Length: 918
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">악보 조회수</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>is_in_my_collection</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 곡 목록에 담았는지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3722,7 +4822,7 @@ Content-Length: 918
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-15 04:20:55 +0900
+Last updated 2022-11-01 02:05:07 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

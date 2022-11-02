@@ -32,4 +32,12 @@ public class CommonTestDocs {
                 subsectionWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터 배열")
         );
     }
+
+    public static List<FieldDescriptor> commonDocsOfEmpty(){
+        return Arrays.asList(
+                fieldWithPath("code").type(JsonFieldType.STRING).description("결과 코드"),
+                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                subsectionWithPath("data").type(JsonFieldType.STRING).description("빈 문자열")
+        );
+    }
 }

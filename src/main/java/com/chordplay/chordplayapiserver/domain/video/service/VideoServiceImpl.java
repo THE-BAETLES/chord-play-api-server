@@ -1,12 +1,15 @@
 package com.chordplay.chordplayapiserver.domain.video.service;
 
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
 import com.chordplay.chordplayapiserver.domain.dao.VideoRepository;
 import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
 import com.chordplay.chordplayapiserver.domain.entity.Sheet;
+import com.chordplay.chordplayapiserver.domain.entity.User;
 import com.chordplay.chordplayapiserver.domain.entity.Video;
 import com.chordplay.chordplayapiserver.domain.entity.WatchHistory;
 import com.chordplay.chordplayapiserver.domain.entity.item.PerformerGrade;
 import com.chordplay.chordplayapiserver.domain.sheet.service.SheetService;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.domain.video.dto.VideoResponse;
 import com.chordplay.chordplayapiserver.domain.video.dto.WatchHistoryResponse;
 import com.chordplay.chordplayapiserver.domain.video.exception.IncorrectGradeInputException;
@@ -31,6 +34,7 @@ public class VideoServiceImpl implements VideoService{
 
     private final YoutubeVideoSearch youtubeVideoSearch;
     private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
     private final SheetService sheetService;
     private final WatchHistoryRepository watchHistoryRepository;
 
@@ -46,7 +50,9 @@ public class VideoServiceImpl implements VideoService{
     @Override
     public Video create(String videoId) {
         Optional<Video> videoOptional = videoRepository.findById(videoId);
-        if(videoOptional.isPresent()) return videoOptional.get();
+        if(videoOptional.isPresent()) {
+            return videoOptional.get();
+        }
         com.google.api.services.youtube.model.Video youtubeVideo = youtubeVideoSearch.getYoutubeVideoInfo(videoId);
         Video video = new Video(youtubeVideo);
         videoRepository.save(video);
@@ -67,8 +73,7 @@ public class VideoServiceImpl implements VideoService{
             Optional<Video> optVideo = videoRepository.findById(youtubeSearchResult.getId().getVideoId());
             if (optVideo.isPresent()) {
                 Video video = optVideo.get();
-                Long sheetCount = videoRepository.getSheetCount(video.getId()) ;
-                videoResponse = new VideoResponse(video, sheetCount);
+                videoResponse= toVideoResponse(video);
             } else {
                 videoResponse = new VideoResponse(youtubeSearchResult);
             }
@@ -96,6 +101,7 @@ public class VideoServiceImpl implements VideoService{
 
         for (Video video : videos){
             System.out.println(video.getId());
+            VideoResponse videoResponse = toVideoResponse(video);
             videoResponses.add(new VideoResponse(video));
         }
         return videoResponses;
@@ -109,7 +115,9 @@ public class VideoServiceImpl implements VideoService{
         List<VideoResponse> videoResponses = new ArrayList<VideoResponse>();
 
         for (WatchHistory w : watchHistories){
-            videoResponses.add(new VideoResponse(w.getVideo()));
+            Video watchedVideo = w.getVideo();
+            VideoResponse videoResponse = toVideoResponse(watchedVideo);
+            videoResponses.add(videoResponse);
         }
         return videoResponses;
     }
@@ -119,6 +127,21 @@ public class VideoServiceImpl implements VideoService{
         return videoRepository.findById(videoId).orElseThrow(() -> new VideoNotFoundException());
     }
 
+    public Boolean isInMyCollection(String videoId){
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        return user.getMyCollection()
+                .stream()
+                .anyMatch(vidInCollection -> vidInCollection.equals(videoId));
+    }
+
+    public VideoResponse toVideoResponse(Video video){
+        VideoResponse videoResponse = new VideoResponse(video);
+        Long playCount = videoRepository.getPlayCount(videoResponse.getId());
+        Long sheetCount = videoRepository.getSheetCount(videoResponse.getId());
+        videoResponse.setPlayCount(playCount);
+        videoResponse.setSheetCount(sheetCount);
+        return videoResponse;
+    }
 
     private List<Video> getVideosByList(List<String> videoIdList){
         List<Video> videos = new ArrayList<Video>();

@@ -1,15 +1,18 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
 import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
+import com.chordplay.chordplayapiserver.domain.dao.SheetLikeRepository;
 import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.entity.Sheet;
-import com.chordplay.chordplayapiserver.domain.entity.SheetData;
-import com.chordplay.chordplayapiserver.domain.entity.User;
-import com.chordplay.chordplayapiserver.domain.entity.Video;
+import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
+import com.chordplay.chordplayapiserver.domain.entity.*;
+import com.chordplay.chordplayapiserver.domain.entity.item.Chord;
 import com.chordplay.chordplayapiserver.domain.entity.item.ChordInfo;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetChangeRequest;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetDuplicationRequest;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetResponse;
+import com.chordplay.chordplayapiserver.domain.sheet.dto.SheetsResponse;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetNotFoundException;
+import com.chordplay.chordplayapiserver.global.ServiceUnitTest;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.util.ContextUtil;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,39 +22,40 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mockStatic;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Sheet 서비스 테스트")
-@ExtendWith(MockitoExtension.class)
-class SheetServiceImplTest {
 
+class SheetServiceImplTest extends ServiceUnitTest {
+
+    @Spy
     @InjectMocks
     SheetServiceImpl sheetService;
     @Mock
     SheetRepository sheetRepository;
-
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    SheetLikeRepository sheetLikeRepository;
     @Mock
     SheetDataRepository sheetDataRepository;
-
-    @BeforeAll
-    public static void staticInit(){
-        User mockUser = createStaticMockUser();
-        MockedStatic<ContextUtil> contextUtilMockedStatic = mockStatic(ContextUtil.class);
-        contextUtilMockedStatic.when(()->ContextUtil.getPrincipalUserId()).thenReturn(mockUser.getId());
-    }
 
     @Test
     @DisplayName("악보 코드 변경하기_없는 악보 호출_오류 반환")
@@ -62,7 +66,8 @@ class SheetServiceImplTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.empty());
 
         //when
-        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
+        Chord chord = new Chord("B","m","none");
+        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); })
                 .isInstanceOf(SheetNotFoundException.class);
         //then
     }
@@ -77,7 +82,8 @@ class SheetServiceImplTest {
 
 
         //when
-        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); })
+        Chord chord = new Chord("B","m","none");
+        assertThatThrownBy(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); })
                 .isInstanceOf(ForbiddenException.class);
         //then
     }
@@ -91,7 +97,8 @@ class SheetServiceImplTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
 
         //when
-        assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,"Bm")); }).doesNotThrowAnyException();
+        Chord chord = new Chord("B","m","none");
+        assertThatCode(() -> { sheetService.updateSheetChord(sheet.getId(), new SheetChangeRequest(0,chord)); }).doesNotThrowAnyException();
         //then
     
     }
@@ -111,13 +118,43 @@ class SheetServiceImplTest {
         given(sheetRepository.findById(sheet.getId())).willReturn(Optional.of(sheet));
         given(sheetDataRepository.findById(sheet.getId())).willReturn(Optional.of(sheetData));
         given(sheetRepository.save(any(Sheet.class))).willReturn(newSheetWithId);
-
         //when
         Sheet returnedSheet = sheetService.duplicateSheet(dto);
 
         //then
         assertThat(returnedSheet.getTitle()).isEqualTo(newSheet.getTitle());
         assertThat(returnedSheet.getUser().getId()).isEqualTo(newSheet.getUser().getId());
+    }
+
+    @Test
+    @DisplayName("sheets 가져오기_videoId_shared,my,like 분류 성공")
+    public void getSheetsByVideoIdTest() throws Exception {
+
+        //get
+        Sheet sheet = createMockSheet();
+        User user = createMockUser();
+        SheetResponse sheetResponse = new SheetResponse(sheet);
+        sheetResponse.setLiked(true);
+        sheetResponse.setLikeCount(3L);
+
+        String videoId = "videoId";
+
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+        given(sheetRepository.findAllByVideoId(eq(videoId))).willReturn(Arrays.asList(sheet));
+        doReturn(sheetResponse).when(sheetService).toSheetResponse(sheet,user);
+
+        //when
+        SheetsResponse sheetsResponse = sheetService.getSheetsByVideoId(videoId);
+
+        //then
+        assertThat(sheetsResponse.getLike().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getMy().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getShared().get(0).getId()).isEqualTo(sheet.getId());
+        assertThat(sheetsResponse.getShared().get(0).getLiked()).isTrue();
+        assertThat(sheetsResponse.getMy().get(0).getLiked()).isTrue();
+        assertThat(sheetsResponse.getLike().get(0).getLiked()).isTrue();
+
+
     }
 
     private Sheet createMockSheet(){
@@ -167,42 +204,17 @@ class SheetServiceImplTest {
     }
 
     private SheetData createMockSheetData() {
-        List<ChordInfo> chordInfos = new ArrayList<>();
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("Am")
-                .start(0.0)
-                .end(2.23)
-                .position(0).build());
-
-        chordInfos.add(ChordInfo.builder()
-                .chord("C")
-                .start(2.23)
-                .end(4.06)
-                .position(1).build());
+        Chord chord1 = new Chord("B","none","none");
+        Chord chord2 = new Chord("none","none","none");
+        Chord chord3 = new Chord("none","none","none");
+        ChordInfo chordInfo1 = new ChordInfo(chord1, 0.1111);
+        ChordInfo chordInfo2 = new ChordInfo(chord2, 0.1234);
+        ChordInfo chordInfo3 = new ChordInfo(chord3, 0.3);
         return SheetData.builder()
+                .id("abc")
                 .bpm(123)
-                .id("6300d7e8aeeb0778c43ea37d")
-                .chordInfos(chordInfos).build();
-    }
-
-    private static User createStaticMockUser(){
-        return User.builder()
-                .id("6313b2381f8fa3bb122eaa78")
-                .username("최현준")
-                .email("test@gmail.com")
-                .nickname("test")
-                .roles("ROLE_USER")
-                .build();
-    }
-
-    private User createMockUser(){
-        return User.builder()
-                .id("6313b2381f8fa3bb122eaa78")
-                .username("최현준")
-                .email("test@gmail.com")
-                .nickname("test")
-                .roles("ROLE_USER")
-                .build();
+                .chordInfos(
+                        Arrays.asList(chordInfo1,chordInfo2,chordInfo3)
+                ).build();
     }
 }

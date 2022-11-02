@@ -1,12 +1,10 @@
 package com.chordplay.chordplayapiserver.domain.sheet.service;
 
-import com.chordplay.chordplayapiserver.domain.dao.SheetRepository;
-import com.chordplay.chordplayapiserver.domain.dao.UserRepository;
-import com.chordplay.chordplayapiserver.domain.dao.WatchHistoryRepository;
+import com.chordplay.chordplayapiserver.domain.dao.*;
 import com.chordplay.chordplayapiserver.domain.entity.*;
-import com.chordplay.chordplayapiserver.domain.dao.SheetDataRepository;
 import com.chordplay.chordplayapiserver.domain.sheet.dto.*;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.AiSheetNotCreatedException;
+import com.chordplay.chordplayapiserver.domain.user.exception.UserNotFoundException;
 import com.chordplay.chordplayapiserver.global.exception.ForbiddenException;
 import com.chordplay.chordplayapiserver.global.exception.UnauthorizedException;
 import com.chordplay.chordplayapiserver.domain.sheet.exception.SheetDataNotFoundException;
@@ -43,6 +41,7 @@ public class SheetServiceImpl implements SheetService{
     private final SheetRepository sheetRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final SheetLikeRepository sheetLikeRepository;
     private final ObjectMapper objectMapper;
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final MessageQueue messageQueue;
@@ -103,10 +102,12 @@ public class SheetServiceImpl implements SheetService{
         return sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
     }
 
+
+
     @Override
     public Sheet deleteSheetAndSheetData(String sheetId) {
         Sheet sheet = sheetRepository.findById(sheetId).orElseThrow(() -> new SheetNotFoundException());
-        if (sheet.getUser().getId() != ContextUtil.getPrincipalUserId()) throw new UnauthorizedException();
+        if (!sheet.getUser().getId().equals(ContextUtil.getPrincipalUserId())) throw new UnauthorizedException();
 
         sheetRepository.delete(sheet);
         sheetDataRepository.findById(sheetId).ifPresent(sheetData->{
@@ -131,11 +132,26 @@ public class SheetServiceImpl implements SheetService{
 
     @Override
     public SheetsResponse getSheetsByVideoId(String videoId) {
-        SheetsResponse sheetsResponse = SheetsResponse.builder()
-                .sharedSheet(sheetRepository.findAllByVideoId(videoId))
-                .mySheet(new ArrayList<Sheet>())
-                .likeSheet(new ArrayList<Sheet>()).build();
-        return sheetsResponse;
+
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<Sheet> sharedSheets = sheetRepository.findAllByVideoId(videoId);
+
+        List<SheetResponse> sharedSheetResponses = new ArrayList<>();
+        List<SheetResponse> likeSheetResponses = new ArrayList<>();
+        List<SheetResponse> mySheetResponses = new ArrayList<>();
+
+        for(Sheet sheet: sharedSheets){
+            SheetResponse sheetResponse = toSheetResponse(sheet,user);
+            sharedSheetResponses.add(sheetResponse);
+
+            if (sheetResponse.getLiked()){
+                likeSheetResponses.add(sheetResponse);
+            }
+            if (sheet.getUser().equals(user)){
+                mySheetResponses.add(sheetResponse);
+            }
+        }
+       return new SheetsResponse(sharedSheetResponses,likeSheetResponses,mySheetResponses);
     }
 
     @Override
@@ -212,5 +228,42 @@ public class SheetServiceImpl implements SheetService{
         sheetDataRepository.save(newSheetData);
 
         return sheet;
+    }
+
+    protected SheetResponse toSheetResponse(Sheet sheet, User user){
+        SheetResponse sheetResponse = new SheetResponse(sheet);
+        Optional<SheetLike> sheetLikeOptional = sheetLikeRepository.findBySheetAndUser(sheet,user);
+        if (sheetLikeOptional.isPresent()){
+            sheetResponse.setLiked(true);
+        }
+        sheetResponse.setLikeCount(sheetRepository.getSheetLikeCount(sheet.getId()));
+
+        sheetResponse.setNickname(user.getNickname());
+        return sheetResponse;
+    }
+
+    @Override
+    public List<SheetResponse> getSheetsOfMyLike() {
+
+        List<SheetResponse> sheetResponses = new ArrayList<>();
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<SheetLike> sheetLikes = sheetLikeRepository.findAllByUser(user);
+        sheetLikes.forEach(sheetLike -> {
+            Sheet sheet = sheetLike.getSheet();
+            sheetResponses.add(toSheetResponse(sheet,user));
+        });
+        return sheetResponses;
+    }
+
+    @Override
+    public List<SheetResponse> getMySheets() {
+        List<SheetResponse> sheetResponses = new ArrayList<>();
+        User user = userRepository.findById(ContextUtil.getPrincipalUserId()).orElseThrow(()-> new UserNotFoundException());
+        List<Sheet> sheets = sheetRepository.findAllByUser(user);
+
+        for (Sheet sheet: sheets) {
+            sheetResponses.add(toSheetResponse(sheet,user));
+        }
+        return sheetResponses;
     }
 }

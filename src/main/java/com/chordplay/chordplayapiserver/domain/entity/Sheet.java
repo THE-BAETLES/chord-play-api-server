@@ -35,9 +35,6 @@ public class Sheet {
     @Field("updated_at")
     private LocalDateTime updatedAt;
 
-    @Field("like_count")
-    private Long likeCount;
-
     @Builder
     public Sheet(String id, Video video, User user, String title, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
@@ -46,6 +43,5 @@ public class Sheet {
         this.title = title;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.likeCount = 0L;
     }
 }
