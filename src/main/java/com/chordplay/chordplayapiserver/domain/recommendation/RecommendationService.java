@@ -43,7 +43,7 @@ public class RecommendationService {
         List<VideoResponse> videoResponses = new ArrayList<>();
         for( String videoId : videoIdList ){
             Video video = videoService.create(videoId);
-            VideoResponse videoResponse = videoService.toVideoResponse(video);
+            videoResponses.add(videoService.toVideoResponse(video));
         }
         return videoResponses;
     }
