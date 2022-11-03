@@ -1,0 +1,72 @@
+name: Deploy API to Amazon Private ECR
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REGISTRY: 199349264777.dkr.ecr.ap-northeast-2.amazonaws.com
+  ECR_REPOSITORY: chord-play-api
+  IMAGE_TAG: latest
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+
+    steps:
+      # Github에 저장된 코드를 CI 서버로 내려받아 뒷 step 에서 사용할 수 있도록 함
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # 자바 설치
+      - name: Set-up java
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11.0.15'
+
+      # application.yml 파일 생성하기
+      - name: Create application.yml
+        run: |
+          cd ./src/main/resources
+          touch ./application.yml
+          echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
+        shell: bash
+
+      # 스프링부트 프로젝트 jar 파일 빌드
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: BootJar with Gradle
+        run: ./gradlew bootJar
+
+      # secret 에 저장된 값 불러옴
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ${{env.AWS_REGION}}
+
+      # key 정보를 바탕으로 aws cli 로그인
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{steps.login-ecr.outputs.registry}}
+          IMAGE_TAG: ${{github.sha}}
+
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
