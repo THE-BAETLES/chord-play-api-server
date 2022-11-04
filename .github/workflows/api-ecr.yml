@@ -38,6 +38,12 @@ jobs:
           cd ./src/main/resources
           touch ./application.yml
           echo "${{ secrets.APPLICATION_YML }}" > ./application.yml
+      # test-application.yml 파일 생성하기
+      - name: Create test application.yml
+        run: |
+          cd ./src/test/resources
+          touch ./application.yml
+          echo "${{ secrets.TEST_APPLICATION_YML }}" > ./application.yml
 
       # 스프링부트 프로젝트 jar 파일 빌드
       - name: Grant execute permission for gradlew
