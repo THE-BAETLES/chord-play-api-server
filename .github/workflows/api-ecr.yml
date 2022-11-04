@@ -41,6 +41,7 @@ jobs:
       # test-application.yml 파일 생성하기
       - name: Create test application.yml
         run: |
+          mkdir ./src/test/resources
           cd ./src/test/resources
           touch ./application.yml
           echo "${{ secrets.TEST_APPLICATION_YML }}" > ./application.yml
