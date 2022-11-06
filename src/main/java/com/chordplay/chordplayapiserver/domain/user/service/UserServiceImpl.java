@@ -34,7 +34,8 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void join(JoinRequest dto) {
-        User user = (dto.getUsername().equals("admin")) ? dto.toEntity("ROLE_ADMIN") : dto.toEntity("ROLE_USER");
+        //User user = (dto.getUsername().equals("admin")) ? dto.toEntity("ROLE_ADMIN") : dto.toEntity("ROLE_USER");
+        User user = dto.toEntity("ROLE_USER");
         userRepository.deleteByFirebaseUid(user.getFirebaseUid());  //임시
         userRepository.save(user);
     }
