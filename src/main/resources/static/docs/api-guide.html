@@ -452,13 +452,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#overview_http_verbs">HTTP verbs</a></li>
 <li><a href="#overview_http_status_codes">HTTP status codes</a></li>
-<li><a href="#overview_errors">Errors</a></li>
-<li><a href="#overview_hypermedia">Hypermedia</a></li>
-</ul>
-</li>
-<li><a href="#resources">Resources</a>
-<ul class="sectlevel1">
-<li><a href="#resources_index">Index</a></li>
 <li><a href="#_user">USER</a>
 <ul class="sectlevel2">
 <li><a href="#_get_user"><code>GET</code> /user</a></li>
@@ -604,46 +597,6 @@ use of HTTP status codes.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div class="sect1">
-<h2 id="overview_errors"><a class="link" href="#overview_errors">Errors</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Whenever an error response (status code &gt;= 400) is returned, the body will contain a JSON object
-that describes the problem. The error object has the following structure:</p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in api-guide.adoc - include::./build/generated-snippets/error-example/response-fields.adoc[]</p>
-</div>
-<div class="paragraph">
-<p>For example, a request that attempts to apply a non-existent tag to a note will produce a
-<code>400 Bad Request</code> response:</p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in api-guide.adoc - include::./build/generated-snippets/error-example/http-response.adoc[]</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="overview_hypermedia"><a class="link" href="#overview_hypermedia">Hypermedia</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>RESTful Notes uses hypermedia and resources include links to other resources in their
-responses. Responses are in <a href="https://github.com/mikekelly/hal_specification">Hypertext
-Application Language (HAL)</a> format. Links can be found beneath the <code>_links</code> key. Users of
-the API should not create URIs themselves, instead they should use the above-described
-links to navigate from resource to resource.</p>
-</div>
-</div>
-</div>
-<h1 id="resources" class="sect0"><a class="link" href="#resources">Resources</a></h1>
-<div class="sect1">
-<h2 id="resources_index"><a class="link" href="#resources_index">Index</a></h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The index provides the entry point into the service.</p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -4822,7 +4775,7 @@ Content-Length: 988
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-01 02:05:07 +0900
+Last updated 2022-11-07 08:03:55 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
