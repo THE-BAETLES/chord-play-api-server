@@ -9,9 +9,9 @@
 ## Contents
 1. [문제인식](#문제인식)
 2. [Skills](#Skills)
-3. [Database 설계](#Database 설계)
+3. [Database 설계](#Database-설계)
 4. [Architecture](#Architecture)
-4. [Details](#Details)
+5. [Details](#Details)
 
 ## 문제인식
 
