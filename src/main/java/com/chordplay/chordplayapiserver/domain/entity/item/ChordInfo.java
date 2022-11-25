@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Unwrapped;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ChordInfo {
 
-    @Unwrapped.Nullable
     private Chord chord;
     private double beat_time;
 
